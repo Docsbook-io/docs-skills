@@ -1,0 +1,28 @@
+{
+  "name": "docs-skills",
+  "version": "1.0.0",
+  "description": "AI agent skills for documentation analysis — 11 specialized skills for Claude Code, Cursor, Codex, and other AI coding tools",
+  "keywords": ["documentation", "docs", "ai", "claude", "cursor", "mcp", "skills", "analysis", "seo", "accessibility", "i18n", "diátaxis"],
+  "author": "Dan Bondarev",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/docsbook/docs-skills.git"
+  },
+  "homepage": "https://docsbook.io",
+  "bin": {
+    "docs-skills": "./bin/docs-skills.js"
+  },
+  "files": [
+    "skills/",
+    "bin/",
+    "install.js",
+    "README.md",
+    "LICENSE",
+    "AGENTS.md",
+    ".cursorrules"
+  ],
+  "engines": {
+    "node": ">=16"
+  }
+}
