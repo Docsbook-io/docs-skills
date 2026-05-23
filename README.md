@@ -54,14 +54,26 @@ No account required for reading public repos. Sign up at [docsbook.io](https://d
 
 ## Install
 
-### npm (recommended)
+### npx (one command, no install required)
+
+```bash
+npx docs-skills install
+```
+
+That's it. Auto-detects your AI tool (Claude Code / Cursor / Copilot / Codex) and copies the skills to the right place.
+
+To install globally for Claude Code:
+
+```bash
+npx docs-skills install ~/
+```
+
+### npm (global install)
 
 ```bash
 npm install -g docs-skills
 docs-skills install
 ```
-
-`docs-skills install` auto-detects your AI tool and copies the skills to the right place.
 
 ### Manual
 
