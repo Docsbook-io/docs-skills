@@ -4,17 +4,19 @@ Open-source catalog of AI agent skills for documentation — analyze, create, pu
 
 Browse the live catalog: **[docsbook.io/skills](https://docsbook.io/skills)**.
 
+**25 skills across 5 categories.** Works with Claude Code, Cursor, GitHub Copilot, and OpenAI Codex.
+
 ---
 
 ## Categories
 
-| Category | What it does | Examples |
-|---|---|---|
-| `analysis` | Audit and quality checks | `docs-analyze`, `docs-seo`, `docs-accessibility`, `docs-i18n` |
-| `creation` | Generate or import docs | `docs-create`, `docs-from-site`, `docs-detect-source` |
-| `publishing` | Publish and onboard a workspace | `docs-publish`, `docs-setup-workspace`, `docs-generate-agents-md` |
-| `automation` | Wire up automations via Docsbook MCP | `docs-enable-translation`, `docs-pr-check`, `docs-tune-ai-chat`, `docs-stale-watcher`, `docs-release-announce`, `docs-translate-webhook` |
-| `observability` | Analytics-driven gap-finding | `docs-gap-finder` |
+| Category | Skills | What it does |
+|---|---:|---|
+| `analysis` | 11 | Audit and quality checks |
+| `creation` | 4 | Generate or import docs |
+| `publishing` | 3 | Publish and onboard a workspace |
+| `automation` | 6 | Wire up automations via Docsbook MCP |
+| `observability` | 1 | Analytics-driven gap-finding |
 
 ---
 
@@ -36,7 +38,7 @@ If your agent is already connected to the Docsbook MCP server, no install needed
 @docsbook find_skill "audit my docs for accessibility"
 ```
 
-The tool searches the catalog by name + description + keywords and returns matching SKILL.md URLs. Your agent reads them directly via WebFetch and runs the steps.
+The tool searches the catalog by name + description + keywords and returns matching SKILL.md URLs. Your agent reads them via WebFetch and runs the steps.
 
 Both modes share the same source — no duplication.
 
@@ -44,25 +46,61 @@ Both modes share the same source — no duplication.
 
 ## Skills
 
-| Skill | Description |
+### Analysis — audit existing documentation
+
+| Skill | What it checks |
 |---|---|
 | `/docs-analyze` | Orchestrator — runs all 10 sub-skills and produces a unified prioritized report |
-| `/docs-content-types` | Diátaxis framework analysis (tutorial / how-to / reference / explanation balance) |
-| `/docs-structure-templates` | Frontmatter, heading hierarchy, code block conventions |
+| `/docs-content-types` | Diátaxis framework balance (tutorial / how-to / reference / explanation) |
+| `/docs-structure-templates` | Frontmatter completeness, heading hierarchy, code block conventions |
 | `/docs-style-tone` | Active voice, filler words, marketing adjectives, terminology consistency |
 | `/docs-audience` | Vocabulary mismatch, assumed knowledge gaps, missing prerequisites |
-| `/docs-navigation-linking` | Orphan pages, broken links, anchor text quality |
-| `/docs-seo` | Title/description tags, topic clusters, AI Overviews compatibility |
+| `/docs-navigation-linking` | Orphan pages, broken internal links, anchor text quality |
+| `/docs-seo` | Title/description, topic clusters, AI Overviews compatibility |
 | `/docs-accessibility` | WCAG 2.1 AA from markdown source — alt text, heading order, link text |
 | `/docs-i18n` | Multilingual parity, hreflang, translation freshness |
-| `/docs-media` | Images, screenshots, diagrams, missing captions, large files |
+| `/docs-media` | Images, screenshots, diagrams, captions, oversized files |
 | `/docs-maintenance` | Stale content, deprecated pages, TODO/FIXME markers |
+
+### Creation — generate new documentation
+
+| Skill | What it does |
+|---|---|
+| `/docs-create` | Full pipeline: detect source → build docs → publish to GitHub → optionally configure Docsbook |
+| `/docs-create-interactive` | Same pipeline with review checkpoints between steps |
+| `/docs-detect-source` | Detect source type (website URL / code repo / Mintlify / GitBook / Docusaurus) |
+| `/docs-from-site` | Crawl a website URL and produce structured Markdown |
+
+### Publishing — ship docs to Docsbook
+
+| Skill | What it does | Plan |
+|---|---|---|
+| `/docs-publish` | Publish a local folder to a new GitHub repo (git init, gh repo create, push) | Free |
+| `/docs-setup-workspace` | Configure a Docsbook workspace via MCP (branding, UI, AI chat, SEO, languages) | Free |
+| `/docs-generate-agents-md` | Generate `AGENTS.md` at repo root from workspace settings — gives every future agent context | Free |
+
+### Automation — wire workspace events to actions
+
+| Skill | What it does | Plan |
+|---|---|---|
+| `/docs-enable-translation` | Enable AI auto-translation; optional Slack notification on completion | PRO |
+| `/docs-pr-check` | Generate a GitHub Actions workflow that validates docs on every PR | Free |
+| `/docs-tune-ai-chat` | Analyze negative feedback + unanswered questions, suggest a new system prompt | PRO |
+| `/docs-stale-watcher` | On `content.outdated` webhook → open a GitHub Issue per stale page | PRO+ |
+| `/docs-release-announce` | On new GitHub release → post to Slack and/or email | PRO |
+| `/docs-translate-webhook` | Replace built-in AI translation with a custom external pipeline | PRO+ |
+
+### Observability — turn analytics into actions
+
+| Skill | What it does | Plan |
+|---|---|---|
+| `/docs-gap-finder` | Cross-reference failed searches + unanswered AI questions vs doc graph → prioritized list of pages to create (with optional draft GitHub Issues) | PRO+ |
 
 ---
 
 ## How it works
 
-Each skill uses the **Docsbook MCP server** to read the documentation graph of any public GitHub repository — all pages, headings, sections, and link relationships — without cloning the repo locally.
+Each skill uses the **Docsbook MCP server** to read the documentation graph of any public GitHub repository — pages, headings, sections, link relationships — without cloning the repo locally. Automation skills additionally register webhooks and update workspace settings.
 
 ```
 AI Tool (Claude Code / Cursor / Codex)
@@ -71,10 +109,10 @@ AI Tool (Claude Code / Cursor / Codex)
   docs-skill runs
         │
         ▼
-  Docsbook MCP  ──▶  GitHub repo docs/
+  Docsbook MCP  ──▶  GitHub repo docs/  +  webhooks  +  workspace settings
         │
         ▼
-  Structured audit report
+  Audit report / generated files / configured automation
 ```
 
 **Docsbook MCP setup** (one-time, per AI tool):
@@ -84,7 +122,7 @@ AI Tool (Claude Code / Cursor / Codex)
 mcp add --transport http https://docsbook.io/api/mcp/server
 ```
 
-No account required for reading public repos. Sign up at [docsbook.io](https://docsbook.io) for PRO features (doc graph, section reading, reindex).
+No account required for reading public repos. Sign up at [docsbook.io](https://docsbook.io) for PRO features (doc graph, section reading, reindex, AI tuning, webhooks).
 
 ---
 
@@ -96,7 +134,7 @@ No account required for reading public repos. Sign up at [docsbook.io](https://d
 npx docs-skills install
 ```
 
-That's it. Auto-detects your AI tool (Claude Code / Cursor / Copilot / Codex) and copies the skills to the right place.
+Auto-detects your AI tool (Claude Code / Cursor / Copilot / Codex) and copies skills to the right place.
 
 To install globally for Claude Code:
 
@@ -113,11 +151,8 @@ docs-skills install
 
 ### Manual
 
-Copy the `skills/` folder into your project:
-
 ```bash
-# Clone or download
-git clone https://github.com/docsbook/docs-skills.git
+git clone https://github.com/Docsbook-io/docs-skills.git
 cp -r docs-skills/skills .claude/skills/
 ```
 
@@ -127,50 +162,40 @@ cp -r docs-skills/skills .claude/skills/
 
 ### Claude Code
 
-Copy skills into `.claude/skills/` in your project (or globally in `~/.claude/skills/`):
-
 ```bash
-docs-skills install          # auto-installs into current project
-docs-skills install ~/       # install globally
+docs-skills install          # current project's .claude/skills/
+docs-skills install ~/       # global ~/.claude/skills/
 ```
 
-Then use in any conversation:
+Then in chat:
 
 ```
 /docs-analyze
 ```
 
-Claude will ask for the GitHub repo URL and run the full audit.
-
 ### Cursor
-
-Copy skills into `.cursor/rules/`:
 
 ```bash
 docs-skills install
 ```
 
-Or manually create `.cursor/rules/docs-skills.mdc` pointing at the skills. Then mention `@docs-analyze` in chat.
+Then mention `@docs-analyze` in chat.
 
 ### GitHub Copilot
 
-The installer appends a `docs-skills` section to `.github/copilot-instructions.md`:
-
 ```bash
 docs-skills install
 ```
 
-Or manually append the contents of `skills/*/SKILL.md` to your Copilot instructions file.
+Appends a `docs-skills` section to `.github/copilot-instructions.md`.
 
 ### OpenAI Codex
 
-The installer appends a `docs-skills` section to `AGENTS.md`:
-
 ```bash
 docs-skills install
 ```
 
-Or manually append skill descriptions to your `AGENTS.md`.
+Appends skill descriptions to `AGENTS.md`.
 
 ---
 
@@ -207,7 +232,7 @@ Running 10 analysis skills...
 
 ```bash
 docs-skills install [dir]    # Install into dir (default: current directory)
-docs-skills list             # List all 11 skills with descriptions
+docs-skills list             # List all skills with descriptions
 docs-skills info <skill>     # Show full skill definition
 ```
 
