@@ -1,8 +1,44 @@
 # docs-skills
 
-11 AI agent skills for documentation analysis. Works with any public GitHub repo via the [Docsbook](https://docsbook.io) MCP server.
+Open-source catalog of AI agent skills for documentation — analyze, create, publish, and automate via the [Docsbook](https://docsbook.io) MCP server.
 
-Point the skills at any GitHub repo and get a comprehensive audit: content structure, SEO, accessibility, i18n parity, style consistency, stale pages, broken links, and more.
+Browse the live catalog: **[docsbook.io/skills](https://docsbook.io/skills)**.
+
+---
+
+## Categories
+
+| Category | What it does | Examples |
+|---|---|---|
+| `analysis` | Audit and quality checks | `docs-analyze`, `docs-seo`, `docs-accessibility`, `docs-i18n` |
+| `creation` | Generate or import docs | `docs-create`, `docs-from-site`, `docs-detect-source` |
+| `publishing` | Publish and onboard a workspace | `docs-publish`, `docs-setup-workspace`, `docs-generate-agents-md` |
+| `automation` | Wire up automations via Docsbook MCP | `docs-enable-translation`, `docs-pr-check`, `docs-tune-ai-chat`, `docs-stale-watcher`, `docs-release-announce`, `docs-translate-webhook` |
+| `observability` | Analytics-driven gap-finding | `docs-gap-finder` |
+
+---
+
+## Two consumption modes
+
+### 1. Local install (default)
+
+```bash
+npx docs-skills install
+```
+
+Copies SKILL.md files into `.claude/skills/` (Claude Code), `.cursor/rules/` (Cursor), or appends to `AGENTS.md` / `copilot-instructions.md` (Codex / Copilot). Works offline once installed.
+
+### 2. Runtime discovery via Docsbook MCP (v2)
+
+If your agent is already connected to the Docsbook MCP server, no install needed — call the `find_skill` tool:
+
+```
+@docsbook find_skill "audit my docs for accessibility"
+```
+
+The tool searches the catalog by name + description + keywords and returns matching SKILL.md URLs. Your agent reads them directly via WebFetch and runs the steps.
+
+Both modes share the same source — no duplication.
 
 ---
 
