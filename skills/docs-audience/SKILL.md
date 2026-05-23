@@ -3,6 +3,13 @@ name: docs-audience
 description: Analyzes how well documentation pages match their intended audience. Finds vocabulary mismatch, assumed knowledge gaps, mixed-audience confusion, and jargon density relative to stated prerequisites.
 metadata:
   version: 1.0.0
+  category: analysis
+  requires_docsbook_mcp: true
+  uses_mcp_tools:
+    - list_workspaces
+    - get_doc_graph
+    - read_doc_sections
+  keywords: [audience, persona, jargon, prerequisites, vocabulary]
 ---
 
 # docs-audience — Audience Targeting Analysis

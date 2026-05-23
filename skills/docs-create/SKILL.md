@@ -3,6 +3,9 @@ name: docs-create
 description: Full pipeline — detects source type, builds documentation, publishes to GitHub, and optionally configures Docsbook. L1 "under the key" entry point with minimal questions. Delegates to /docs-detect-source → /docs-from-* → /docs-publish → /docs-setup-workspace.
 metadata:
   version: 1.0.0
+  category: creation
+  requires_docsbook_mcp: false
+  keywords: [create, pipeline, generate, docs, new]
 ---
 
 # docs-create

@@ -3,6 +3,13 @@ name: docs-maintenance
 description: Analyzes documentation freshness and maintenance health — stale content, deprecated pages without migration paths, TODO/FIXME in published docs, past-dated promises, old version references, and ownership gaps. For quarterly audits, not single-page reviews.
 metadata:
   version: 1.0.0
+  category: analysis
+  requires_docsbook_mcp: true
+  uses_mcp_tools:
+    - list_workspaces
+    - get_doc_graph
+    - read_doc_sections
+  keywords: [maintenance, stale, freshness, deprecated, todo, ownership]
 ---
 
 # docs-maintenance — Documentation Maintenance Analysis

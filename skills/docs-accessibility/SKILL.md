@@ -3,6 +3,13 @@ name: docs-accessibility
 description: Analyzes accessibility (a11y) of markdown documentation — alt text, heading hierarchy, link anchor text, captions, code block language, and text readability. Target standard is WCAG 2.1 Level AA, applied to what is controllable from the markdown source.
 metadata:
   version: 1.0.0
+  category: analysis
+  requires_docsbook_mcp: true
+  uses_mcp_tools:
+    - list_workspaces
+    - get_doc_graph
+    - read_doc_sections
+  keywords: [accessibility, a11y, wcag, alt-text, headings, screen-reader]
 ---
 
 # docs-accessibility — Accessibility Analysis (WCAG 2.1 AA)

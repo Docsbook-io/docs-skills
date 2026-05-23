@@ -1,0 +1,526 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-23T10:18:53.659Z",
+  "skills": [
+    {
+      "name": "docs-accessibility",
+      "description": "Analyzes accessibility (a11y) of markdown documentation — alt text, heading hierarchy, link anchor text, captions, code block language, and text readability. Target standard is WCAG 2.1 Level AA, applied to what is controllable from the markdown source.",
+      "category": "analysis",
+      "keywords": [
+        "accessibility",
+        "a11y",
+        "wcag",
+        "alt-text",
+        "headings",
+        "screen-reader"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "get_doc_graph",
+        "read_doc_sections"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-accessibility/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-accessibility/SKILL.md"
+    },
+    {
+      "name": "docs-analyze",
+      "description": "When the user wants to audit, review, or analyze markdown documentation quality. Use when the user mentions \"docs audit\", \"review docs\", \"docs quality\", \"documentation review\", \"find issues in docs\", \"check my documentation\", \"analyze documentation\". Orchestrates 10 specialized analysis skills (docs-content-types, docs-structure-templates, docs-style-tone, docs-audience, docs-navigation-linking, docs-seo, docs-accessibility, docs-i18n, docs-media, docs-maintenance) over a single page, folder, or full docs/ tree and produces a unified prioritized report. For writing NEW documentation, see docs-writing-guide. For creating docs from scratch, see create-docs.",
+      "category": "analysis",
+      "keywords": [
+        "audit",
+        "review",
+        "analysis",
+        "quality",
+        "orchestrator",
+        "documentation"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "get_workspace",
+        "get_doc_graph",
+        "read_doc_sections"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-analyze/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-analyze/SKILL.md"
+    },
+    {
+      "name": "docs-audience",
+      "description": "Analyzes how well documentation pages match their intended audience. Finds vocabulary mismatch, assumed knowledge gaps, mixed-audience confusion, and jargon density relative to stated prerequisites.",
+      "category": "analysis",
+      "keywords": [
+        "audience",
+        "persona",
+        "jargon",
+        "prerequisites",
+        "vocabulary"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "get_doc_graph",
+        "read_doc_sections"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-audience/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-audience/SKILL.md"
+    },
+    {
+      "name": "docs-content-types",
+      "description": "Analyzes whether each documentation page follows the Diátaxis framework — tutorial, how-to guide, reference, or explanation. Detects mixed content types, misclassified pages, and structural violations per type. Uses Docsbook MCP to access content.",
+      "category": "analysis",
+      "keywords": [
+        "diataxis",
+        "tutorial",
+        "how-to",
+        "reference",
+        "explanation",
+        "content-type"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "get_doc_graph",
+        "read_doc_sections"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-content-types/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-content-types/SKILL.md"
+    },
+    {
+      "name": "docs-create",
+      "description": "Full pipeline — detects source type, builds documentation, publishes to GitHub, and optionally configures Docsbook. L1 \"under the key\" entry point with minimal questions. Delegates to /docs-detect-source → /docs-from-* → /docs-publish → /docs-setup-workspace.",
+      "category": "creation",
+      "keywords": [
+        "create",
+        "pipeline",
+        "generate",
+        "docs",
+        "new"
+      ],
+      "requires_docsbook_mcp": false,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-create/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-create/SKILL.md"
+    },
+    {
+      "name": "docs-create-interactive",
+      "description": "Full pipeline with interactive checkpoints — detects source, builds docs, lets you review structure before publishing, customize branding, and choose languages and domain. L2 entry point for users who want control. Same power as /docs-create but with stops at key decisions.",
+      "category": "creation",
+      "keywords": [
+        "create",
+        "interactive",
+        "pipeline",
+        "checkpoints",
+        "customize"
+      ],
+      "requires_docsbook_mcp": false,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-create-interactive/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-create-interactive/SKILL.md"
+    },
+    {
+      "name": "docs-detect-source",
+      "description": "Detects what type of documentation source you have — website URL, code repository, or existing docs platform (Mintlify, GitBook, Docusaurus, etc.). Used internally by /docs-create to route to the right skill. Can also be run directly to identify your source type.",
+      "category": "creation",
+      "keywords": [
+        "detect",
+        "source",
+        "mintlify",
+        "gitbook",
+        "docusaurus",
+        "platform"
+      ],
+      "requires_docsbook_mcp": false,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-detect-source/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-detect-source/SKILL.md"
+    },
+    {
+      "name": "docs-enable-translation",
+      "description": "Enable AI auto-translation for Docsbook workspace with optional Slack notifications on completion.",
+      "category": "automation",
+      "requires_plan": "pro",
+      "keywords": [
+        "translate",
+        "i18n",
+        "multilang",
+        "локализация"
+      ],
+      "uses_mcp_tools": [
+        "update_languages",
+        "set_translation_mode",
+        "register_webhook_translation_completed"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-enable-translation/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-enable-translation/SKILL.md"
+    },
+    {
+      "name": "docs-from-site",
+      "description": "Builds documentation from a website URL. Crawls the site, extracts content, and produces structured Markdown files in docs-output/<name>/. Use when you have a product URL and want to create documentation from it. Use /docs-create if you want the full pipeline (crawl + publish + Docsbook setup).",
+      "category": "creation",
+      "keywords": [
+        "crawl",
+        "website",
+        "site",
+        "extract",
+        "markdown",
+        "generate"
+      ],
+      "requires_docsbook_mcp": false,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-from-site/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-from-site/SKILL.md"
+    },
+    {
+      "name": "docs-gap-finder",
+      "description": "Finds documentation gaps by cross-referencing failed searches, AI-unanswered questions, and popular search queries against the existing doc graph. Returns a prioritized report of pages worth creating, and optionally opens GitHub Issues with draft outlines for each gap.",
+      "category": "observability",
+      "requires_plan": "pro_plus",
+      "keywords": [
+        "gap",
+        "content",
+        "missing",
+        "analytics",
+        "observability"
+      ],
+      "uses_mcp_tools": [
+        "get_failed_searches",
+        "get_ai_unanswered",
+        "get_popular_searches",
+        "get_doc_graph"
+      ],
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-gap-finder/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-gap-finder/SKILL.md"
+    },
+    {
+      "name": "docs-generate-agents-md",
+      "description": "Generates an AGENTS.md system prompt at the repo root from the user's Docsbook workspace settings. Reads workspace config and doc graph via Docsbook MCP, renders a Handlebars template, and writes AGENTS.md so future agent sessions have stable context about the docs site, languages, AI chat, and available @docs-skills commands.",
+      "category": "publishing",
+      "requires_plan": "free",
+      "keywords": [
+        "agents.md",
+        "system prompt",
+        "onboarding",
+        "agent context",
+        "docsbook",
+        "mcp",
+        "setup"
+      ],
+      "uses_mcp_tools": [
+        "get_workspace",
+        "get_doc_graph"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-generate-agents-md/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-generate-agents-md/SKILL.md"
+    },
+    {
+      "name": "docs-i18n",
+      "description": "Analyzes multilingual documentation — content parity between languages, ISO 639-1 codes, hreflang tags, navigation translation, date/number format localization, and translation freshness. Apply only if documentation has multiple language versions. Docsbook supports 15 languages: EN, ES, FR, DE, PT, IT, RU, ZH, JA, KO, AR, HI, TR, PL, NL.",
+      "category": "analysis",
+      "keywords": [
+        "i18n",
+        "translation",
+        "localization",
+        "multilingual",
+        "hreflang",
+        "languages"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "get_workspace",
+        "get_doc_graph",
+        "read_doc_sections"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-i18n/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-i18n/SKILL.md"
+    },
+    {
+      "name": "docs-maintenance",
+      "description": "Analyzes documentation freshness and maintenance health — stale content, deprecated pages without migration paths, TODO/FIXME in published docs, past-dated promises, old version references, and ownership gaps. For quarterly audits, not single-page reviews.",
+      "category": "analysis",
+      "keywords": [
+        "maintenance",
+        "stale",
+        "freshness",
+        "deprecated",
+        "todo",
+        "ownership"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "get_doc_graph",
+        "read_doc_sections"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-maintenance/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-maintenance/SKILL.md"
+    },
+    {
+      "name": "docs-media",
+      "description": "Analyzes media in markdown documentation — images, screenshots, videos, and diagrams. Checks formats, file sizes, alt text, screenshot freshness, and diagram best practices.",
+      "category": "analysis",
+      "keywords": [
+        "media",
+        "images",
+        "screenshots",
+        "videos",
+        "diagrams",
+        "alt-text"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "get_doc_graph",
+        "read_doc_sections"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-media/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-media/SKILL.md"
+    },
+    {
+      "name": "docs-navigation-linking",
+      "description": "Analyzes navigation structure and link quality across documentation — orphan pages, broken internal links, poor anchor text, over-deep hierarchy, and missing next-step links. Cross-file skill that requires the full doc graph.",
+      "category": "analysis",
+      "keywords": [
+        "navigation",
+        "links",
+        "orphan",
+        "broken-links",
+        "anchor",
+        "hierarchy"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "get_doc_graph",
+        "read_doc_sections"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-navigation-linking/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-navigation-linking/SKILL.md"
+    },
+    {
+      "name": "docs-pr-check",
+      "description": "Generates a GitHub Actions workflow (.github/workflows/docsbook-docs-check.yml) that runs on pull requests and checks whether code changes are accompanied by documentation updates, validates frontmatter in changed markdown files, and detects broken internal links. Optional input `block_on_broken_links` controls whether broken links fail the workflow.",
+      "category": "automation",
+      "requires_plan": "free",
+      "keywords": [
+        "pr",
+        "ci",
+        "github-actions",
+        "lint"
+      ],
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-pr-check/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-pr-check/SKILL.md"
+    },
+    {
+      "name": "docs-publish",
+      "description": "Publishes a local documentation folder to a new GitHub repository. Handles git init, commit, gh repo create, and push. Works without Docsbook MCP. Use after /docs-from-site, /docs-from-code, or /docs-from-docs to make the docs live.",
+      "category": "publishing",
+      "keywords": [
+        "publish",
+        "github",
+        "git",
+        "commit",
+        "push",
+        "repo"
+      ],
+      "requires_docsbook_mcp": false,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-publish/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-publish/SKILL.md"
+    },
+    {
+      "name": "docs-release-announce",
+      "description": "Announce new GitHub releases of a Docsbook-tracked repository to Slack and/or email by registering a Docsbook release.published webhook and generating a GitHub Actions handler.",
+      "category": "automation",
+      "requires_plan": "pro",
+      "keywords": [
+        "release",
+        "announce",
+        "slack",
+        "email",
+        "webhook"
+      ],
+      "uses_mcp_tools": [
+        "register_webhook_release_published"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-release-announce/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-release-announce/SKILL.md"
+    },
+    {
+      "name": "docs-seo",
+      "description": "Analyzes SEO of technical documentation — title/description optimization, heading hierarchy, keyword placement, internal topic clusters, image alt text, and GEO/AI Overviews compatibility. Documentation-specific SEO, not a general site audit.",
+      "category": "analysis",
+      "keywords": [
+        "seo",
+        "meta",
+        "titles",
+        "descriptions",
+        "keywords",
+        "geo",
+        "ai-overviews"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "get_doc_graph",
+        "read_doc_sections"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-seo/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-seo/SKILL.md"
+    },
+    {
+      "name": "docs-setup-workspace",
+      "description": "Configures a Docsbook workspace via MCP — branding, UI, AI chat, SEO, languages. Requires Docsbook MCP connected (mcp add --transport http https://docsbook.io/api/mcp/server). Run after /docs-publish. If MCP is unavailable, prints setup instructions.",
+      "category": "publishing",
+      "requires_plan": "free",
+      "keywords": [
+        "setup",
+        "workspace",
+        "branding",
+        "configure",
+        "docsbook",
+        "mcp"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "get_workspace",
+        "create_workspace",
+        "update_branding",
+        "update_ui_settings",
+        "update_navigation",
+        "update_seo",
+        "update_languages",
+        "update_ai_settings",
+        "update_domain"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-setup-workspace/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-setup-workspace/SKILL.md"
+    },
+    {
+      "name": "docs-stale-watcher",
+      "description": "Registers a Docsbook webhook for the `content.outdated` event and generates a GitHub Actions workflow that turns each outdated-content notification into a GitHub Issue in the user's documentation repository. Useful for keeping docs fresh by surfacing stale pages as actionable issues for the team.",
+      "category": "automation",
+      "requires_plan": "pro_plus",
+      "keywords": [
+        "stale",
+        "outdated",
+        "watcher",
+        "webhook",
+        "issue"
+      ],
+      "uses_mcp_tools": [
+        "register_webhook_content_outdated"
+      ],
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-stale-watcher/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-stale-watcher/SKILL.md"
+    },
+    {
+      "name": "docs-structure-templates",
+      "description": "Analyzes the structure and formatting of documentation pages — frontmatter completeness, heading hierarchy, prerequisites sections, code blocks, and page length. Reports issues in JSON format without editing files.",
+      "category": "analysis",
+      "keywords": [
+        "structure",
+        "frontmatter",
+        "templates",
+        "headings",
+        "formatting"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "get_doc_graph",
+        "read_doc_sections"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-structure-templates/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-structure-templates/SKILL.md"
+    },
+    {
+      "name": "docs-style-tone",
+      "description": "Analyzes writing style and tone in documentation — active vs passive voice, filler words, marketing adjectives, sentence length, second person usage, and terminology consistency. Reports issues without editing files.",
+      "category": "analysis",
+      "keywords": [
+        "style",
+        "tone",
+        "voice",
+        "passive",
+        "filler",
+        "writing",
+        "terminology"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "get_doc_graph",
+        "read_doc_sections"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-style-tone/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-style-tone/SKILL.md"
+    },
+    {
+      "name": "docs-translate-webhook",
+      "description": "Wire a Docsbook workspace to an external translation pipeline. Switches translation mode to `external`, registers a webhook on `translation.requested`, and scaffolds a handler function (Vercel or Express) that the user deploys to run their own translation logic and POST results back to Docsbook.",
+      "category": "automation",
+      "requires_plan": "pro_plus",
+      "keywords": [
+        "translate",
+        "webhook",
+        "external",
+        "custom",
+        "pipeline"
+      ],
+      "uses_mcp_tools": [
+        "set_translation_mode",
+        "register_webhook_translation_requested"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-translate-webhook/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-translate-webhook/SKILL.md"
+    },
+    {
+      "name": "docs-tune-ai-chat",
+      "description": "Tunes the AI chat system prompt for a Docsbook workspace by analyzing negative feedback and unanswered AI questions from the last 30 days, clustering them by topic, and proposing an improved system_prompt. Requires user confirmation before applying changes.",
+      "category": "automation",
+      "requires_plan": "pro",
+      "keywords": [
+        "ai",
+        "chat",
+        "tuning",
+        "feedback",
+        "system-prompt"
+      ],
+      "uses_mcp_tools": [
+        "get_negative_feedback",
+        "get_ai_unanswered",
+        "set_chat_system_prompt"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-tune-ai-chat/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-tune-ai-chat/SKILL.md"
+    }
+  ]
+}

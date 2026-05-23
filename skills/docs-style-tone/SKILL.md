@@ -3,6 +3,13 @@ name: docs-style-tone
 description: Analyzes writing style and tone in documentation — active vs passive voice, filler words, marketing adjectives, sentence length, second person usage, and terminology consistency. Reports issues without editing files.
 metadata:
   version: 1.0.0
+  category: analysis
+  requires_docsbook_mcp: true
+  uses_mcp_tools:
+    - list_workspaces
+    - get_doc_graph
+    - read_doc_sections
+  keywords: [style, tone, voice, passive, filler, writing, terminology]
 ---
 
 # docs-style-tone — Style and Tone Analysis

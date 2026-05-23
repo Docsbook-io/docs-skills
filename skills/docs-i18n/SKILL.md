@@ -3,6 +3,14 @@ name: docs-i18n
 description: Analyzes multilingual documentation — content parity between languages, ISO 639-1 codes, hreflang tags, navigation translation, date/number format localization, and translation freshness. Apply only if documentation has multiple language versions. Docsbook supports 15 languages: EN, ES, FR, DE, PT, IT, RU, ZH, JA, KO, AR, HI, TR, PL, NL.
 metadata:
   version: 1.0.0
+  category: analysis
+  requires_docsbook_mcp: true
+  uses_mcp_tools:
+    - list_workspaces
+    - get_workspace
+    - get_doc_graph
+    - read_doc_sections
+  keywords: [i18n, translation, localization, multilingual, hreflang, languages]
 ---
 
 # docs-i18n — Internationalization Analysis

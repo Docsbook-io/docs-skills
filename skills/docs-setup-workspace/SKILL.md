@@ -3,6 +3,21 @@ name: docs-setup-workspace
 description: Configures a Docsbook workspace via MCP — branding, UI, AI chat, SEO, languages. Requires Docsbook MCP connected (mcp add --transport http https://docsbook.io/api/mcp/server). Run after /docs-publish. If MCP is unavailable, prints setup instructions.
 metadata:
   version: 1.0.0
+  category: publishing
+  requires_docsbook_mcp: true
+  requires_plan: free
+  uses_mcp_tools:
+    - list_workspaces
+    - get_workspace
+    - create_workspace
+    - update_branding
+    - update_ui_settings
+    - update_navigation
+    - update_seo
+    - update_languages
+    - update_ai_settings
+    - update_domain
+  keywords: [setup, workspace, branding, configure, docsbook, mcp]
 ---
 
 # docs-setup-workspace

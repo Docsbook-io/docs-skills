@@ -3,6 +3,13 @@ name: docs-content-types
 description: Analyzes whether each documentation page follows the Diátaxis framework — tutorial, how-to guide, reference, or explanation. Detects mixed content types, misclassified pages, and structural violations per type. Uses Docsbook MCP to access content.
 metadata:
   version: 1.0.0
+  category: analysis
+  requires_docsbook_mcp: true
+  uses_mcp_tools:
+    - list_workspaces
+    - get_doc_graph
+    - read_doc_sections
+  keywords: [diataxis, tutorial, how-to, reference, explanation, content-type]
 ---
 
 # docs-content-types — Content Type Analysis (Diátaxis)

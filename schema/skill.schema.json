@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/schema/skill.schema.json",
+  "title": "Docsbook Skill Frontmatter",
+  "description": "JSON Schema for the YAML frontmatter of a SKILL.md file in the docs-skills catalog.",
+  "type": "object",
+  "required": ["name", "description", "metadata"],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Unique skill identifier (kebab-case).",
+      "pattern": "^[a-z][a-z0-9-]*[a-z0-9]$",
+      "minLength": 3,
+      "maxLength": 64
+    },
+    "description": {
+      "type": "string",
+      "description": "Short human-readable description used for discovery and AI matching.",
+      "minLength": 20,
+      "maxLength": 2000
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["version", "category"],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Semver version of the skill.",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(-[0-9A-Za-z.-]+)?$"
+        },
+        "category": {
+          "type": "string",
+          "description": "High-level taxonomy bucket.",
+          "enum": [
+            "analysis",
+            "creation",
+            "publishing",
+            "automation",
+            "observability"
+          ]
+        },
+        "requires_docsbook_mcp": {
+          "type": "boolean",
+          "description": "True if the skill calls Docsbook MCP tools."
+        },
+        "requires_plan": {
+          "type": "string",
+          "description": "Minimum Docsbook plan required to use this skill.",
+          "enum": ["free", "pro", "pro_plus"]
+        },
+        "uses_mcp_tools": {
+          "type": "array",
+          "description": "List of Docsbook MCP tool names the skill calls.",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "uniqueItems": true
+        },
+        "produces_files": {
+          "type": "array",
+          "description": "Files the skill writes or modifies in the user's repo.",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "keywords": {
+          "type": "array",
+          "description": "Discovery keywords used by find_skill matching.",
+          "items": { "type": "string", "minLength": 2 },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

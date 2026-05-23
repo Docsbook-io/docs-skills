@@ -3,6 +3,13 @@ name: docs-structure-templates
 description: Analyzes the structure and formatting of documentation pages — frontmatter completeness, heading hierarchy, prerequisites sections, code blocks, and page length. Reports issues in JSON format without editing files.
 metadata:
   version: 1.0.0
+  category: analysis
+  requires_docsbook_mcp: true
+  uses_mcp_tools:
+    - list_workspaces
+    - get_doc_graph
+    - read_doc_sections
+  keywords: [structure, frontmatter, templates, headings, formatting]
 ---
 
 # docs-structure-templates — Structure and Formatting Analysis

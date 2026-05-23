@@ -3,6 +3,14 @@ name: docs-analyze
 description: When the user wants to audit, review, or analyze markdown documentation quality. Use when the user mentions "docs audit", "review docs", "docs quality", "documentation review", "find issues in docs", "check my documentation", "analyze documentation". Orchestrates 10 specialized analysis skills (docs-content-types, docs-structure-templates, docs-style-tone, docs-audience, docs-navigation-linking, docs-seo, docs-accessibility, docs-i18n, docs-media, docs-maintenance) over a single page, folder, or full docs/ tree and produces a unified prioritized report. For writing NEW documentation, see docs-writing-guide. For creating docs from scratch, see create-docs.
 metadata:
   version: 1.0.0
+  category: analysis
+  requires_docsbook_mcp: true
+  uses_mcp_tools:
+    - list_workspaces
+    - get_workspace
+    - get_doc_graph
+    - read_doc_sections
+  keywords: [audit, review, analysis, quality, orchestrator, documentation]
 ---
 
 # docs-analyze — Documentation Analysis Orchestrator

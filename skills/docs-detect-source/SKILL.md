@@ -3,6 +3,9 @@ name: docs-detect-source
 description: Detects what type of documentation source you have — website URL, code repository, or existing docs platform (Mintlify, GitBook, Docusaurus, etc.). Used internally by /docs-create to route to the right skill. Can also be run directly to identify your source type.
 metadata:
   version: 1.0.0
+  category: creation
+  requires_docsbook_mcp: false
+  keywords: [detect, source, mintlify, gitbook, docusaurus, platform]
 ---
 
 # docs-detect-source

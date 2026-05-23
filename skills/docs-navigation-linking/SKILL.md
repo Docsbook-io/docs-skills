@@ -3,6 +3,13 @@ name: docs-navigation-linking
 description: Analyzes navigation structure and link quality across documentation — orphan pages, broken internal links, poor anchor text, over-deep hierarchy, and missing next-step links. Cross-file skill that requires the full doc graph.
 metadata:
   version: 1.0.0
+  category: analysis
+  requires_docsbook_mcp: true
+  uses_mcp_tools:
+    - list_workspaces
+    - get_doc_graph
+    - read_doc_sections
+  keywords: [navigation, links, orphan, broken-links, anchor, hierarchy]
 ---
 
 # docs-navigation-linking — Navigation and Linking Analysis

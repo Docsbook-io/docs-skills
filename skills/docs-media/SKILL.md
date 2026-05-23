@@ -3,6 +3,13 @@ name: docs-media
 description: Analyzes media in markdown documentation — images, screenshots, videos, and diagrams. Checks formats, file sizes, alt text, screenshot freshness, and diagram best practices.
 metadata:
   version: 1.0.0
+  category: analysis
+  requires_docsbook_mcp: true
+  uses_mcp_tools:
+    - list_workspaces
+    - get_doc_graph
+    - read_doc_sections
+  keywords: [media, images, screenshots, videos, diagrams, alt-text]
 ---
 
 # docs-media — Media Analysis
