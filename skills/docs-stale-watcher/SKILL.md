@@ -1,6 +1,6 @@
 ---
 name: docs-stale-watcher
-description: Registers a Docsbook webhook for the `content.outdated` event and generates a GitHub Actions workflow that turns each outdated-content notification into a GitHub Issue in the user's documentation repository. Useful for keeping docs fresh by surfacing stale pages as actionable issues for the team.
+description: Turn outdated-docs notifications into real GitHub Issues your team will act on. Registers a Docsbook `content.outdated` webhook and generates a GitHub Actions workflow that opens an issue in your docs repo whenever a page goes stale. PRO+.
 category: automation
 requires_plan: pro_plus
 requires_docsbook_mcp: true

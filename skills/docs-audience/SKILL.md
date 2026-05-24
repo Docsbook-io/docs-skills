@@ -1,6 +1,6 @@
 ---
 name: docs-audience
-description: Analyzes how well documentation pages match their intended audience. Finds vocabulary mismatch, assumed knowledge gaps, mixed-audience confusion, and jargon density relative to stated prerequisites.
+description: Find out where your docs talk past their reader. Detects vocabulary mismatch, undeclared prerequisites, mixed-audience pages and jargon density against the stated reader profile — so junior devs stop bouncing on senior-level pages.
 metadata:
   version: 1.0.0
   category: analysis

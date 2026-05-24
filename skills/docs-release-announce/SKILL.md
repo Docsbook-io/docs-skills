@@ -1,6 +1,6 @@
 ---
 name: docs-release-announce
-description: Announce new GitHub releases of a Docsbook-tracked repository to Slack and/or email by registering a Docsbook release.published webhook and generating a GitHub Actions handler.
+description: Tell users about every release without writing a webhook handler. Wires a Docsbook release.published webhook plus a GitHub Actions workflow that announces new GitHub releases of a Docsbook-tracked repo to Slack and/or email via Resend. PRO plan.
 metadata:
   version: 1.0.0
   category: automation

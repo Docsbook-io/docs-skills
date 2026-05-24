@@ -1,6 +1,6 @@
 ---
 name: docs-generate-agents-md
-description: Generates an AGENTS.md system prompt at the repo root from the user's Docsbook workspace settings. Reads workspace config and doc graph via Docsbook MCP, renders a Handlebars template, and writes AGENTS.md so future agent sessions have stable context about the docs site, languages, AI chat, and available @docs-skills commands.
+description: Give every AI agent in your repo the same context about your docs. Reads your Docsbook workspace and writes an AGENTS.md at repo root so Claude Code, Cursor, Codex, Copilot and Gemini CLI all start each session knowing the docs URL, languages, AI-chat conventions and available @docs-skills commands.
 metadata:
   version: 1.0.0
   category: publishing

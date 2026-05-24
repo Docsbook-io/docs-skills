@@ -1,6 +1,6 @@
 ---
 name: docs-create-interactive
-description: Full pipeline with interactive checkpoints — detects source, builds docs, lets you review structure before publishing, customize branding, and choose languages and domain. L2 entry point for users who want control. Same power as /docs-create but with stops at key decisions.
+description: Same as /docs-create, but with you in the loop. Pauses at five checkpoints — source detection, structure review, branding, languages, domain — so you can adjust before publishing. Use when you want full control over what ships.
 metadata:
   version: 1.0.0
   category: creation

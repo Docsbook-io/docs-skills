@@ -1,6 +1,6 @@
 ---
 name: docs-pr-check
-description: Generates a GitHub Actions workflow (.github/workflows/docsbook-docs-check.yml) that runs on pull requests and checks whether code changes are accompanied by documentation updates, validates frontmatter in changed markdown files, and detects broken internal links. Optional input `block_on_broken_links` controls whether broken links fail the workflow.
+description: Block PRs that change code without updating docs. Generates a GitHub Actions workflow (.github/workflows/docsbook-docs-check.yml) that runs on every PR, validates frontmatter in changed markdown, and detects broken internal links. Optional `block_on_broken_links` input fails the build on breakage.
 category: automation
 requires_plan: free
 produces_files:

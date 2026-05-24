@@ -1,6 +1,6 @@
 ---
 name: docs-enable-translation
-description: Enable AI auto-translation for Docsbook workspace with optional Slack notifications on completion.
+description: Translate your docs into 15 languages without leaving Claude. Switches a Docsbook workspace to AI auto-translation, enables the languages you pick (en/es/fr/de/pt/it/ru/zh/ja/ko/ar/hi/tr/pl/nl), and optionally pings Slack when each batch finishes. PRO plan.
 metadata:
   version: 1.0.0
   category: automation

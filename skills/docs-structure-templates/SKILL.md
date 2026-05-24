@@ -1,6 +1,6 @@
 ---
 name: docs-structure-templates
-description: Analyzes the structure and formatting of documentation pages — frontmatter completeness, heading hierarchy, prerequisites sections, code blocks, and page length. Reports issues in JSON format without editing files.
+description: Catch malformed pages before reviewers do. Checks each page for frontmatter completeness, heading hierarchy, prerequisites section, code block language tags and length — and reports issues as machine-readable JSON without editing files. Cheap, deterministic, runs on every page.
 metadata:
   version: 1.0.0
   category: analysis

@@ -1,6 +1,6 @@
 ---
 name: docs-create
-description: Full pipeline — detects source type, builds documentation, publishes to GitHub, and optionally configures Docsbook. L1 "under the key" entry point with minimal questions. Delegates to /docs-detect-source → /docs-from-* → /docs-publish → /docs-setup-workspace.
+description: Turn a URL or repo into a live docs site in one command. Full end-to-end pipeline — detects the source (website, code, or Mintlify/GitBook/Docusaurus), generates structured Markdown, publishes to GitHub, and configures the Docsbook workspace. Minimal questions, maximum output.
 metadata:
   version: 1.0.0
   category: creation

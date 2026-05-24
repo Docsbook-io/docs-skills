@@ -1,6 +1,6 @@
 ---
 name: docs-translate-webhook
-description: Wire a Docsbook workspace to an external translation pipeline. Switches translation mode to `external`, registers a webhook on `translation.requested`, and scaffolds a handler function (Vercel or Express) that the user deploys to run their own translation logic and POST results back to Docsbook.
+description: Plug your own translation pipeline into Docsbook. Switches translation mode to `external`, registers a `translation.requested` webhook and scaffolds a Vercel or Express handler — so in-house TMS, human reviewers, glossary enforcement or regulated content can replace the built-in AI translator. PRO+.
 metadata:
   version: 1.0.0
   category: automation

@@ -1,6 +1,6 @@
 ---
 name: docs-from-site
-description: Builds documentation from a website URL. Crawls the site, extracts content, and produces structured Markdown files in docs-output/<name>/. Use when you have a product URL and want to create documentation from it. Use /docs-create if you want the full pipeline (crawl + publish + Docsbook setup).
+description: Spin up Markdown docs from any product website. Crawls the site, extracts content, and produces a clean docs-output/<name>/ folder ready for Docsbook or GitHub — useful when your only source of truth today is the marketing site. Use /docs-create for the full crawl→publish→setup pipeline.
 metadata:
   version: 1.0.0
   category: creation

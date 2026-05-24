@@ -4,7 +4,7 @@
   "skills": [
     {
       "name": "docs-accessibility",
-      "description": "Analyzes accessibility (a11y) of markdown documentation — alt text, heading hierarchy, link anchor text, captions, code block language, and text readability. Target standard is WCAG 2.1 Level AA, applied to what is controllable from the markdown source.",
+      "description": "Catch a11y issues in your docs before users hit them. Audits markdown for WCAG 2.1 AA violations a screen reader actually cares about — missing alt text, broken heading hierarchy, vague link anchors, captions and code-block language. Returns a prioritized fix list per page.",
       "category": "analysis",
       "keywords": [
         "accessibility",
@@ -26,7 +26,7 @@
     },
     {
       "name": "docs-analyze",
-      "description": "When the user wants to audit, review, or analyze markdown documentation quality. Use when the user mentions \"docs audit\", \"review docs\", \"docs quality\", \"documentation review\", \"find issues in docs\", \"check my documentation\", \"analyze documentation\". Orchestrates 10 specialized analysis skills (docs-content-types, docs-structure-templates, docs-style-tone, docs-audience, docs-navigation-linking, docs-seo, docs-accessibility, docs-i18n, docs-media, docs-maintenance) over a single page, folder, or full docs/ tree and produces a unified prioritized report. For writing NEW documentation, see docs-writing-guide. For creating docs from scratch, see create-docs.",
+      "description": "Run a full audit of your documentation in one command. Orchestrates 10 specialized analyses — content type, structure, style, audience, links, SEO, a11y, i18n, media, maintenance — and returns a single prioritized report you can hand to the writer. Works on one page, a folder, or the entire docs/ tree.",
       "category": "analysis",
       "keywords": [
         "audit",
@@ -49,7 +49,7 @@
     },
     {
       "name": "docs-audience",
-      "description": "Analyzes how well documentation pages match their intended audience. Finds vocabulary mismatch, assumed knowledge gaps, mixed-audience confusion, and jargon density relative to stated prerequisites.",
+      "description": "Find out where your docs talk past their reader. Detects vocabulary mismatch, undeclared prerequisites, mixed-audience pages and jargon density against the stated reader profile — so junior devs stop bouncing on senior-level pages.",
       "category": "analysis",
       "keywords": [
         "audience",
@@ -70,7 +70,7 @@
     },
     {
       "name": "docs-content-types",
-      "description": "Analyzes whether each documentation page follows the Diátaxis framework — tutorial, how-to guide, reference, or explanation. Detects mixed content types, misclassified pages, and structural violations per type. Uses Docsbook MCP to access content.",
+      "description": "Stop mixing tutorials with reference. Classifies each page against the Diátaxis framework (tutorial / how-to / reference / explanation), flags misclassified or hybrid pages, and reports structural violations — the #1 reason users can't find answers in your docs.",
       "category": "analysis",
       "keywords": [
         "diataxis",
@@ -92,7 +92,7 @@
     },
     {
       "name": "docs-create",
-      "description": "Full pipeline — detects source type, builds documentation, publishes to GitHub, and optionally configures Docsbook. L1 \"under the key\" entry point with minimal questions. Delegates to /docs-detect-source → /docs-from-* → /docs-publish → /docs-setup-workspace.",
+      "description": "Turn a URL or repo into a live docs site in one command. Full end-to-end pipeline — detects the source (website, code, or Mintlify/GitBook/Docusaurus), generates structured Markdown, publishes to GitHub, and configures the Docsbook workspace. Minimal questions, maximum output.",
       "category": "creation",
       "keywords": [
         "create",
@@ -108,7 +108,7 @@
     },
     {
       "name": "docs-create-interactive",
-      "description": "Full pipeline with interactive checkpoints — detects source, builds docs, lets you review structure before publishing, customize branding, and choose languages and domain. L2 entry point for users who want control. Same power as /docs-create but with stops at key decisions.",
+      "description": "Same as /docs-create, but with you in the loop. Pauses at five checkpoints — source detection, structure review, branding, languages, domain — so you can adjust before publishing. Use when you want full control over what ships.",
       "category": "creation",
       "keywords": [
         "create",
@@ -124,7 +124,7 @@
     },
     {
       "name": "docs-detect-source",
-      "description": "Detects what type of documentation source you have — website URL, code repository, or existing docs platform (Mintlify, GitBook, Docusaurus, etc.). Used internally by /docs-create to route to the right skill. Can also be run directly to identify your source type.",
+      "description": "Identify what kind of docs source you have in one call. Detects website URLs, code repositories, and existing platforms (Mintlify, GitBook, Docusaurus, Nextra) so the right builder is picked. Used internally by /docs-create or directly when you're not sure where to start.",
       "category": "creation",
       "keywords": [
         "detect",
@@ -141,7 +141,7 @@
     },
     {
       "name": "docs-enable-translation",
-      "description": "Enable AI auto-translation for Docsbook workspace with optional Slack notifications on completion.",
+      "description": "Translate your docs into 15 languages without leaving Claude. Switches a Docsbook workspace to AI auto-translation, enables the languages you pick (en/es/fr/de/pt/it/ru/zh/ja/ko/ar/hi/tr/pl/nl), and optionally pings Slack when each batch finishes. PRO plan.",
       "category": "automation",
       "requires_plan": "pro",
       "keywords": [
@@ -162,7 +162,7 @@
     },
     {
       "name": "docs-from-site",
-      "description": "Builds documentation from a website URL. Crawls the site, extracts content, and produces structured Markdown files in docs-output/<name>/. Use when you have a product URL and want to create documentation from it. Use /docs-create if you want the full pipeline (crawl + publish + Docsbook setup).",
+      "description": "Spin up Markdown docs from any product website. Crawls the site, extracts content, and produces a clean docs-output/<name>/ folder ready for Docsbook or GitHub — useful when your only source of truth today is the marketing site. Use /docs-create for the full crawl→publish→setup pipeline.",
       "category": "creation",
       "keywords": [
         "crawl",
@@ -179,7 +179,7 @@
     },
     {
       "name": "docs-gap-finder",
-      "description": "Finds documentation gaps by cross-referencing failed searches, AI-unanswered questions, and popular search queries against the existing doc graph. Returns a prioritized report of pages worth creating, and optionally opens GitHub Issues with draft outlines for each gap.",
+      "description": "Know exactly which docs page to write next. Cross-references real user signals — failed searches, AI-unanswered questions, popular queries — against your live doc graph and returns the top 7 pages worth creating. Optionally opens a GitHub Issue with a draft outline for each. PRO+.",
       "category": "observability",
       "requires_plan": "pro_plus",
       "keywords": [
@@ -201,7 +201,7 @@
     },
     {
       "name": "docs-generate-agents-md",
-      "description": "Generates an AGENTS.md system prompt at the repo root from the user's Docsbook workspace settings. Reads workspace config and doc graph via Docsbook MCP, renders a Handlebars template, and writes AGENTS.md so future agent sessions have stable context about the docs site, languages, AI chat, and available @docs-skills commands.",
+      "description": "Give every AI agent in your repo the same context about your docs. Reads your Docsbook workspace and writes an AGENTS.md at repo root so Claude Code, Cursor, Codex, Copilot and Gemini CLI all start each session knowing the docs URL, languages, AI-chat conventions and available @docs-skills commands.",
       "category": "publishing",
       "requires_plan": "free",
       "keywords": [
@@ -224,7 +224,7 @@
     },
     {
       "name": "docs-i18n",
-      "description": "Analyzes multilingual documentation — content parity between languages, ISO 639-1 codes, hreflang tags, navigation translation, date/number format localization, and translation freshness. Apply only if documentation has multiple language versions. Docsbook supports 15 languages: EN, ES, FR, DE, PT, IT, RU, ZH, JA, KO, AR, HI, TR, PL, NL.",
+      "description": "Stop letting translations rot silently. Audits multilingual docs for content parity across languages, ISO 639-1 correctness, hreflang tags, navigation translation, date/number localization and out-of-date pages — across the 15 languages Docsbook supports. Skipped automatically if only one language is enabled.",
       "category": "analysis",
       "keywords": [
         "i18n",
@@ -247,7 +247,7 @@
     },
     {
       "name": "docs-maintenance",
-      "description": "Analyzes documentation freshness and maintenance health — stale content, deprecated pages without migration paths, TODO/FIXME in published docs, past-dated promises, old version references, and ownership gaps. For quarterly audits, not single-page reviews.",
+      "description": "Surface the docs that are quietly lying to your users. A quarterly-style audit that flags stale content, deprecated pages without migration paths, TODO/FIXME left in published docs, expired promises, old version references and ownership gaps. Not a single-page review — designed for the whole tree.",
       "category": "analysis",
       "keywords": [
         "maintenance",
@@ -269,7 +269,7 @@
     },
     {
       "name": "docs-media",
-      "description": "Analyzes media in markdown documentation — images, screenshots, videos, and diagrams. Checks formats, file sizes, alt text, screenshot freshness, and diagram best practices.",
+      "description": "Find the bloated images and stale screenshots dragging your docs down. Scans every image, video and diagram referenced from markdown — bad formats, oversized files, missing alt text, screenshots older than the current UI — and returns a fix list per file.",
       "category": "analysis",
       "keywords": [
         "media",
@@ -291,7 +291,7 @@
     },
     {
       "name": "docs-navigation-linking",
-      "description": "Analyzes navigation structure and link quality across documentation — orphan pages, broken internal links, poor anchor text, over-deep hierarchy, and missing next-step links. Cross-file skill that requires the full doc graph.",
+      "description": "Fix the dead ends and orphan pages in your docs. Walks the full doc graph to find broken internal links, pages nothing links to, generic anchor text (\"click here\"), over-deep hierarchies and missing next-step links between related pages. Cross-file — requires the whole graph, not one page.",
       "category": "analysis",
       "keywords": [
         "navigation",
@@ -313,7 +313,7 @@
     },
     {
       "name": "docs-pr-check",
-      "description": "Generates a GitHub Actions workflow (.github/workflows/docsbook-docs-check.yml) that runs on pull requests and checks whether code changes are accompanied by documentation updates, validates frontmatter in changed markdown files, and detects broken internal links. Optional input `block_on_broken_links` controls whether broken links fail the workflow.",
+      "description": "Block PRs that change code without updating docs. Generates a GitHub Actions workflow (.github/workflows/docsbook-docs-check.yml) that runs on every PR, validates frontmatter in changed markdown, and detects broken internal links. Optional `block_on_broken_links` input fails the build on breakage.",
       "category": "automation",
       "requires_plan": "free",
       "keywords": [
@@ -328,7 +328,7 @@
     },
     {
       "name": "docs-publish",
-      "description": "Publishes a local documentation folder to a new GitHub repository. Handles git init, commit, gh repo create, and push. Works without Docsbook MCP. Use after /docs-from-site, /docs-from-code, or /docs-from-docs to make the docs live.",
+      "description": "Push a local docs folder to GitHub in one step. Handles git init, commit, gh repo create and push — no Docsbook MCP required. Designed as the natural next step after /docs-from-site, /docs-from-code or /docs-from-docs.",
       "category": "publishing",
       "keywords": [
         "publish",
@@ -345,7 +345,7 @@
     },
     {
       "name": "docs-release-announce",
-      "description": "Announce new GitHub releases of a Docsbook-tracked repository to Slack and/or email by registering a Docsbook release.published webhook and generating a GitHub Actions handler.",
+      "description": "Tell users about every release without writing a webhook handler. Wires a Docsbook release.published webhook plus a GitHub Actions workflow that announces new GitHub releases of a Docsbook-tracked repo to Slack and/or email via Resend. PRO plan.",
       "category": "automation",
       "requires_plan": "pro",
       "keywords": [
@@ -365,7 +365,7 @@
     },
     {
       "name": "docs-seo",
-      "description": "Analyzes SEO of technical documentation — title/description optimization, heading hierarchy, keyword placement, internal topic clusters, image alt text, and GEO/AI Overviews compatibility. Documentation-specific SEO, not a general site audit.",
+      "description": "Make your docs rankable — by Google and by AI. A documentation-aware SEO audit covering title and description optimization, heading hierarchy, keyword placement, internal topic clusters, image alt text and GEO / AI Overviews compatibility. Not a general site audit — tuned for doc-specific failure modes.",
       "category": "analysis",
       "keywords": [
         "seo",
@@ -388,7 +388,7 @@
     },
     {
       "name": "docs-setup-workspace",
-      "description": "Configures a Docsbook workspace via MCP — branding, UI, AI chat, SEO, languages. Requires Docsbook MCP connected (mcp add --transport http https://docsbook.io/api/mcp/server). Run after /docs-publish. If MCP is unavailable, prints setup instructions.",
+      "description": "Configure a fresh Docsbook workspace from one command. Wires branding, UI toggles, AI chat, SEO, languages and custom domain via Docsbook MCP — the natural follow-up to /docs-publish. Falls back to printed setup instructions if MCP isn't connected.",
       "category": "publishing",
       "requires_plan": "free",
       "keywords": [
@@ -418,7 +418,7 @@
     },
     {
       "name": "docs-stale-watcher",
-      "description": "Registers a Docsbook webhook for the `content.outdated` event and generates a GitHub Actions workflow that turns each outdated-content notification into a GitHub Issue in the user's documentation repository. Useful for keeping docs fresh by surfacing stale pages as actionable issues for the team.",
+      "description": "Turn outdated-docs notifications into real GitHub Issues your team will act on. Registers a Docsbook `content.outdated` webhook and generates a GitHub Actions workflow that opens an issue in your docs repo whenever a page goes stale. PRO+.",
       "category": "automation",
       "requires_plan": "pro_plus",
       "keywords": [
@@ -437,7 +437,7 @@
     },
     {
       "name": "docs-structure-templates",
-      "description": "Analyzes the structure and formatting of documentation pages — frontmatter completeness, heading hierarchy, prerequisites sections, code blocks, and page length. Reports issues in JSON format without editing files.",
+      "description": "Catch malformed pages before reviewers do. Checks each page for frontmatter completeness, heading hierarchy, prerequisites section, code block language tags and length — and reports issues as machine-readable JSON without editing files. Cheap, deterministic, runs on every page.",
       "category": "analysis",
       "keywords": [
         "structure",
@@ -458,7 +458,7 @@
     },
     {
       "name": "docs-style-tone",
-      "description": "Analyzes writing style and tone in documentation — active vs passive voice, filler words, marketing adjectives, sentence length, second person usage, and terminology consistency. Reports issues without editing files.",
+      "description": "Tighten the prose of your docs without rewriting by hand. Flags passive voice, filler words, marketing adjectives, runaway sentences, missing second person and inconsistent terminology — and returns issues per page without touching the files. Pair with /docs-create or /docs-analyze.",
       "category": "analysis",
       "keywords": [
         "style",
@@ -481,7 +481,7 @@
     },
     {
       "name": "docs-translate-webhook",
-      "description": "Wire a Docsbook workspace to an external translation pipeline. Switches translation mode to `external`, registers a webhook on `translation.requested`, and scaffolds a handler function (Vercel or Express) that the user deploys to run their own translation logic and POST results back to Docsbook.",
+      "description": "Plug your own translation pipeline into Docsbook. Switches translation mode to `external`, registers a `translation.requested` webhook and scaffolds a Vercel or Express handler — so in-house TMS, human reviewers, glossary enforcement or regulated content can replace the built-in AI translator. PRO+.",
       "category": "automation",
       "requires_plan": "pro_plus",
       "keywords": [
@@ -502,7 +502,7 @@
     },
     {
       "name": "docs-tune-ai-chat",
-      "description": "Tunes the AI chat system prompt for a Docsbook workspace by analyzing negative feedback and unanswered AI questions from the last 30 days, clustering them by topic, and proposing an improved system_prompt. Requires user confirmation before applying changes.",
+      "description": "Improve your docs AI chat from real failure signals. Pulls 30 days of negative feedback and unanswered questions, clusters them by topic, and proposes an updated system_prompt — applied via MCP only after you confirm the diff. PRO plan.",
       "category": "automation",
       "requires_plan": "pro",
       "keywords": [

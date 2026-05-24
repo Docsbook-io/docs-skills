@@ -1,6 +1,6 @@
 ---
 name: docs-navigation-linking
-description: Analyzes navigation structure and link quality across documentation — orphan pages, broken internal links, poor anchor text, over-deep hierarchy, and missing next-step links. Cross-file skill that requires the full doc graph.
+description: Fix the dead ends and orphan pages in your docs. Walks the full doc graph to find broken internal links, pages nothing links to, generic anchor text ("click here"), over-deep hierarchies and missing next-step links between related pages. Cross-file — requires the whole graph, not one page.
 metadata:
   version: 1.0.0
   category: analysis

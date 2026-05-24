@@ -1,6 +1,6 @@
 ---
 name: docs-media
-description: Analyzes media in markdown documentation — images, screenshots, videos, and diagrams. Checks formats, file sizes, alt text, screenshot freshness, and diagram best practices.
+description: Find the bloated images and stale screenshots dragging your docs down. Scans every image, video and diagram referenced from markdown — bad formats, oversized files, missing alt text, screenshots older than the current UI — and returns a fix list per file.
 metadata:
   version: 1.0.0
   category: analysis

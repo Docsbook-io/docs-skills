@@ -1,6 +1,6 @@
 ---
 name: docs-publish
-description: Publishes a local documentation folder to a new GitHub repository. Handles git init, commit, gh repo create, and push. Works without Docsbook MCP. Use after /docs-from-site, /docs-from-code, or /docs-from-docs to make the docs live.
+description: Push a local docs folder to GitHub in one step. Handles git init, commit, gh repo create and push — no Docsbook MCP required. Designed as the natural next step after /docs-from-site, /docs-from-code or /docs-from-docs.
 metadata:
   version: 1.0.0
   category: publishing

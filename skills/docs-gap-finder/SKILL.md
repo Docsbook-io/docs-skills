@@ -1,6 +1,6 @@
 ---
 name: docs-gap-finder
-description: Finds documentation gaps by cross-referencing failed searches, AI-unanswered questions, and popular search queries against the existing doc graph. Returns a prioritized report of pages worth creating, and optionally opens GitHub Issues with draft outlines for each gap.
+description: Know exactly which docs page to write next. Cross-references real user signals — failed searches, AI-unanswered questions, popular queries — against your live doc graph and returns the top 7 pages worth creating. Optionally opens a GitHub Issue with a draft outline for each. PRO+.
 category: observability
 requires_plan: pro_plus
 requires_docsbook_mcp: true

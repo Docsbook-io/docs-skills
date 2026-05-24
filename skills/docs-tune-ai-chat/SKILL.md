@@ -1,6 +1,6 @@
 ---
 name: docs-tune-ai-chat
-description: Tunes the AI chat system prompt for a Docsbook workspace by analyzing negative feedback and unanswered AI questions from the last 30 days, clustering them by topic, and proposing an improved system_prompt. Requires user confirmation before applying changes.
+description: Improve your docs AI chat from real failure signals. Pulls 30 days of negative feedback and unanswered questions, clusters them by topic, and proposes an updated system_prompt — applied via MCP only after you confirm the diff. PRO plan.
 metadata:
   version: 1.0.0
   category: automation

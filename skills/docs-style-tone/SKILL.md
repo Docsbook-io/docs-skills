@@ -1,6 +1,6 @@
 ---
 name: docs-style-tone
-description: Analyzes writing style and tone in documentation — active vs passive voice, filler words, marketing adjectives, sentence length, second person usage, and terminology consistency. Reports issues without editing files.
+description: Tighten the prose of your docs without rewriting by hand. Flags passive voice, filler words, marketing adjectives, runaway sentences, missing second person and inconsistent terminology — and returns issues per page without touching the files. Pair with /docs-create or /docs-analyze.
 metadata:
   version: 1.0.0
   category: analysis

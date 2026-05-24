@@ -1,6 +1,6 @@
 ---
 name: docs-i18n
-description: Analyzes multilingual documentation — content parity between languages, ISO 639-1 codes, hreflang tags, navigation translation, date/number format localization, and translation freshness. Apply only if documentation has multiple language versions. Docsbook supports 15 languages: EN, ES, FR, DE, PT, IT, RU, ZH, JA, KO, AR, HI, TR, PL, NL.
+description: Stop letting translations rot silently. Audits multilingual docs for content parity across languages, ISO 639-1 correctness, hreflang tags, navigation translation, date/number localization and out-of-date pages — across the 15 languages Docsbook supports. Skipped automatically if only one language is enabled.
 metadata:
   version: 1.0.0
   category: analysis

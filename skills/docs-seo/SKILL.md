@@ -1,6 +1,6 @@
 ---
 name: docs-seo
-description: Analyzes SEO of technical documentation — title/description optimization, heading hierarchy, keyword placement, internal topic clusters, image alt text, and GEO/AI Overviews compatibility. Documentation-specific SEO, not a general site audit.
+description: Make your docs rankable — by Google and by AI. A documentation-aware SEO audit covering title and description optimization, heading hierarchy, keyword placement, internal topic clusters, image alt text and GEO / AI Overviews compatibility. Not a general site audit — tuned for doc-specific failure modes.
 metadata:
   version: 1.0.0
   category: analysis

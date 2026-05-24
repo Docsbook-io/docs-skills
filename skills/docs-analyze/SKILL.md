@@ -1,6 +1,6 @@
 ---
 name: docs-analyze
-description: When the user wants to audit, review, or analyze markdown documentation quality. Use when the user mentions "docs audit", "review docs", "docs quality", "documentation review", "find issues in docs", "check my documentation", "analyze documentation". Orchestrates 10 specialized analysis skills (docs-content-types, docs-structure-templates, docs-style-tone, docs-audience, docs-navigation-linking, docs-seo, docs-accessibility, docs-i18n, docs-media, docs-maintenance) over a single page, folder, or full docs/ tree and produces a unified prioritized report. For writing NEW documentation, see docs-writing-guide. For creating docs from scratch, see create-docs.
+description: Run a full audit of your documentation in one command. Orchestrates 10 specialized analyses — content type, structure, style, audience, links, SEO, a11y, i18n, media, maintenance — and returns a single prioritized report you can hand to the writer. Works on one page, a folder, or the entire docs/ tree.
 metadata:
   version: 1.0.0
   category: analysis
