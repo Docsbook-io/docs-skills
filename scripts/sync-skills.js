@@ -281,7 +281,8 @@ function bumpAndPublish(bump) {
   log(`▸ npm version ${bump}`);
   if (APPLY) {
     // npm version требует чистого working tree. Проверим заранее, чтобы дать понятную ошибку.
-    const dirty = gitStatusPorcelain(REPO_ROOT);
+    // Только tracked-изменения блокируют npm version (untracked ??, игнорируем).
+    const dirty = gitStatusPorcelain(REPO_ROOT).filter((l) => !l.startsWith('??'));
     if (dirty.length) {
       die(
         `npm version требует чистого working tree, но есть незакоммиченные изменения:\n  ${dirty.join('\n  ')}\n` +
