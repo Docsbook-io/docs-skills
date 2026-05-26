@@ -153,6 +153,15 @@ function buildCategoriesTable(index) {
   return { total: index.skills.length, categories: sortedCats.length, table: rows.join('\n'), counts };
 }
 
+function updatePackageDescription(index) {
+  const pkg = JSON.parse(fs.readFileSync(PKG_JSON, 'utf8'));
+  const newDesc = pkg.description.replace(/\d+ specialized skills/, `${index.skills.length} specialized skills`);
+  if (newDesc === pkg.description) return;
+  pkg.description = newDesc;
+  if (APPLY) fs.writeFileSync(PKG_JSON, JSON.stringify(pkg, null, 2) + '\n');
+  else log(`  [dry] would update package.json description → ${index.skills.length} skills`);
+}
+
 function updateDocsSkillsReadme(index) {
   log('▸ update docs-skills/README.md');
   const stats = buildCategoriesTable(index);
@@ -308,6 +317,7 @@ function main() {
   log(`▸ bump determined: ${bump}`);
 
   const index = readIndex();
+  updatePackageDescription(index);
   updateDocsSkillsReadme(index);
   const docsbookUpdated = updateDocsbookReadme(index);
 
