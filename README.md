@@ -4,7 +4,7 @@ Open-source catalog of AI agent skills for documentation — analyze, create, pu
 
 Browse the live catalog: **[docsbook.io/skills](https://docsbook.io/skills)**.
 
-**25 skills across 5 categories.** Works with Claude Code, Cursor, GitHub Copilot, and OpenAI Codex.
+**26 skills across 6 categories.** Works with Claude Code, Cursor, GitHub Copilot, and OpenAI Codex.
 
 ---
 
@@ -17,6 +17,7 @@ Browse the live catalog: **[docsbook.io/skills](https://docsbook.io/skills)**.
 | `publishing` | 3 | Publish and onboard a workspace |
 | `automation` | 6 | Wire up automations via Docsbook MCP |
 | `observability` | 1 | Analytics-driven gap-finding |
+| `planning` | 1 | Plan docs strategy before creation |
 
 ---
 

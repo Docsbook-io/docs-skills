@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-23T10:18:53.659Z",
+  "generated_at": "2026-05-26T02:01:29.645Z",
   "skills": [
     {
       "name": "docs-accessibility",
@@ -434,6 +434,25 @@
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-stale-watcher/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-stale-watcher/SKILL.md"
+    },
+    {
+      "name": "docs-strategy-plan",
+      "description": "Build a documentation strategy plan from scratch through a guided interview — for teams who know they need docs but not what kind. Asks about product, audience, sources, and business goals; derives roles and funnels; outputs an information architecture, content roadmap, and prioritized backlog. Run BEFORE /docs-create when you don't yet know what to document or why. Trigger phrases — \"I need docs but don't know where to start\", \"help me plan documentation\", \"what should I document\", \"documentation strategy\", \"docs roadmap\", \"docs from scratch\".",
+      "category": "planning",
+      "keywords": [
+        "planning",
+        "strategy",
+        "interview",
+        "roadmap",
+        "information-architecture",
+        "funnel",
+        "roles",
+        "discovery"
+      ],
+      "requires_docsbook_mcp": false,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-strategy-plan/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-strategy-plan/SKILL.md"
     },
     {
       "name": "docs-structure-templates",
