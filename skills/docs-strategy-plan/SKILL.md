@@ -1,6 +1,6 @@
 ---
 name: docs-strategy-plan
-description: Build a documentation strategy plan from scratch through a guided interview — for teams who know they need docs but not what kind. Asks about product, audience, sources, and business goals; derives roles and funnels; outputs an information architecture, content roadmap, and prioritized backlog. Run BEFORE /docs-create when you don't yet know what to document or why. Trigger phrases — "I need docs but don't know where to start", "help me plan documentation", "what should I document", "documentation strategy", "docs roadmap", "docs from scratch".
+description: Guided interview that turns "I have no docs and don't know where to start" into a concrete plan — what pages to write, for whom, in what order. Use when the user says "help me create documentation", "помоги создать документацию", "помоги с документацией", "не знаю с чего начать", "what should I document", "I need docs", "docs from scratch", "documentation strategy", "docs roadmap", or when the project has no existing docs. Asks about product, goals, audience; derives roles and funnels; outputs docs-plan.md + prioritized backlog. Run BEFORE /docs-create. DO NOT use docs-writing-guide for this — that skill is only for styling pages that already exist.
 metadata:
   version: 1.0.0
   category: planning
