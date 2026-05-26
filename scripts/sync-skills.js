@@ -271,7 +271,14 @@ function commitAndPush(cwd, files, message) {
 function bumpAndPublish(bump) {
   log(`▸ npm version ${bump}`);
   if (APPLY) {
-    // npm version само закоммитит package.json + создаст git tag
+    // npm version требует чистого working tree. Проверим заранее, чтобы дать понятную ошибку.
+    const dirty = gitStatusPorcelain(REPO_ROOT);
+    if (dirty.length) {
+      die(
+        `npm version требует чистого working tree, но есть незакоммиченные изменения:\n  ${dirty.join('\n  ')}\n` +
+        `Закоммить или stash их и повтори. (sync-skills уже сделал commit/push скиллов — версия не бампилась.)`
+      );
+    }
     execSync(`npm version ${bump} -m "chore: release v%s"`, { cwd: REPO_ROOT, stdio: 'inherit' });
     execSync('git push --follow-tags', { cwd: REPO_ROOT, stdio: 'inherit' });
   } else {
