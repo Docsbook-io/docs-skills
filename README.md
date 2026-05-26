@@ -27,6 +27,8 @@ Browse the live catalog: **[docsbook.io/skills](https://docsbook.io/skills)**.
 
 ```bash
 npx skills add Docsbook-io/docs-skills
+# or
+npx docs-skills install
 ```
 
 Copies SKILL.md files into `.claude/skills/` (Claude Code), `.cursor/rules/` (Cursor), or appends to `AGENTS.md` / `copilot-instructions.md` (Codex / Copilot). Works offline once installed.
@@ -133,9 +135,17 @@ No account required for reading public repos. Sign up at [docsbook.io](https://d
 
 ```bash
 npx skills add Docsbook-io/docs-skills
+# or
+npx docs-skills install
 ```
 
 Auto-detects your AI tool (Claude Code / Cursor / Copilot / Codex) and copies skills to the right place.
+
+To install globally for Claude Code:
+
+```bash
+npx docs-skills install ~/
+```
 
 ### Manual
 
@@ -152,6 +162,8 @@ cp -r docs-skills/skills .claude/skills/
 
 ```bash
 npx skills add Docsbook-io/docs-skills
+# or
+npx docs-skills install
 ```
 
 Then in chat:
@@ -164,6 +176,8 @@ Then in chat:
 
 ```bash
 npx skills add Docsbook-io/docs-skills
+# or
+npx docs-skills install
 ```
 
 Then mention `@docs-analyze` in chat.
@@ -172,6 +186,8 @@ Then mention `@docs-analyze` in chat.
 
 ```bash
 npx skills add Docsbook-io/docs-skills
+# or
+npx docs-skills install
 ```
 
 Appends a `docs-skills` section to `.github/copilot-instructions.md`.
@@ -180,6 +196,8 @@ Appends a `docs-skills` section to `.github/copilot-instructions.md`.
 
 ```bash
 npx skills add Docsbook-io/docs-skills
+# or
+npx docs-skills install
 ```
 
 Appends skill descriptions to `AGENTS.md`.
