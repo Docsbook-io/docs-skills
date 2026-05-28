@@ -2,7 +2,7 @@
 name: docs-from-site
 description: Spin up Markdown docs from any product website. Crawls the site, extracts content, and produces a clean docs-output/<name>/ folder ready for Docsbook or GitHub — useful when your only source of truth today is the marketing site. Use /docs-create for the full crawl→publish→setup pipeline.
 metadata:
-  version: 1.0.0
+  version: 2.0.0
   category: creation
   requires_docsbook_mcp: false
   keywords: [crawl, website, site, extract, markdown, generate]
@@ -10,93 +10,37 @@ metadata:
 
 # docs-from-site
 
-Build documentation from a website URL. Crawl the site, extract content, and produce structured Markdown files ready for Docsbook or GitHub.
+Knowledge for building documentation from a product URL. The actual work is done by the **`docs-site-crawler`** subagent (Haiku, pinned model) shipped in the [docs-create Claude Code plugin](https://github.com/Docsbook-io/docs-claude-plugins) and the [docs-subagents npm package](https://github.com/Docsbook-io/docs-subagents). This skill is the reference notes a human or agent reads *before* running it.
 
-## Arguments
+## What this is for
 
-- `$ARGUMENTS[0]` — website URL (required)
-- `$ARGUMENTS[1]` — output name (optional; derived from the domain if not provided)
+You have a product but no docs — only the marketing site. You want a Markdown folder you can edit, publish to GitHub, and connect to Docsbook. The crawler walks the site, converts pages, and produces `docs-output/<name>/` plus a `_branding.json` describing the visual identity.
 
-If no URL is provided, ask for it before proceeding.
+## Tips & tricks
 
-## Step 1 — Branding extraction
+- **WebFetch beats headless Chrome for marketing sites.** Almost every modern landing page returns full HTML on the first request — JS-only sites are rare. Don't pay for Chrome startup unless WebFetch returns empty `<main>`.
+- **Sitemap first, links second.** `/sitemap.xml` is the cheapest signal — one request, often returns the full URL set. Fall back to `<a href>` from the homepage only when sitemap is missing.
+- **Cap at ~50 pages.** Marketing sites with 200+ URLs are mostly blog noise. The first 50 (prioritised `/docs`, `/help`, `/guides`, `/features`) cover 95% of the user value.
+- **Skip auth and commerce paths.** `/login`, `/signup`, `/auth`, `/checkout`, `/cart` are dead weight — every crawler should hard-exclude them.
+- **Drop chrome before converting.** Strip `<header>`, `<footer>`, `<nav>`, `<aside>` *before* the HTML→Markdown pass; otherwise the same nav text ends up at the top of every page.
+- **Branding regex shortcuts.** Color tokens live in inline `<style>` or `:root` declarations — `--primary`, `--color-primary`, `--accent`, `--background`. Compute `detectedScheme` from the background luminance: `>50% → "light"`, else `"dark"`.
+- **Theme toggle = soft signal.** Look for `data-theme-toggle`, `[class*="theme-toggle"]`, or a sun/moon SVG. When present, set `defaultTheme: "system"` downstream; otherwise pin to the detected scheme.
 
-Fetch the homepage HTML using WebFetch. Only fall back to Chrome if WebFetch fails.
+## Output contract
 
-From `<head>`, extract:
-- `<title>` — site name
-- `<meta name="description">` — tagline
-- `<link rel="icon">` — favicon URL
-- `<meta property="og:image">` — OpenGraph image
-
-From inline CSS and `<style>` blocks, extract color tokens using regex:
-- `--primary`, `--color-primary`, `--accent`, `--background`, `--foreground`
-- Button color from `.btn`, `button` inline styles
-
-Determine the detected color scheme:
-- Parse the `--background` or `background-color` value
-- If luminance > 50%, scheme is `"light"`; otherwise `"dark"`
-
-Check for a theme toggle by scanning for `data-theme-toggle`, `[class*="theme-toggle"]`, or similar attributes.
-
-## Step 2 — Content discovery
-
-Find all pages to crawl:
-
-1. Fetch `/sitemap.xml` — parse all `<loc>` URLs
-2. Collect `<a href>` links from the homepage (same domain only)
-3. Check standard paths:
-   - Documentation first: `/docs`, `/docs/getting-started`, `/help`, `/guides`, `/tutorials`
-   - Product: `/features`, `/pricing`, `/about`
-   - Technical: `/api`, `/integrations`
-   - Reference: `/faq`, `/changelog`
-
-Crawl in that priority order. Skip: `/login`, `/signup`, `/auth`, `/checkout`, `/cart`.
-
-## Step 3 — Content extraction
-
-If `scripts/crawl-site.js` is available locally, run:
-
-```bash
-node scripts/crawl-site.js "$URL" "docs-output/$NAME" \
-  --max-pages=50 \
-  --priority-paths=docs,help,guides,tutorials \
-  --skip-paths=login,signup,auth,checkout,cart
-```
-
-If the script is not available, fetch each discovered URL manually and convert HTML to Markdown:
-- Extract content from `<main>`, `<article>`, or `.content`
-- Skip `<header>`, `<footer>`, `<nav>`, `<aside>`
-
-## Step 4 — Structure organization
-
-Organize the extracted files into this layout (skip empty sections):
+The crawler writes:
 
 ```
 docs-output/<name>/
 ├── README.md                    # Intro: what the product does, key value props
-├── getting-started/
-│   ├── README.md                # Quick start — the most important page
-│   └── installation.md          # If applicable
-├── features/
-│   └── <feature-name>.md        # One file per major feature
-├── guides/
-│   └── <guide-name>.md          # How-to guides
-├── api/
-│   └── reference.md             # If API docs were found
-└── faq.md                       # If a FAQ was found
+├── getting-started/README.md    # Quick start — most important page
+├── features/<feature>.md        # One file per major feature (optional)
+├── guides/<guide>.md            # How-to guides (optional)
+├── api/reference.md             # If API docs were found (optional)
+└── faq.md                       # If a FAQ was found (optional)
 ```
 
-Write each page following the shared writing rules:
-- Active voice, second person ("you"), imperative mood for instructions
-- Sentence case headings ("How to configure X")
-- No filler words: remove "simply", "just", "easily", "powerful"
-- All code blocks must have a language specifier
-- Link related pages using relative internal links
-
-## Step 5 — Branding JSON
-
-Write a `_branding.json` file in `docs-output/<name>/`:
+Plus `_branding.json` at the root:
 
 ```json
 {
@@ -109,16 +53,37 @@ Write a `_branding.json` file in `docs-output/<name>/`:
 }
 ```
 
-This file is consumed by `/docs-setup-workspace` when configuring Docsbook.
+`_branding.json` is consumed by [docs-setup-workspace](../docs-setup-workspace/SKILL.md) when configuring Docsbook.
 
-## Output
+## Writing rules (apply to every generated page)
 
-Print the created directory tree. Then suggest next steps:
+- Active voice, second person ("you"), imperative mood for instructions.
+- Sentence case headings ("How to configure X", not "How To Configure X").
+- No filler: drop "simply", "just", "easily", "powerful".
+- Every code block tagged with a language.
+- Link related pages with relative paths, not absolute URLs.
+
+## How to run
+
+**Plugin (recommended):**
 
 ```
-Docs written to docs-output/<name>/
-
-Next steps:
-  /docs-publish    — push to GitHub
-  /docs-setup-workspace — configure Docsbook workspace
+/plugin install docs-create@docs-claude-plugins
+/docs-from-site https://example.com
 ```
+
+The slash command spawns the `docs-site-crawler` subagent on Haiku and returns a JSON result with the output path and page count.
+
+**Standalone subagent:**
+
+```
+npx docs-subagents install
+# then in Claude Code:
+"Use the docs-site-crawler subagent to crawl https://example.com"
+```
+
+**Next steps after the crawl:**
+
+- [docs-publish](../docs-publish/SKILL.md) — push to GitHub
+- [docs-setup-workspace](../docs-setup-workspace/SKILL.md) — configure Docsbook
+- [docs-create](../docs-create/SKILL.md) — run all three in one command

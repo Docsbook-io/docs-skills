@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-28T05:07:32.654Z",
+  "generated_at": "2026-05-28T06:11:32.104Z",
   "skills": [
     {
       "name": "docs-accessibility",
@@ -173,7 +173,7 @@
         "generate"
       ],
       "requires_docsbook_mcp": false,
-      "version": "1.0.0",
+      "version": "2.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-from-site/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-from-site/SKILL.md"
     },
@@ -339,7 +339,7 @@
         "repo"
       ],
       "requires_docsbook_mcp": false,
-      "version": "1.0.0",
+      "version": "2.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-publish/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-publish/SKILL.md"
     },
@@ -412,7 +412,7 @@
         "update_domain"
       ],
       "requires_docsbook_mcp": true,
-      "version": "1.0.0",
+      "version": "2.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-setup-workspace/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-setup-workspace/SKILL.md"
     },

@@ -2,7 +2,7 @@
 name: docs-publish
 description: Push a local docs folder to GitHub in one step. Handles git init, commit, gh repo create and push — no Docsbook MCP required. Designed as the natural next step after /docs-from-site, /docs-from-code or /docs-from-docs.
 metadata:
-  version: 1.0.0
+  version: 2.0.0
   category: publishing
   requires_docsbook_mcp: false
   keywords: [publish, github, git, commit, push, repo]
@@ -10,65 +10,64 @@ metadata:
 
 # docs-publish
 
-Publishes a local documentation folder to a new public GitHub repository.
+Knowledge for publishing a local docs folder to GitHub. The actual work is done by the **`docs-publisher`** subagent (Haiku, pinned model) shipped in the [docs-create Claude Code plugin](https://github.com/Docsbook-io/docs-claude-plugins) and the [docs-subagents npm package](https://github.com/Docsbook-io/docs-subagents). This skill is the reference notes you read *before* running it.
 
-## Arguments
+## What this is for
 
-- `$ARGUMENTS[0]` — path to docs folder (required, e.g. `docs-output/myproduct`)
-- `$ARGUMENTS[1]` — `owner/repo-name` (optional — if not given, ask or derive from folder name + `gh auth status`)
+You have `docs-output/<name>/` from [docs-from-site](../docs-from-site/SKILL.md) (or hand-written docs). You want it live on GitHub so Docsbook can auto-index it. The publisher creates a new public repo and pushes `main` in one shot.
 
-## Before Starting
+## Tips & tricks
 
-- If path is not provided, look for `docs-output/` in cwd and ask which folder to publish.
-- Run `gh auth status` to get the authenticated GitHub user — use as default owner.
-- Derive repo name from the folder name if `$ARGUMENTS[1]` is not given.
+- **Use HTTPS with the gh token, not SSH.** `git push` over SSH fails silently when the user's key isn't loaded. `gh auth token` returns a short-lived PAT that works on any machine where `gh auth login` has been run.
+- **Run `gh auth status` before anything else.** Cheapest sanity check. If it fails, the entire publish flow is dead — return early with manual instructions instead of trying to recover.
+- **Derive the repo name from the folder.** `docs-output/example/` → `example-docs` (or just `example`). Don't ask the user unless the folder name collides with an existing repo on their account.
+- **`gh repo create --source` is brittle.** It tries to clone, set remote, and push in one call — fails when workflow scope is missing. Safer: `gh repo create owner/repo --public --description "..."` (no `--source`), then add the remote manually and `git push -u origin main`.
+- **Never overwrite existing repos.** If `gh repo create` returns "name already exists", bail with a clear error — silently force-pushing into someone else's repo is a footgun.
+- **Pre-existing `.git` is fine.** If the user's `docs-output/` is already a git repo, skip `git init` and reuse the current branch; just warn so they know nothing is being reinitialized.
+- **`_branding.json` survives the push.** Don't delete it — [docs-setup-workspace](../docs-setup-workspace/SKILL.md) reads it from the local copy, but having it in the repo helps reproducibility.
 
-## Step 1 — Validate Docs Folder
+## Output contract
 
-- Check that the path exists and contains `README.md`.
-- Count markdown files and report the number.
-- Check if `_branding.json` exists (produced by `/docs-from-site` — used later by `/docs-setup-workspace`).
+The publisher returns:
 
-## Step 2 — Git Init and Commit
-
-```bash
-cd <path>
-git init
-git add .
-git commit -m "docs: initial documentation"
-git branch -M main
+```json
+{
+  "status": "ok",
+  "githubUrl": "https://github.com/owner/repo",
+  "docsbookUrl": "https://docsbook.io/owner/repo",
+  "markdownFiles": 12,
+  "hasBranding": true,
+  "warnings": []
+}
 ```
 
-## Step 3 — Create GitHub Repo and Push
+`docsbookUrl` is computed deterministically (`https://docsbook.io/<owner>/<repo>`) — the site is live the moment Docsbook indexes the repo (typically a few seconds).
 
-```bash
-# Use HTTPS to avoid SSH key issues
-GH_TOKEN=$(gh auth token)
-gh repo create {owner}/{repo} --public --description "{description}" 2>&1
-git remote add origin https://{owner}:$GH_TOKEN@github.com/{owner}/{repo}.git
-git push -u origin main
-```
+## Error modes worth knowing
 
-> Note: if `gh repo create --source` fails due to workflow scope, create the repo first then push separately.
+| Failure | What the agent returns | Recovery |
+|---|---|---|
+| `gh` not installed | `{"status":"error","reason":"gh_missing","manualSteps":[...]}` | Install gh CLI; the result includes the manual `git`/`gh` commands |
+| Repo name taken | `{"status":"error","reason":"repo_exists"}` | Pick a different repo name or delete the existing repo first |
+| Push fails over HTTPS | `{"status":"error","reason":"push_failed","detail":"..."}` | Check `gh auth status`; do NOT silently retry over SSH |
+| Auth missing | gh auth status fails before push | Run `gh auth login` once and re-invoke |
 
-## Step 4 — Verify
+## How to run
 
-- Print the GitHub URL: `https://github.com/{owner}/{repo}`
-- Print the Docsbook URL: `https://docsbook.io/{owner}/{repo}`
-- Note: Docsbook auto-indexes the repo — the site will be live at the Docsbook URL after creating a workspace.
-
-## Output
+**Plugin (recommended):**
 
 ```
-✅ Published!
-🐙 GitHub:   https://github.com/{owner}/{repo}
-📚 Docsbook: https://docsbook.io/{owner}/{repo}
-
-Next: run /docs-setup-workspace to configure branding and AI.
+/docs-publish docs-output/example
 ```
 
-## Error Handling
+The slash command spawns the `docs-publisher` subagent on Haiku and returns the JSON result.
 
-- If repo already exists: print error and suggest a different name.
-- If push fails due to SSH: automatically switch to HTTPS with gh token.
-- If gh not installed: provide manual git instructions as fallback.
+**Standalone subagent:**
+
+```
+"Use the docs-publisher subagent to publish docs-output/example as alice/example-docs"
+```
+
+**Next step:**
+
+- [docs-setup-workspace](../docs-setup-workspace/SKILL.md) — configure Docsbook branding, UI, AI, SEO via MCP

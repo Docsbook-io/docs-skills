@@ -2,7 +2,7 @@
 name: docs-setup-workspace
 description: Configure a fresh Docsbook workspace from one command. Wires branding, UI toggles, AI chat, SEO, languages and custom domain via Docsbook MCP — the natural follow-up to /docs-publish. Falls back to printed setup instructions if MCP isn't connected.
 metadata:
-  version: 1.0.0
+  version: 2.0.0
   category: publishing
   requires_docsbook_mcp: true
   requires_plan: free
@@ -22,55 +22,27 @@ metadata:
 
 # docs-setup-workspace
 
-Configures a Docsbook workspace using the Docsbook MCP server. Applies branding, UI settings, navigation, AI, SEO, and language options.
+Knowledge for configuring a Docsbook workspace via MCP. The actual work is done by the **`docs-workspace-configurator`** subagent (Sonnet, pinned model) shipped in the [docs-create Claude Code plugin](https://github.com/Docsbook-io/docs-claude-plugins) and the [docs-subagents npm package](https://github.com/Docsbook-io/docs-subagents). This skill is the reference notes you read *before* running it.
 
-## Arguments
+## What this is for
 
-- `$ARGUMENTS[0]` — `owner/repo` or Docsbook workspace ID (required)
+You pushed docs to GitHub via [docs-publish](../docs-publish/SKILL.md). The Docsbook workspace exists (or needs to be created) at `https://docsbook.io/<owner>/<repo>`. You want branding, UI, AI, SEO, and languages configured from one command — no clicking through the dashboard.
 
-## Check MCP Availability
+The configurator runs on **Sonnet** (not Haiku) because the MCP calls are stateful: each settings update reads/writes typed JSON against a real workspace, and errors are plan-gated (Free vs PRO vs PRO+). Haiku is too lossy for the retries and error classification.
 
-Try calling `mcp__docsbook__list_workspaces`. If it fails or is unavailable, print:
+## Tips & tricks
 
-```
-Docsbook MCP not connected. To set it up:
-  mcp add --transport http https://docsbook.io/api/mcp/server
-Then re-run /docs-setup-workspace.
-```
+- **Probe MCP before touching anything.** First call `list_workspaces` — it's the cheapest method and confirms transport is up. If it fails for non-auth reasons, exit with `mcp add --transport http https://docsbook.io/api/mcp/server` instructions instead of trying every other tool.
+- **`list_workspaces` first, then `create_workspace`.** Don't blindly create — if Docsbook already auto-indexed the repo (it does this within seconds of `docs-publish`), the workspace exists and double-creating wastes a round trip.
+- **Plan-gated calls are normal.** `update_ai_settings`, `update_seo`, `update_languages` fail on Free with a plan error. Catch each one individually, record it in `planGated`, and keep going — never abort the whole run on a 402.
+- **`_branding.json` may be missing.** When the repo wasn't built by [docs-from-site](../docs-from-site/SKILL.md) (e.g. hand-written docs), no branding file exists. Use sensible defaults: `accentColor: "#6366f1"`, `detectedScheme: "light"`, `hasThemeToggle: true`.
+- **`defaultTheme` follows the toggle.** If the source site had a theme toggle, set `defaultTheme: "system"` (let the browser decide). Otherwise pin to the `detectedScheme` — locking the theme makes the docs match the marketing brand.
+- **Navigation > AI/SEO.** Always set `update_navigation` (it's Free-tier and adds a "Website" link back to the source — high-value link). AI/SEO are nice-to-have on Free.
+- **MCP transport is HTTP, not stdio.** This MCP is hosted: `https://docsbook.io/api/mcp/server`. Different from `markdown-lsp` (local stdio). Don't confuse the two.
 
-Exit gracefully without error.
+## Fast UI settings preset
 
-## Step 1 — Create or Find Workspace
-
-- Call `mcp__docsbook__list_workspaces` to check if the workspace already exists.
-- If not found: call `mcp__docsbook__create_workspace({ github_owner, github_repo })`.
-- Store the workspace ID for subsequent calls.
-
-## Step 2 — Read Branding from _branding.json
-
-If `_branding.json` exists in the docs-output folder, parse:
-
-- `accentColor`
-- `background`
-- `foreground`
-- `favicon`
-- `hasThemeToggle`
-- `detectedScheme` (`"light"` or `"dark"`)
-
-If the file does not exist, use sensible defaults.
-
-## Step 3 — Apply Branding
-
-Call `mcp__docsbook__update_branding` with:
-
-- `accentColor` — from `_branding.json` or default `#6366f1`
-- `accentColorDark` — slightly adjusted or same as `accentColor`
-- `iconUrl` — favicon URL from branding
-- `defaultTheme` — `"system"` if `hasThemeToggle` is true, otherwise `detectedScheme`
-
-## Step 4 — UI Settings
-
-Call `mcp__docsbook__update_ui_settings` with:
+This block is what every workspace gets on first setup:
 
 ```json
 {
@@ -90,39 +62,43 @@ Call `mcp__docsbook__update_ui_settings` with:
 }
 ```
 
-## Step 5 — Navigation
+## Output contract
 
-Call `mcp__docsbook__update_navigation`. If the source URL is known, add a "Website" header link:
+The configurator returns:
 
 ```json
 {
-  "headerLinks": [{ "label": "Website", "url": "{source_url}" }]
+  "status": "ok",
+  "workspaceId": "ws_...",
+  "docsbookUrl": "https://docsbook.io/owner/repo",
+  "applied": ["branding", "ui", "navigation"],
+  "planGated": ["ai", "seo", "languages"],
+  "warnings": []
 }
 ```
 
-## Step 6 — AI, SEO, and Languages
+`applied` = sections that succeeded. `planGated` = sections that failed because of plan limits (upgrade hint). `warnings` = anything else worth knowing (missing `_branding.json`, navigation skipped because no source URL, etc).
 
-Attempt the following calls. These may fail on the Free plan — catch errors silently and mention the upgrade path.
+## Error modes worth knowing
 
-- `mcp__docsbook__update_ai_settings` — `{ aiEnabled: true, showAskAiButton: true }`
-- `mcp__docsbook__update_seo` — `{ seoEnabled: true }`
-- `mcp__docsbook__update_languages` — `{ enabledLanguages: ["en", "zh", "ja", "ru"] }`
+| Failure | What the agent returns | Recovery |
+|---|---|---|
+| MCP not connected | `{"status":"mcp_unavailable","instructions":[...]}` | Run `mcp add --transport http https://docsbook.io/api/mcp/server` |
+| Workspace not yet indexed | `{"status":"error","reason":"workspace_not_found","retryAfterSeconds":60}` | Wait a minute, then retry — Docsbook is still pulling the repo |
+| Plan limit on AI/SEO/i18n | success result with the section in `planGated` | Upgrade plan or ignore — branding/UI/navigation still applied |
 
-If any call fails with a plan restriction error, append to output:
+## How to run
 
-```
-⚠️  AI / SEO / Languages require PRO plan. Upgrade at https://docsbook.io
-```
-
-## Output
+**Plugin (recommended):**
 
 ```
-✅ Workspace configured!
-📚 Docsbook: https://docsbook.io/{owner}/{repo}
-
-Settings applied:
-- Branding: accent #{color}, theme: {scheme}
-- AI chat: ✅ enabled
-- SEO: ✅ enabled
-- Languages: en, zh, ja, ru
+/docs-setup-workspace alice/example-docs
 ```
+
+**Standalone subagent:**
+
+```
+"Use the docs-workspace-configurator subagent to set up alice/example-docs with docs-output/example"
+```
+
+Plug-and-play with [docs-create](../docs-create/SKILL.md) if you want crawl → publish → configure in one command.
