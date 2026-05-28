@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-28T08:16:05.068Z",
+  "generated_at": "2026-05-28T09:14:33.960Z",
   "skills": [
     {
       "name": "docs-accessibility",
@@ -174,6 +174,7 @@
         "get_popular_searches",
         "get_doc_graph"
       ],
+      "requires_docsbook_mcp": true,
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-gap-finder/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-gap-finder/SKILL.md"
