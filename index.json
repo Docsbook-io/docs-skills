@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-28T11:16:52.401Z",
+  "generated_at": "2026-05-28T12:34:41.160Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -309,7 +309,7 @@
         "readme"
       ],
       "requires_docsbook_mcp": false,
-      "version": "0.1.0",
+      "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-from-code/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-from-code/SKILL.md"
     },
@@ -328,7 +328,7 @@
         "platform"
       ],
       "requires_docsbook_mcp": false,
-      "version": "0.1.0",
+      "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-from-docs/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-from-docs/SKILL.md"
     },
@@ -616,6 +616,156 @@
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-style-tone/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-style-tone/SKILL.md"
+    },
+    {
+      "name": "docs-engagement-analyzer",
+      "description": "Splits high-dwell-time pages into \"engagement signal\" (deep interest) vs \"engagement problem\" (stuck users) by cross-referencing dwell time with negative feedback. Identifies which long-read pages are loved vs which are confusing. Produces an insight JSON report consumable by downstream actor agents. Requires PRO+ plan.",
+      "category": "observability",
+      "requires_plan": "pro_plus",
+      "keywords": [
+        "engagement",
+        "dwell-time",
+        "time-on-page",
+        "attention",
+        "confusion",
+        "retention",
+        "content-quality"
+      ],
+      "uses_mcp_tools": [
+        "get_analytics",
+        "query_events",
+        "get_negative_feedback",
+        "get_workspace"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/observability/docs-engagement-analyzer/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-engagement-analyzer/SKILL.md"
+    },
+    {
+      "name": "docs-funnel-mapper",
+      "description": "Maps the most common 3-step navigation journeys through your docs and identifies high-volume paths with low completion rates (users dropping before reaching a conversion page). Surfaces \"broken journeys\" — transitions implied by the doc graph that users do not actually take. Produces an insight JSON report consumable by downstream actor agents. Requires PRO+ plan.",
+      "category": "observability",
+      "requires_plan": "pro_plus",
+      "keywords": [
+        "funnel",
+        "journey",
+        "conversion",
+        "drop-off",
+        "navigation",
+        "paths",
+        "sessions"
+      ],
+      "uses_mcp_tools": [
+        "get_page_journeys",
+        "get_analytics",
+        "get_workspace"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/observability/docs-funnel-mapper/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-funnel-mapper/SKILL.md"
+    },
+    {
+      "name": "docs-link-click-analyzer",
+      "description": "Measures click-through rate on every internal link and CTA button across the docs. Flags conversion-critical buttons (Upgrade, Sign up, Book demo) whose CTR sits below the site median given comparable impressions. Also surfaces \"orphan traffic\" — pages with pageviews but zero outgoing clicks. Produces an insight JSON report consumable by downstream actor agents. Requires PRO+ plan.",
+      "category": "observability",
+      "requires_plan": "pro_plus",
+      "keywords": [
+        "ctr",
+        "cta",
+        "conversion",
+        "clicks",
+        "links",
+        "buttons",
+        "upgrade",
+        "sign-up"
+      ],
+      "uses_mcp_tools": [
+        "query_events",
+        "get_analytics",
+        "get_workspace"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/observability/docs-link-click-analyzer/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-link-click-analyzer/SKILL.md"
+    },
+    {
+      "name": "docs-question-clusterer",
+      "description": "Clusters every user question asked to the AI chat into themed topic groups, then cross-references against the doc graph to label each cluster as content_gap (no doc covers it) or ai_chat_failure (doc exists but chat couldn't surface it). Goes deeper than docs-gap-finder by including answered-but-not-helpful questions. Requires PRO plan.",
+      "category": "observability",
+      "requires_plan": "pro",
+      "keywords": [
+        "questions",
+        "ai-chat",
+        "gap",
+        "clustering",
+        "themes",
+        "coverage",
+        "rag"
+      ],
+      "uses_mcp_tools": [
+        "get_ai_questions",
+        "get_ai_unanswered",
+        "get_negative_feedback",
+        "get_failed_searches",
+        "get_popular_searches",
+        "get_workspace"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/observability/docs-question-clusterer/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-question-clusterer/SKILL.md"
+    },
+    {
+      "name": "docs-utm-analyzer",
+      "description": "Maps UTM-tagged traffic against landing pages to find mismatches between marketing promise and documentation reality. Surfaces UTM campaigns where users land but bounce — the doc page doesn't answer what the ad/post promised. Produces an insight JSON report consumable by downstream actor agents. Requires PRO+ plan.",
+      "category": "observability",
+      "requires_plan": "pro_plus",
+      "keywords": [
+        "utm",
+        "attribution",
+        "landing-page",
+        "bounce",
+        "marketing",
+        "campaigns",
+        "traffic-source"
+      ],
+      "uses_mcp_tools": [
+        "get_analytics",
+        "query_events",
+        "get_workspace"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/observability/docs-utm-analyzer/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-utm-analyzer/SKILL.md"
+    },
+    {
+      "name": "docs-visitor-cohort",
+      "description": "Drills into the top-N most active anonymous visitors and clusters them by behavior pattern — \"buyer-blocker\" (visits pricing, leaves negative feedback), \"tire-kicker\" (browses but never reaches CTA), \"deep-reader\" (long engagement, positive signals). Surfaces cohort-level findings that page-level analytics miss. Produces an insight JSON report consumable by downstream actor agents. Requires PRO+ plan.",
+      "category": "observability",
+      "requires_plan": "pro_plus",
+      "keywords": [
+        "cohort",
+        "visitor",
+        "behavior",
+        "segmentation",
+        "top-users",
+        "buyer",
+        "blocker",
+        "retention"
+      ],
+      "uses_mcp_tools": [
+        "get_top_visitors",
+        "get_visitor_activity",
+        "get_workspace"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/observability/docs-visitor-cohort/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-visitor-cohort/SKILL.md"
     }
   ]
 }

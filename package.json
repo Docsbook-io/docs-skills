@@ -1,7 +1,7 @@
 {
   "name": "docs-skills",
-  "version": "1.4.2",
-  "description": "AI agent skills for documentation analysis and creation — 20 specialized skills for Claude Code, Cursor, Codex, and other AI coding tools",
+  "version": "1.5.0",
+  "description": "AI agent skills for documentation analysis, creation, and observability — 35 specialized skills for Claude Code, Cursor, Codex, and other AI coding tools. New in 1.5: observability category with six analyzers that emit schema-validated JSON insight reports.",
   "keywords": [
     "documentation",
     "docs",
@@ -17,7 +17,13 @@
     "diátaxis",
     "mintlify",
     "gitbook",
-    "docsbook"
+    "docsbook",
+    "observability",
+    "analytics",
+    "insights",
+    "utm",
+    "engagement",
+    "funnel"
   ],
   "author": "Dan Bondarev",
   "license": "MIT",
