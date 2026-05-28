@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-28T10:32:52.589Z",
+  "generated_at": "2026-05-28T11:16:52.401Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -294,6 +294,43 @@
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-detect-source/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-detect-source/SKILL.md"
+    },
+    {
+      "name": "docs-from-code",
+      "description": "Build Markdown docs from a code repository — README, source tree, exported APIs, examples, comments. Use when the source of truth is GitHub source code rather than a marketing site. Produces docs-output/<name>/ ready for /docs-publish or the full /docs-create pipeline.",
+      "category": "creation",
+      "keywords": [
+        "code",
+        "repo",
+        "github",
+        "source",
+        "generate",
+        "api",
+        "readme"
+      ],
+      "requires_docsbook_mcp": false,
+      "version": "0.1.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-from-code/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-from-code/SKILL.md"
+    },
+    {
+      "name": "docs-from-docs",
+      "description": "Import existing documentation from Mintlify, GitBook, Docusaurus, Nextra, or VitePress into a clean docs-output/<name>/ folder ready for Docsbook. Preserves structure and content; normalises platform-specific syntax to plain Markdown. Use when migrating away from another docs platform.",
+      "category": "creation",
+      "keywords": [
+        "import",
+        "migrate",
+        "mintlify",
+        "gitbook",
+        "docusaurus",
+        "nextra",
+        "vitepress",
+        "platform"
+      ],
+      "requires_docsbook_mcp": false,
+      "version": "0.1.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-from-docs/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-from-docs/SKILL.md"
     },
     {
       "name": "docs-from-site",

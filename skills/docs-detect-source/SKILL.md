@@ -27,11 +27,11 @@ metadata:
 
 ## Skill Routing
 
-| Detected type | Downstream skill |
-|---|---|
-| `website` | `/docs-from-site` |
-| `github-code-repo` | `/docs-from-code` |
-| Any recognized docs platform | `/docs-from-docs` |
+| Detected type | Downstream skill | Subagent |
+|---|---|---|
+| `website` | `/docs-from-site` | `docs-site-crawler` (Haiku) |
+| `github-code-repo` | `/docs-from-code` | `docs-code-crawler` (Haiku) |
+| Any recognized docs platform | `/docs-from-docs` | `docs-platform-importer` (Haiku) |
 
 ## Acceptance Criteria
 
