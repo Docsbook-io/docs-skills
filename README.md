@@ -24,7 +24,7 @@ AI agents are powerful — but they have no shared standard for **what good docu
 
 ## The Solution
 
-**27 reusable skills** (Workflow + Guardrails + Acceptance Criteria) that teach your AI agent to handle any documentation task correctly — from audit to publish.
+**29 reusable skills** (Workflow + Guardrails + Acceptance Criteria) that teach your AI agent to handle any documentation task correctly — from audit to publish.
 
 | Before | After |
 |--------|-------|
@@ -79,7 +79,7 @@ npx docs-skills list
 
 ## Skills Catalog
 
-**27 skills** across 6 categories. Browse live: [docsbook.io/skills](https://docsbook.io/skills).
+**29 skills** across 6 categories. Browse live: [docsbook.io/skills](https://docsbook.io/skills).
 
 ### Analysis — audit existing documentation
 
@@ -221,6 +221,24 @@ Use when you need to produce docs from scratch or migrate from another platform.
 **What you get:** A `docs-output/<name>/` folder with a README, getting-started section, per-feature pages, guides, and FAQ (only sections found on the site), plus a `_branding.json` with accent color, background, favicon, and color scheme extracted from the site's CSS.  
 **Requires:** No MCP needed • Free plan  
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-from-site/SKILL.md)
+
+---
+
+#### `/docs-from-code`
+
+**When to use:** Your source of truth is a code repository (Node, Python, Go, Rust, .NET, JVM) and you want docs built from its README, exported API surface, examples, and configuration — useful when the marketing site is a thin SPA or doesn't exist yet.  
+**What you get:** A `docs-output/<name>/` folder with the README split into structured pages, one `api/<module>.md` per public export (signatures + docstrings, with `TODO` markers for undocumented items), a `guides/configuration.md` from `.env.example` and `docker-compose.yml`, and a `_branding.json` (no fabricated accent color — omitted when undetected). Secrets in env files are redacted.  
+**Requires:** `gh` CLI or `git` • No MCP needed • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-from-code/SKILL.md)
+
+---
+
+#### `/docs-from-docs`
+
+**When to use:** You're migrating off Mintlify, GitBook, Docusaurus, Nextra, VitePress, or Starlight and want a clean Docsbook-ready Markdown folder with the original structure preserved.  
+**What you get:** A `docs-output/<name>/` folder mirroring the source navigation, with platform-specific MDX components normalised to plain Markdown (`<Card>`, `<Tabs>`, `{% hint %}`, `:::note`, `<Callout>`, `<Aside>` → headings + blockquotes), internal links rewritten to relative paths, images copied into `_assets/`, and `_branding.json` carrying the platform's accent color when present.  
+**Requires:** `gh` CLI or `git` • No MCP needed • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-from-docs/SKILL.md)
 
 ---
 
@@ -399,7 +417,7 @@ The tool searches by name + description + keywords and returns matching SKILL.md
 
 ## Features
 
-✅ **27 reusable skills** — analysis, creation, publishing, observability, planning, automation  
+✅ **29 reusable skills** — analysis, creation, publishing, observability, planning, automation  
 ✅ **Acceptance Criteria** — every skill ships with a pass/fail checklist  
 ✅ **Agent-agnostic** — Claude Code, Cursor, Copilot, Codex  
 ✅ **Live doc graph** — reads structure via Docsbook MCP, no repo clone needed  
