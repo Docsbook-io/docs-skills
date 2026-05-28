@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-28T06:11:32.104Z",
+  "generated_at": "2026-05-28T08:16:05.068Z",
   "skills": [
     {
       "name": "docs-accessibility",
@@ -138,27 +138,6 @@
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-detect-source/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-detect-source/SKILL.md"
-    },
-    {
-      "name": "docs-enable-translation",
-      "description": "Translate your docs into 15 languages without leaving Claude. Switches a Docsbook workspace to AI auto-translation, enables the languages you pick (en/es/fr/de/pt/it/ru/zh/ja/ko/ar/hi/tr/pl/nl), and optionally pings Slack when each batch finishes. PRO plan.",
-      "category": "automation",
-      "requires_plan": "pro",
-      "keywords": [
-        "translate",
-        "i18n",
-        "multilang",
-        "локализация"
-      ],
-      "uses_mcp_tools": [
-        "update_languages",
-        "set_translation_mode",
-        "register_webhook_translation_completed"
-      ],
-      "requires_docsbook_mcp": true,
-      "version": "1.0.0",
-      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-enable-translation/SKILL.md",
-      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-enable-translation/SKILL.md"
     },
     {
       "name": "docs-from-site",
@@ -312,21 +291,6 @@
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-navigation-linking/SKILL.md"
     },
     {
-      "name": "docs-pr-check",
-      "description": "Block PRs that change code without updating docs. Generates a GitHub Actions workflow (.github/workflows/docsbook-docs-check.yml) that runs on every PR, validates frontmatter in changed markdown, and detects broken internal links. Optional `block_on_broken_links` input fails the build on breakage.",
-      "category": "automation",
-      "requires_plan": "free",
-      "keywords": [
-        "pr",
-        "ci",
-        "github-actions",
-        "lint"
-      ],
-      "version": "1.0.0",
-      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-pr-check/SKILL.md",
-      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-pr-check/SKILL.md"
-    },
-    {
       "name": "docs-publish",
       "description": "Push a local docs folder to GitHub in one step. Handles git init, commit, gh repo create and push — no Docsbook MCP required. Designed as the natural next step after /docs-from-site, /docs-from-code or /docs-from-docs.",
       "category": "publishing",
@@ -342,26 +306,6 @@
       "version": "2.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-publish/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-publish/SKILL.md"
-    },
-    {
-      "name": "docs-release-announce",
-      "description": "Tell users about every release without writing a webhook handler. Wires a Docsbook release.published webhook plus a GitHub Actions workflow that announces new GitHub releases of a Docsbook-tracked repo to Slack and/or email via Resend. PRO plan.",
-      "category": "automation",
-      "requires_plan": "pro",
-      "keywords": [
-        "release",
-        "announce",
-        "slack",
-        "email",
-        "webhook"
-      ],
-      "uses_mcp_tools": [
-        "register_webhook_release_published"
-      ],
-      "requires_docsbook_mcp": true,
-      "version": "1.0.0",
-      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-release-announce/SKILL.md",
-      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-release-announce/SKILL.md"
     },
     {
       "name": "docs-seo",
@@ -415,25 +359,6 @@
       "version": "2.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-setup-workspace/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-setup-workspace/SKILL.md"
-    },
-    {
-      "name": "docs-stale-watcher",
-      "description": "Turn outdated-docs notifications into real GitHub Issues your team will act on. Registers a Docsbook `content.outdated` webhook and generates a GitHub Actions workflow that opens an issue in your docs repo whenever a page goes stale. PRO+.",
-      "category": "automation",
-      "requires_plan": "pro_plus",
-      "keywords": [
-        "stale",
-        "outdated",
-        "watcher",
-        "webhook",
-        "issue"
-      ],
-      "uses_mcp_tools": [
-        "register_webhook_content_outdated"
-      ],
-      "version": "1.0.0",
-      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-stale-watcher/SKILL.md",
-      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-stale-watcher/SKILL.md"
     },
     {
       "name": "docs-strategy-plan",
@@ -497,72 +422,6 @@
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-style-tone/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-style-tone/SKILL.md"
-    },
-    {
-      "name": "docs-sync",
-      "description": "Detect and fix code↔docs drift in parallel git worktrees before push. Runs as a pre-push hook — fans out Haiku searcher sub-agents per code cluster, applies Sonnet edits, then merges everything with a curator agent in a fresh context.",
-      "category": "automation",
-      "requires_plan": "free",
-      "keywords": [
-        "drift",
-        "sync",
-        "pre-push",
-        "worktree",
-        "parallel",
-        "hook",
-        "mcp"
-      ],
-      "uses_mcp_tools": [
-        "doc_search_text",
-        "doc_search_symbols",
-        "doc_search_links_to"
-      ],
-      "version": "1.0.0",
-      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-sync/SKILL.md",
-      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-sync/SKILL.md"
-    },
-    {
-      "name": "docs-translate-webhook",
-      "description": "Plug your own translation pipeline into Docsbook. Switches translation mode to `external`, registers a `translation.requested` webhook and scaffolds a Vercel or Express handler — so in-house TMS, human reviewers, glossary enforcement or regulated content can replace the built-in AI translator. PRO+.",
-      "category": "automation",
-      "requires_plan": "pro_plus",
-      "keywords": [
-        "translate",
-        "webhook",
-        "external",
-        "custom",
-        "pipeline"
-      ],
-      "uses_mcp_tools": [
-        "set_translation_mode",
-        "register_webhook_translation_requested"
-      ],
-      "requires_docsbook_mcp": true,
-      "version": "1.0.0",
-      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-translate-webhook/SKILL.md",
-      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-translate-webhook/SKILL.md"
-    },
-    {
-      "name": "docs-tune-ai-chat",
-      "description": "Improve your docs AI chat from real failure signals. Pulls 30 days of negative feedback and unanswered questions, clusters them by topic, and proposes an updated system_prompt — applied via MCP only after you confirm the diff. PRO plan.",
-      "category": "automation",
-      "requires_plan": "pro",
-      "keywords": [
-        "ai",
-        "chat",
-        "tuning",
-        "feedback",
-        "system-prompt"
-      ],
-      "uses_mcp_tools": [
-        "get_negative_feedback",
-        "get_ai_unanswered",
-        "set_chat_system_prompt"
-      ],
-      "requires_docsbook_mcp": true,
-      "version": "1.0.0",
-      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-tune-ai-chat/SKILL.md",
-      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-tune-ai-chat/SKILL.md"
     }
   ]
 }
