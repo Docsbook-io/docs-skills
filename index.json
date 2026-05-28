@@ -1,7 +1,163 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-28T09:14:33.960Z",
+  "generated_at": "2026-05-28T09:16:38.082Z",
   "skills": [
+    {
+      "name": "docs-enable-translation",
+      "description": "Enable AI auto-translation for a Docsbook workspace across up to 15 languages in one command. Validates inputs, checks the workspace plan, enables the requested languages, switches translation mode to auto, and optionally registers a Slack webhook that fires when each translation batch completes. Requires PRO plan.",
+      "category": "automation",
+      "requires_plan": "pro",
+      "keywords": [
+        "translate",
+        "i18n",
+        "multilang",
+        "localization",
+        "auto-translation"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "get_workspace",
+        "update_languages",
+        "set_translation_mode",
+        "register_webhook_translation_completed"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/automation/docs-enable-translation/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-enable-translation/SKILL.md"
+    },
+    {
+      "name": "docs-pr-check",
+      "description": "Add a CI gate to every pull request that checks whether code changes are accompanied by documentation updates, validates frontmatter in changed markdown files, and detects broken internal links. Generates a ready-to-use GitHub Actions workflow file.",
+      "category": "automation",
+      "requires_plan": "free",
+      "keywords": [
+        "pr",
+        "ci",
+        "github-actions",
+        "lint",
+        "frontmatter",
+        "broken-links"
+      ],
+      "requires_docsbook_mcp": false,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/automation/docs-pr-check/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-pr-check/SKILL.md"
+    },
+    {
+      "name": "docs-release-announce",
+      "description": "Wire up release announcements for a Docsbook workspace. Registers a Docsbook webhook on release events and generates a GitHub Actions workflow that dispatches notifications to Slack and/or email when a new release is published. Requires PRO plan.",
+      "category": "automation",
+      "requires_plan": "pro",
+      "keywords": [
+        "release",
+        "announce",
+        "slack",
+        "email",
+        "webhook",
+        "notifications"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "register_webhook_content_indexed"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/automation/docs-release-announce/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-release-announce/SKILL.md"
+    },
+    {
+      "name": "docs-stale-watcher",
+      "description": "Register a Docsbook content.outdated webhook and generate a GitHub Actions workflow that converts each stale-content notification into a GitHub Issue in the documentation repository. Keeps docs maintenance visible in the team's normal issue triage flow. Requires PRO+ plan.",
+      "category": "automation",
+      "requires_plan": "pro_plus",
+      "keywords": [
+        "stale",
+        "outdated",
+        "watcher",
+        "webhook",
+        "issue",
+        "maintenance",
+        "freshness"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "register_webhook_content_outdated"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/automation/docs-stale-watcher/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-stale-watcher/SKILL.md"
+    },
+    {
+      "name": "docs-sync",
+      "description": "Detect and fix code↔docs drift before every push. Orchestrates a four-subagent pipeline — Haiku planner clusters changed code files, Haiku searchers find drifted pages per cluster in parallel worktrees, Sonnet editors rewrite the affected sections, and a Sonnet curator merges everything atomically into the commit. Works as a manual command or as an auto-installed pre-push git hook.",
+      "category": "automation",
+      "keywords": [
+        "sync",
+        "drift",
+        "pre-push",
+        "subagents",
+        "worktree",
+        "markdown",
+        "code-docs"
+      ],
+      "requires_docsbook_mcp": false,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/automation/docs-sync/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-sync/SKILL.md"
+    },
+    {
+      "name": "docs-translate-webhook",
+      "description": "Bypass Docsbook's built-in AI translator and delegate translation work to a custom external service over webhooks. Switches the workspace to external translation mode, registers a translation.requested webhook, and scaffolds a handler function the user deploys with their own translation logic. Requires PRO+ plan.",
+      "category": "automation",
+      "requires_plan": "pro_plus",
+      "keywords": [
+        "translate",
+        "webhook",
+        "external",
+        "custom",
+        "pipeline",
+        "tms",
+        "i18n"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "get_workspace",
+        "set_translation_mode",
+        "register_webhook_translation_requested"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/automation/docs-translate-webhook/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-translate-webhook/SKILL.md"
+    },
+    {
+      "name": "docs-tune-ai-chat",
+      "description": "Improve the AI chat system prompt of a Docsbook workspace using real negative feedback and unanswered questions from the last 30 days. Clusters failure patterns by topic, proposes a minimally invasive prompt update, shows a before/after diff, and applies the change only after explicit user confirmation. Requires PRO plan.",
+      "category": "automation",
+      "requires_plan": "pro",
+      "keywords": [
+        "ai",
+        "chat",
+        "tuning",
+        "feedback",
+        "system-prompt",
+        "rag",
+        "quality"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "get_workspace",
+        "get_negative_feedback",
+        "get_ai_unanswered",
+        "set_chat_system_prompt"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/automation/docs-tune-ai-chat/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-tune-ai-chat/SKILL.md"
+    },
     {
       "name": "docs-accessibility",
       "description": "Catch a11y issues in your docs before users hit them. Audits markdown for WCAG 2.1 AA violations a screen reader actually cares about — missing alt text, broken heading hierarchy, vague link anchors, captions and code-block language. Returns a prioritized fix list per page.",

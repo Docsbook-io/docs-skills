@@ -179,30 +179,44 @@ function parseFrontmatter(yaml) {
   return out;
 }
 
+/**
+ * Recursively collect all SKILL.md files under SKILLS_DIR.
+ * Returns array of { skillPath (relative to SKILLS_DIR), file (absolute) }.
+ * Supports both flat layout (skills/<name>/SKILL.md) and
+ * category-grouped layout (skills/<category>/<name>/SKILL.md).
+ */
+function collectSkillFiles(dir, prefix) {
+  const results = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    const skillFile = path.join(dir, entry.name, 'SKILL.md');
+    const nestedPath = prefix ? `${prefix}/${entry.name}` : entry.name;
+    if (fs.existsSync(skillFile)) {
+      results.push({ skillPath: nestedPath, file: skillFile });
+    } else {
+      // One level deeper (category folder without own SKILL.md)
+      results.push(...collectSkillFiles(path.join(dir, entry.name), nestedPath));
+    }
+  }
+  return results.sort((a, b) => a.skillPath.localeCompare(b.skillPath));
+}
+
 function buildIndex() {
   if (!fs.existsSync(SKILLS_DIR)) {
     console.error(`skills/ not found at ${SKILLS_DIR}`);
     process.exit(1);
   }
 
-  const dirs = fs.readdirSync(SKILLS_DIR, { withFileTypes: true })
-    .filter((d) => d.isDirectory())
-    .map((d) => d.name)
-    .sort();
-
+  const skillFiles = collectSkillFiles(SKILLS_DIR, '');
   const skills = [];
 
-  for (const name of dirs) {
-    const file = path.join(SKILLS_DIR, name, 'SKILL.md');
-    if (!fs.existsSync(file)) {
-      console.warn(`skip ${name}: no SKILL.md`);
-      continue;
-    }
+  for (const { skillPath, file } of skillFiles) {
+    const name = path.basename(skillPath);
 
     const text = fs.readFileSync(file, 'utf8');
     const fm = extractFrontmatter(text);
     if (!fm) {
-      console.warn(`skip ${name}: no frontmatter`);
+      console.warn(`skip ${skillPath}: no frontmatter`);
       continue;
     }
 
@@ -231,8 +245,8 @@ function buildIndex() {
 
     if (md.version) entry.version = md.version;
 
-    entry.raw_url = `${RAW_BASE}/skills/${name}/SKILL.md`;
-    entry.github_url = `${GH_BASE}/skills/${name}/SKILL.md`;
+    entry.raw_url = `${RAW_BASE}/skills/${skillPath}/SKILL.md`;
+    entry.github_url = `${GH_BASE}/skills/${skillPath}/SKILL.md`;
 
     skills.push(entry);
   }
