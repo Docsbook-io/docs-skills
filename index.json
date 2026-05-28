@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-26T02:27:09.861Z",
+  "generated_at": "2026-05-28T05:07:32.654Z",
   "skills": [
     {
       "name": "docs-accessibility",
@@ -497,6 +497,29 @@
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-style-tone/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-style-tone/SKILL.md"
+    },
+    {
+      "name": "docs-sync",
+      "description": "Detect and fix code↔docs drift in parallel git worktrees before push. Runs as a pre-push hook — fans out Haiku searcher sub-agents per code cluster, applies Sonnet edits, then merges everything with a curator agent in a fresh context.",
+      "category": "automation",
+      "requires_plan": "free",
+      "keywords": [
+        "drift",
+        "sync",
+        "pre-push",
+        "worktree",
+        "parallel",
+        "hook",
+        "mcp"
+      ],
+      "uses_mcp_tools": [
+        "doc_search_text",
+        "doc_search_symbols",
+        "doc_search_links_to"
+      ],
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-sync/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-sync/SKILL.md"
     },
     {
       "name": "docs-translate-webhook",

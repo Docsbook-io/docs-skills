@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# pre-push hook installed by docs-sync skill.
+# Runs the /docs-sync skill via the claude CLI to detect & fix code↔docs drift
+# before push. Never blocks the push in `warn` mode (the default).
+#
+# Disable temporarily: DOCS_SYNC_SKIP=1 git push
+# Force block mode:     DOCS_SYNC_MODE=block git push
+set -e
+
+if [ "${DOCS_SYNC_SKIP:-0}" = "1" ]; then
+  echo "[docs-sync] skipped via DOCS_SYNC_SKIP=1"
+  exit 0
+fi
+
+if ! command -v claude >/dev/null 2>&1; then
+  echo "[docs-sync] claude CLI not found — skipping doc sync."
+  echo "[docs-sync] install: https://claude.com/claude-code"
+  exit 0
+fi
+
+MODE="${DOCS_SYNC_MODE:-warn}"
+
+echo "[docs-sync] running /docs-sync (mode=$MODE)..."
+
+if claude --print --dangerously-skip-permissions /docs-sync; then
+  echo "[docs-sync] done"
+  exit 0
+fi
+
+# claude command failed
+if [ "$MODE" = "block" ]; then
+  echo "[docs-sync] FAILED in block mode — push aborted. Set DOCS_SYNC_MODE=warn to allow."
+  exit 1
+fi
+
+echo "[docs-sync] failed — push will continue (warn mode). Set DOCS_SYNC_MODE=block to fail-fast."
+exit 0
