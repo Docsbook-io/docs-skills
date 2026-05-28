@@ -24,7 +24,7 @@ AI agents are powerful — but they have no shared standard for **what good docu
 
 ## The Solution
 
-**20 reusable skills** (Workflow + Guardrails + Acceptance Criteria) that teach your AI agent to handle any documentation task correctly — from audit to publish.
+**27 reusable skills** (Workflow + Guardrails + Acceptance Criteria) that teach your AI agent to handle any documentation task correctly — from audit to publish.
 
 | Before | After |
 |--------|-------|
@@ -79,64 +79,274 @@ npx docs-skills list
 
 ## Skills Catalog
 
-**20 skills** across 6 categories. Browse the live catalog: [docsbook.io/skills](https://docsbook.io/skills).
+**27 skills** across 6 categories. Browse live: [docsbook.io/skills](https://docsbook.io/skills).
 
-### Analysis — audit existing documentation (11 skills)
+### Analysis — audit existing documentation
 
-| Skill | What it checks |
-|-------|---------------|
-| `/docs-analyze` | Orchestrator — runs all 10 sub-skills, produces a unified prioritized report |
-| `/docs-content-types` | Diátaxis balance: tutorial / how-to / reference / explanation |
-| `/docs-structure-templates` | Frontmatter, heading hierarchy, code block conventions |
-| `/docs-style-tone` | Active voice, filler words, marketing adjectives, terminology consistency |
-| `/docs-audience` | Vocabulary mismatch, assumed knowledge gaps, missing prerequisites |
-| `/docs-navigation-linking` | Orphan pages, broken internal links, anchor text quality |
-| `/docs-seo` | Title/description, topic clusters, AI Overviews compatibility |
-| `/docs-accessibility` | WCAG 2.1 AA from markdown source — alt text, heading order, link text |
-| `/docs-i18n` | Multilingual parity, hreflang, translation freshness |
-| `/docs-media` | Images, screenshots, diagrams, captions, oversized files |
-| `/docs-maintenance` | Stale content, deprecated pages, TODO/FIXME markers |
+Run when your docs exist but you're not sure they're correct, readable, or complete.
 
-### Creation — generate new documentation (4 skills)
+#### `/docs-analyze`
 
-| Skill | What it does |
-|-------|-------------|
-| `/docs-create` | Full pipeline: detect source → build docs → publish to GitHub → configure Docsbook |
-| `/docs-create-interactive` | Same pipeline with review checkpoints between each step |
-| `/docs-detect-source` | Detect source type (website URL / code repo / Mintlify / GitBook / Docusaurus) |
-| `/docs-from-site` | Crawl a website URL and produce structured Markdown |
+**When to use:** You want a full health check of your docs in one command — instead of running 10 audits separately. Run before a major release or after a big restructure.  
+**What you get:** A single prioritized Markdown report combining SEO, accessibility, style, structure, i18n, media and maintenance findings — ranked by severity (Critical / High / Medium / Low), with a Quick Wins list of fixes that take under 30 minutes.  
+**Requires:** Docsbook MCP • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-analyze/SKILL.md)
 
-### Publishing — ship docs to Docsbook (3 skills)
+---
 
-| Skill | What it does | Plan |
-|-------|-------------|------|
-| `/docs-publish` | Publish a local folder to a new GitHub repo (git init, gh repo create, push) | Free |
-| `/docs-setup-workspace` | Configure a Docsbook workspace via MCP (branding, AI chat, SEO, languages) | Free |
-| `/docs-generate-agents-md` | Generate `AGENTS.md` at repo root — gives every future agent context | Free |
+#### `/docs-content-types`
 
-### Observability — turn analytics into actions (1 skill)
+**When to use:** Users say they can't find answers, or your docs feel confusing — a sign that tutorials, how-to guides, reference and explanation are mixed together on the same pages.  
+**What you get:** Every page classified against the Diátaxis framework (tutorial / how-to / reference / explanation), with a JSON issue list flagging misclassified pages, hybrid pages that mix types, and specific split or rewrite suggestions.  
+**Requires:** Docsbook MCP • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-content-types/SKILL.md)
 
-| Skill | What it does | Plan |
-|-------|-------------|------|
-| `/docs-gap-finder` | Cross-reference failed searches + unanswered AI questions vs doc graph → prioritized list of pages to create | PRO+ |
+---
 
-### Planning (1 skill)
+#### `/docs-structure-templates`
 
-| Skill | What it does |
-|-------|-------------|
-| `/docs-strategy-plan` | Plan docs strategy before creation — audience, structure, content types |
+**When to use:** Before merging a batch of new pages, or when running a structural audit to make sure every page has a title, description, correct heading hierarchy, and tagged code blocks.  
+**What you get:** A JSON report per page listing missing frontmatter fields, heading-level skips (H2 → H4), code blocks without a language tag, and missing prerequisites sections — sorted by severity, with the exact fix for each.  
+**Requires:** Docsbook MCP • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-structure-templates/SKILL.md)
 
-### Automation (7 skills)
+---
 
-| Skill | What it does |
-|-------|-------------|
-| `/docs-sync` | Keep docs in sync with code on push |
-| `/docs-pr-check` | Validate docs changes in pull requests |
-| `/docs-enable-translation` | Set up AI translation for a workspace |
-| `/docs-tune-ai-chat` | Tune the AI chatbot system prompt and hooks |
-| `/docs-release-announce` | Announce new releases in docs |
-| `/docs-stale-watcher` | Watch for stale content and create issues |
-| `/docs-translate-webhook` | Trigger translation on content updates |
+#### `/docs-style-tone`
+
+**When to use:** When you receive feedback that your docs feel corporate, condescending or hard to follow. Run after onboarding a new writer or before a public launch.  
+**What you get:** A per-page JSON issue list flagging passive voice in instructions, filler words ("simply", "just"), marketing adjectives without specifics ("powerful", "seamless"), oversized sentences, and terminology inconsistencies — each with a before/after rewrite suggestion.  
+**Requires:** Docsbook MCP • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-style-tone/SKILL.md)
+
+---
+
+#### `/docs-audience`
+
+**When to use:** When junior developers bounce off a page, or when a single page is trying to serve beginners and experts at the same time.  
+**What you get:** Every page assigned an audience level (beginner / expert / mixed), with JSON findings for undefined jargon on beginner pages, prerequisite mismatches, and mixed-audience pages — each with a concrete split or rewrite recommendation.  
+**Requires:** Docsbook MCP • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-audience/SKILL.md)
+
+---
+
+#### `/docs-navigation-linking`
+
+**When to use:** After a docs restructure, when users report dead ends, or as part of a quarterly audit to catch orphan pages and broken internal links.  
+**What you get:** A full cross-file JSON report listing broken internal links (with the exact missing path), orphan pages with zero inbound links, "click here" anchor text violations, navigation depth over 3 levels, and tutorials missing a Next Steps section.  
+**Requires:** Docsbook MCP • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-navigation-linking/SKILL.md)
+
+---
+
+#### `/docs-seo`
+
+**When to use:** When organic traffic is flat, after a site migration, or before launching a new docs section you want to rank in Google and appear in AI Overviews.  
+**What you get:** A JSON report covering missing or duplicate titles/descriptions, heading hierarchy violations, orphan pages with no link equity, images without alt text, and an optional AI Overviews / GEO checklist — all sorted by SEO impact.  
+**Requires:** Docsbook MCP • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-seo/SKILL.md)
+
+---
+
+#### `/docs-accessibility`
+
+**When to use:** Before a public launch, for WCAG 2.1 AA compliance, or when a user reports that your docs are difficult to use with a screen reader.  
+**What you get:** A JSON issue list per page covering missing alt text on informative images, heading hierarchy skips, vague link anchor text ("click here"), code blocks without language tags, and color-only meaning in prose — each with the exact WCAG criterion and a specific fix.  
+**Requires:** Docsbook MCP • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-accessibility/SKILL.md)
+
+---
+
+#### `/docs-i18n`
+
+**When to use:** When enabling a new language, after a large content update, or when you suspect translations are lagging behind the English source. Automatically skipped if only one language is enabled.  
+**What you get:** A JSON report of missing Tier 1 page translations, stale translations more than 30 days behind the source, translated code blocks (a syntax error risk), broken hreflang tags, and un-localized date/number formats — covering all 15 languages Docsbook supports.  
+**Requires:** Docsbook MCP • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-i18n/SKILL.md)
+
+---
+
+#### `/docs-media`
+
+**When to use:** When images are loading slowly, screenshots look outdated after a UI redesign, or before a public launch to catch missing alt text and generic filenames.  
+**What you get:** A JSON issue list covering informative images without alt text, generic filenames (`screenshot1.png`), JPG used for UI screenshots (degrades text), video files committed to the repo, and pages with screenshots not updated in 180+ days — with a specific fix for each.  
+**Requires:** Docsbook MCP • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-media/SKILL.md)
+
+---
+
+#### `/docs-maintenance`
+
+**When to use:** As a quarterly audit, or when users report that your docs reference features, prices or API endpoints that no longer exist.  
+**What you get:** A whole-tree JSON report flagging TODO/FIXME in published docs, "coming soon" banners older than 30 days, past dates presented as future promises, deprecated pages without migration paths, and pricing values out of sync with `constants.ts` — each marked critical/high/medium/low.  
+**Requires:** Docsbook MCP • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-maintenance/SKILL.md)
+
+---
+
+### Creation — generate new documentation
+
+Use when you need to produce docs from scratch or migrate from another platform.
+
+#### `/docs-create`
+
+**When to use:** You have a product URL, a GitHub repo, or an existing docs platform (Mintlify, GitBook, Docusaurus) and want a live Docsbook site with minimal questions asked.  
+**What you get:** A fully scaffolded Markdown docs folder published to a new GitHub repo, a configured Docsbook workspace with branding applied, and a final report with local path, GitHub URL, and Docsbook URL — end-to-end in one command.  
+**Requires:** No MCP needed (MCP enhances workspace setup step) • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-create/SKILL.md)
+
+---
+
+#### `/docs-create-interactive`
+
+**When to use:** Same scenario as `/docs-create`, but you want to review and approve each decision — file structure, branding, GitHub repo name, and which Docsbook features to enable — before anything is published.  
+**What you get:** Identical output to `/docs-create`, but with five explicit checkpoints where you confirm or adjust before the next step runs. A final summary lists every choice made at each checkpoint.  
+**Requires:** No MCP needed • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-create-interactive/SKILL.md)
+
+---
+
+#### `/docs-detect-source`
+
+**When to use:** Before running `/docs-create` when you're unsure whether your input is a plain website, a code repo, or an existing docs platform — or use it standalone to route correctly before building.  
+**What you get:** A single classified source type (`website`, `github-code-repo`, Mintlify, GitBook, Docusaurus, etc.) derived from meta tags, config file inspection, and domain signals, plus the name of the downstream skill to run next.  
+**Requires:** No MCP needed • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-detect-source/SKILL.md)
+
+---
+
+#### `/docs-from-site`
+
+**When to use:** Your only source of truth is a marketing or product website and you need structured Markdown docs from it — useful as a starting point before a full `/docs-create` run.  
+**What you get:** A `docs-output/<name>/` folder with a README, getting-started section, per-feature pages, guides, and FAQ (only sections found on the site), plus a `_branding.json` with accent color, background, favicon, and color scheme extracted from the site's CSS.  
+**Requires:** No MCP needed • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-from-site/SKILL.md)
+
+---
+
+### Publishing — ship docs to Docsbook
+
+Use after generating docs locally to push them live and configure the workspace.
+
+#### `/docs-publish`
+
+**When to use:** You have a local docs folder ready and want to push it to GitHub in one step — the natural follow-up to `/docs-from-site` or any other generation skill.  
+**What you get:** A new public GitHub repo with your docs pushed to `main` over HTTPS, plus a computed Docsbook URL printed in the result. The skill handles `git init`, initial commit, and `gh repo create` automatically.  
+**Requires:** `gh` CLI authenticated • No MCP needed • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-publish/SKILL.md)
+
+---
+
+#### `/docs-setup-workspace`
+
+**When to use:** Right after `/docs-publish`, to wire branding, AI chat, SEO, languages, and a custom domain for your new Docsbook workspace — without clicking through the UI.  
+**What you get:** A fully configured Docsbook workspace: branding applied from `_branding.json` (or sensible defaults), UI toggles set, navigation back-link added. Plan-gated features (SEO, languages, AI chat, custom domain) are applied if your plan allows; each failure is recorded without blocking the rest of the run.  
+**Requires:** Docsbook MCP • Free plan (PRO/PRO+ for advanced settings)  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-setup-workspace/SKILL.md)
+
+---
+
+#### `/docs-generate-agents-md`
+
+**When to use:** After setting up a Docsbook workspace, to give every AI agent in the repo — Claude Code, Cursor, Codex, Copilot, Gemini CLI — consistent context about your docs site from the very first session.  
+**What you get:** An `AGENTS.md` written to repo root (or a managed section updated if it already exists) containing the docs URL, enabled languages, AI chat status, top-level folder structure, and the list of available `/docs-skills` commands.  
+**Requires:** Docsbook MCP • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-generate-agents-md/SKILL.md)
+
+---
+
+### Observability — turn analytics into actions
+
+Use when you want to act on real user signal rather than guesswork.
+
+#### `/docs-gap-finder`
+
+**When to use:** Monthly, or after a major product launch, to find out which docs pages users are looking for but not finding — based on real failed searches and unanswered AI chat questions.  
+**What you get:** A prioritized report of the top 7 missing pages, each with a priority score (`failed_search × 3 + ai_unanswered × 3 + popular_search × 1`), the user queries that drove it, a suggested file path, and a draft outline. Optionally opens one GitHub Issue per gap.  
+**Requires:** Docsbook MCP • PRO+ plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-gap-finder/SKILL.md)
+
+---
+
+### Planning — design the structure before writing
+
+Use when starting from scratch or when the existing docs need a strategic rethink.
+
+#### `/docs-strategy-plan`
+
+**When to use:** When you have no docs yet and aren't sure what to write, or when your team wants docs to serve more than just getting-started (SEO, sales funnel, support deflection, AI citability).  
+**What you get:** A `docs-plan.md` file with product summary, confirmed goals, 2–3 audience roles with funnels (Awareness → Activation → Retention), an information architecture, and a prioritized content backlog with P0/P1/P2 labels and effort estimates — plus a 5-line chat summary and the suggested next command to run.  
+**Requires:** No MCP needed (optional: Docsbook MCP to read existing graph) • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-strategy-plan/SKILL.md)
+
+---
+
+### Automation — wire docs maintenance into your CI/CD pipeline
+
+Install once, run forever. For the full pre-push automation stack: [docs-claude-plugins](https://github.com/Docsbook-io/docs-claude-plugins).
+
+#### `/docs-sync`
+
+**When to use:** To prevent code↔docs drift on every push — install once as a pre-push git hook and it runs automatically before each push, detecting and fixing drifted documentation sections.  
+**What you get:** A four-subagent pipeline (planner → parallel searchers → editors → curator) that detects which docs sections drifted relative to code changes, rewrites only the affected sections, and amends the commit atomically. In `warn` mode (default) it never blocks a push.  
+**Requires:** `markdown-lsp` MCP server • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-sync/SKILL.md)
+
+---
+
+#### `/docs-pr-check`
+
+**When to use:** To add a CI gate to every pull request that enforces docs hygiene — catches missing frontmatter, broken internal links, and code changes shipped without any doc updates.  
+**What you get:** A ready-to-use `.github/workflows/docsbook-docs-check.yml` file with three jobs: code-vs-docs change ratio check, frontmatter validation (`title` and `description` required), and internal link integrity. Broken-links job uses `continue-on-error` by default so it never blocks merges unless you explicitly opt in.  
+**Requires:** No MCP needed • Free plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-pr-check/SKILL.md)
+
+---
+
+#### `/docs-enable-translation`
+
+**When to use:** When launching docs in a new market and you want AI auto-translation switched on across up to 15 languages in one command, with an optional Slack notification when each translation batch completes.  
+**What you get:** Languages enabled on the workspace, translation mode switched to `auto` (translates new and changed pages on every push), an optional Slack webhook registered with a fresh HMAC secret, and a managed `## Docsbook Translation` section added to `AGENTS.md`.  
+**Requires:** Docsbook MCP • PRO plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-enable-translation/SKILL.md)
+
+---
+
+#### `/docs-tune-ai-chat`
+
+**When to use:** When users give thumbs-down to AI chat answers, or when the chatbot frequently says "I don't know" — use monthly or after a major docs overhaul.  
+**What you get:** Failure patterns from the last 30 days clustered into 3–8 topics, a minimally invasive system prompt update (capped at 1,500 tokens) that addresses the top clusters without touching brand voice or persona rules, and a before/after diff. The update is applied only after you type `yes`.  
+**Requires:** Docsbook MCP • PRO plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-tune-ai-chat/SKILL.md)
+
+---
+
+#### `/docs-release-announce`
+
+**When to use:** When you want Slack and/or email notifications sent automatically every time a new release is published, without manually posting announcements.  
+**What you get:** A `.github/workflows/docsbook-release-announce.yml` workflow triggered on `release: published`, a Docsbook release webhook registered with a fresh HMAC secret, and a list of repository secrets you need to configure for each notification channel.  
+**Requires:** Docsbook MCP • PRO plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-release-announce/SKILL.md)
+
+---
+
+#### `/docs-stale-watcher`
+
+**When to use:** When you want stale pages to surface automatically as GitHub Issues in your team's issue tracker, rather than requiring manual quarterly audits.  
+**What you get:** A `.github/workflows/docsbook-stale-handler.yml` workflow that converts each `content.outdated` webhook event into a GitHub Issue linking to the source file, plus a registered webhook with a configurable staleness threshold (default 180 days).  
+**Requires:** Docsbook MCP • PRO+ plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-stale-watcher/SKILL.md)
+
+---
+
+#### `/docs-translate-webhook`
+
+**When to use:** When you want to bypass Docsbook's built-in AI translator and route translation work to your own TMS, DeepL integration, or custom translation pipeline.  
+**What you get:** Translation mode switched to `external`, a `translation.requested` webhook registered with a fresh HMAC secret, and a scaffolded handler file (`api/docsbook-translate.ts` for Vercel, or `src/routes/docsbook-translate.ts` for Express) with HMAC signature verification and a TODO placeholder for your translation logic.  
+**Requires:** Docsbook MCP • PRO+ plan  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-translate-webhook/SKILL.md)
+
+---
 
 > **Looking for event-driven automation?** Subagents that execute on webhook events (pre-push, PR merge, release tags) live in **[docs-subagents](https://github.com/Docsbook-io/docs-subagents)**.
 
@@ -189,7 +399,7 @@ The tool searches by name + description + keywords and returns matching SKILL.md
 
 ## Features
 
-✅ **20 reusable skills** — analysis, creation, publishing, observability, planning, automation  
+✅ **27 reusable skills** — analysis, creation, publishing, observability, planning, automation  
 ✅ **Acceptance Criteria** — every skill ships with a pass/fail checklist  
 ✅ **Agent-agnostic** — Claude Code, Cursor, Copilot, Codex  
 ✅ **Live doc graph** — reads structure via Docsbook MCP, no repo clone needed  
