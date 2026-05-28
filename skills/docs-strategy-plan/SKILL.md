@@ -8,104 +8,66 @@ metadata:
   keywords: [planning, strategy, interview, roadmap, information-architecture, funnel, roles, discovery]
 ---
 
-# docs-strategy-plan
+# docs-strategy-plan — Documentation Strategy Planning
 
-A guided discovery interview that turns a vague "we need docs" into a concrete plan: what to write, for whom, in what order, and why. The output is a markdown plan the user (or `/docs-create`) can act on.
+## Workflow
 
-## When to use
+1. **Parse context** — if the user provided a URL or short pitch, fetch and pre-fill what you can; confirm rather than asking cold. Otherwise open with: "Give me one sentence: what is the product?"
+2. **Run discovery interview** — one question at a time, max two if tightly coupled. Cover product (name, one-liner, source of truth, maturity), goals (onboarding, SEO, support deflection, sales enablement, AI citability, etc.), and audience roles. Reflect back what you heard after each block.
+3. **Derive funnels** — for each confirmed role, sketch a 3–5 step funnel from entry to success. For top-of-funnel goals (SEO, AI citability), awareness pages should be about the space, not the product.
+4. **Synthesize the plan** — write `docs-plan.md` with product summary, goals, roles and funnels, information architecture, and a prioritized content backlog.
+5. **Hand off** — print a 5-line summary to chat with the top 3 pages to ship first and the suggested next command.
 
-- Project has no documentation yet and the user isn't sure what to write.
-- Product owner says "docs would be nice" but can't name the pages.
-- Team wants docs to do more than getting-started (SEO, sales funnel, education, support deflection) and needs to map it out.
-- Before `/docs-create` if the source signal alone is too thin to produce a meaningful structure.
+## Guardrails
 
-If the user already knows exactly what pages they want, skip this skill — go straight to `/docs-create`.
+- One question at a time — don't dump a survey. Wait for the answer, react to it, then ask the next thing.
+- Skip questions whose answer you already have from provided context.
+- Cap P0 pages at 5–7 — teams won't ship more than that in the first plan.
+- Do not conflate blog and docs structurally unless the user explicitly wants `/learn`.
+- Do not recommend AI chat, multi-language, or custom domain — that is `/docs-setup-workspace`'s job.
+- Do not generate any docs files other than `docs-plan.md`.
+- If the user already knows exactly what pages they want, skip this skill — go straight to `/docs-create`.
 
-## Operating principles
+## MCP Tools
 
-- **One question at a time, max two if tightly coupled.** Don't dump a survey. Wait for the answer, react to it, then ask the next thing.
-- **Use AskUserQuestion for closed choices.** Free text for the open-ended ones (product description, problems users have).
-- **Skip questions whose answer you already have.** If the user provided a URL, fetch it and pre-fill what you can — then confirm rather than ask cold.
-- **Reflect, don't interrogate.** After each block, say back what you heard in one line so the user can correct course.
-- **No filler.** "Got it." / "Makes sense." adds nothing — go straight to the next question.
+| Tool | Purpose |
+|------|---------|
+| None required | This skill is a guided interview — no Docsbook MCP tools needed |
 
-## Phase 0 — Quick context (optional, skip if `$ARGUMENTS` already gives it)
+> If the user provides a Docsbook workspace, optionally call `list_workspaces` + `get_doc_graph` to see what already exists and skip redundant questions.
 
-If the user invoked the skill with a URL or short pitch, parse it first. Otherwise open with:
+## Checklist
 
-> "Give me one sentence: what is the product?"
+### Phase 1 — Product
 
-## Phase 1 — Product
+- [ ] Product name confirmed
+- [ ] One-liner (what it does and for whom) captured
+- [ ] Source of truth identified: URL / GitHub repo / existing docs / nothing yet
+- [ ] Maturity level: pre-launch / early (<100 users) / growing (100–10k) / scaled (10k+)
 
-Ask in this order. Stop and confirm before moving on.
+### Phase 2 — Goals
 
-1. **Name** — "What's the product called?"
-2. **One-liner** — "In one sentence, what does it do and for whom?"
-3. **Source of truth** — AskUserQuestion:
-   - Public website URL
-   - GitHub repo
-   - Existing docs (any platform)
-   - Internal Notion / Confluence / Google Doc (paste content)
-   - Nothing yet — it's all in my head
-   If a source is provided, fetch / inspect it before the next phase so later questions are sharper. Note what's covered already and what's missing.
-4. **Maturity** — AskUserQuestion: pre-launch / early users (<100) / growing (100–10k) / scaled (10k+). This calibrates how much SEO/education content makes sense vs. pure onboarding.
+- [ ] At least one goal selected: onboarding, support deflection, SEO, AI citability, sales enablement, education, developer reference, trust/compliance
+- [ ] One-line follow-up captured for each selected goal (makes it actionable)
+- [ ] Unexplored goals explicitly surfaced if not volunteered
 
-## Phase 2 — Goals (the "why docs?")
+### Phase 3 — Audience and Roles
 
-Most users name one goal and stop. Probe for the others — they almost always apply. AskUserQuestion (multiSelect):
+- [ ] 2–3 confirmed roles (proposed, not asked cold)
+- [ ] For each role: entry point, current knowledge, job to be done, success exit
 
-- **Onboarding / getting started** — reduce time-to-first-value
-- **Support deflection** — fewer "how do I…" tickets
-- **SEO acquisition** — be findable on Google / AI search for problem-space queries
-- **AI citability** — get cited by ChatGPT / Perplexity / Claude when users ask about the space
-- **Sales enablement** — give prospects something to read before / during a demo
-- **Education / category creation** — teach the space, not just the product (top-of-funnel)
-- **Developer reference** — API / SDK / config docs
-- **Trust & compliance** — security, privacy, SOC2-style pages
+### Phase 4 — Funnels
 
-For each selected goal, ask a one-line follow-up so it's actionable. Examples:
-- SEO → "What 2–3 search queries do you wish you ranked for?"
-- Support deflection → "What's the #1 question support gets repeatedly?"
-- Education → "What does your ideal customer not yet understand that's blocking them from buying?"
-- Sales → "What objection comes up most on demo calls?"
+- [ ] Funnel table per role: Entry → Awareness → Evaluation → Activation → Retention
+- [ ] Top-of-funnel awareness pages (if SEO/education goal) are about the space, not the product
 
-If the user is unsure of any goal, **suggest it explicitly** with a sentence on what it would do for them. Many teams don't realize docs can lower friction for people who don't yet know they need the product — name that out loud.
+### Phase 5 — Blog / Evergreen (if top-of-funnel goal selected)
 
-## Phase 3 — Audience & roles
+- [ ] Cadence vs. one-time evergreen library decided
+- [ ] `/blog` vs `/learn` placement chosen with recommendation given
+- [ ] 5–10 evergreen topic seeds proposed (pillar / cluster / one-off)
 
-Derive roles from the goals + product type. Don't ask "who are your users" cold — propose roles and let the user edit. Example for a developer tool:
-
-> "Sounds like the readers will be: (1) the developer integrating it, (2) the tech lead evaluating it, (3) someone Googling the problem space who hasn't heard of you. Add / remove / merge?"
-
-For each confirmed role, capture:
-- **Entry point** — how they arrive (Google, referral, demo, signup email)
-- **Current knowledge** — what they already know
-- **Job to be done** — what they're trying to accomplish in the next 10 minutes
-- **Success exit** — what action completes the journey for them
-
-Two or three roles is usually enough. Don't manufacture more.
-
-## Phase 4 — Funnels per role
-
-For each role, sketch a 3–5 step funnel from entry to success. Use a single table the user can edit:
-
-```
-Role: <name>
-Entry → Awareness page → Evaluation page → Activation page → Retention page
-```
-
-For roles tied to top-of-funnel goals (SEO, education, AI citability), the awareness pages should be **about the space, not the product** — explain the concept, then link toward the product naturally. Call this out to the user; many don't realize this is what unlocks discovery.
-
-## Phase 5 — Blog / evergreen content (only if a top-of-funnel goal was selected)
-
-Ask:
-1. "Are you publishing on a cadence, or producing a one-time evergreen library?"
-2. "Should blog live under `/blog` (separate) or `/learn` (integrated with docs nav)?" — recommend `/learn` for SEO/AI-citability goals (more topical authority concentrated on one path); recommend `/blog` for news/changelog style.
-3. Propose 5–10 evergreen topic seeds derived from the goals + queries gathered in Phase 2. Mark each: pillar, cluster, or one-off.
-
-## Phase 6 — Synthesize the plan
-
-Write `docs-plan.md` in the current directory with this structure:
+### Phase 6 — Output: docs-plan.md
 
 ```markdown
 # Documentation plan — <product>
@@ -147,24 +109,23 @@ Effort: S / M / L.
 4. Re-run `/docs-strategy-plan` in 3 months to re-prioritize against analytics.
 ```
 
-## Phase 7 — Hand-off
+## Acceptance Criteria
 
-Print a 5-line summary to the chat (not the full plan — the file has it):
+- [ ] `docs-plan.md` is written to the current directory.
+- [ ] The plan contains at least 3 roles (or a reasoned explanation of why fewer), a prioritized backlog, and a recommended next step.
+- [ ] No docs files other than `docs-plan.md` are created.
+- [ ] A 5-line summary is printed to chat with the top 3 P0 pages and the next suggested command.
 
-```
-📋 Plan written: docs-plan.md
-   <N> pages across <M> roles, <K> goals
-   Top 3 to ship first:
-     1. <page>
-     2. <page>
-     3. <page>
-   Suggested next command: /docs-create <source>
-```
+## When to Use
 
-## Anti-patterns to avoid
+- Project has no documentation yet and the user isn't sure what to write.
+- Product owner says "docs would be nice" but can't name the pages.
+- Team wants docs to serve more than getting-started (SEO, sales funnel, education, support deflection).
+- Before `/docs-create` if the source signal alone is too thin to produce a meaningful structure.
 
-- Don't ask all questions upfront then synthesize at the end — react in the moment so the user can course-correct.
-- Don't propose >15 pages in the first plan; teams won't ship them. Cap P0 at 5–7.
-- Don't conflate blog and docs structurally unless the user explicitly wants `/learn`.
-- Don't recommend AI chat, multi-language, or custom domain in this skill — that's `/docs-setup-workspace`'s job. Stay in planning.
-- Don't generate any docs files. This skill outputs `docs-plan.md` only.
+## Related Skills
+
+- `docs-create` — scaffold pages from the plan output
+- `docs-analyze` — audit existing docs quality
+- `docs-gap-finder` — identify missing pages from real user signals
+- `docs-setup-workspace` — configure Docsbook workspace features

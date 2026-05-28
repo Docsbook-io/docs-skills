@@ -14,33 +14,28 @@ metadata:
 
 # docs-audience — Audience Targeting Analysis
 
-## Before Starting
+## Workflow
 
-1. **Get the repository.** Ask for the GitHub repo URL or `{user}/{repo}`.
-2. **Check Docsbook.** Run `mcp__docsbook__list_workspaces` to find the workspace.
-   - If found → use `mcp__docsbook__get_doc_graph` to get all pages.
-   - If not found → offer to add it first.
-3. **Check the graph.** If `get_doc_graph` returns an empty graph or no data → run `mcp__docsbook__reindex_doc_graph` to generate it, then retry. If it returns a stale warning, offer to reindex before proceeding.
-3. **Read pages.** Use `mcp__docsbook__read_doc_sections` to access content.
-4. **Identify stated audience.** Look for "who this is for", prerequisites, and page type signals before flagging vocabulary issues.
+1. **Connect to Docsbook** — run `list_workspaces` to find the workspace, then `get_doc_graph` to get all pages. Reindex if graph is empty or stale.
+2. **Identify stated audience** — before flagging vocabulary issues, read each page's stated prerequisites, "who this is for" sections, and content type signals.
+3. **Apply checklist** — check audience declaration, vocabulary and jargon, beginner-page conventions, expert-page conventions, and mixed-audience red flags.
+4. **Produce report** — return one JSON issue object per finding, sorted by severity. Group issues by page.
 
----
+## Guardrails
 
-## Core Principles
+- Do not edit any documentation files — surface findings only.
+- Flag jargon only when it is undefined *and* the stated prerequisites do not cover it. Precise technical terms are not a problem if the audience is declared correctly.
+- A single page may legitimately serve both beginner and expert sections if they are clearly separated with headers — flag as mixed-audience only when no separation exists.
+- Ask the user to confirm the primary audience and assumed knowledge level before deep-diving.
 
-### 1. Audience mismatch causes abandonment
-A beginner hitting unexplained jargon on page 2 of a tutorial doesn't ask for help — they leave. A senior engineer reading basic hand-holding explanations in a reference page wastes time.
+## MCP Tools
 
-### 2. Stated vs. implied audience must align
-If prerequisites say "No experience required" but the content uses "idempotent", "O(n²)", or "eventual consistency" without explanation — the page is lying to beginners.
-
-### 3. Mixed audiences need separate pages
-A page that tries to serve both beginners and experts serves neither well. Split into a getting-started page (for beginners) and an advanced guide (for experts).
-
-### 4. Jargon isn't the enemy — undefined jargon is
-Technical documentation can and should use precise technical terms. The rule is: define at first use, link to glossary, or ensure the stated prerequisites cover the term.
-
----
+| Tool | Purpose |
+|------|---------|
+| `mcp__docsbook__list_workspaces` | Find workspace |
+| `mcp__docsbook__get_doc_graph` | Page list and structure |
+| `mcp__docsbook__read_doc_sections` | Read content for vocabulary analysis |
+| `mcp__docsbook__reindex_doc_graph` | Refresh graph if empty or stale |
 
 ## Checklist
 
@@ -81,8 +76,6 @@ Technical documentation can and should use precise technical terms. The rule is:
 - [ ] Navigation groups similar-level content together
 - [ ] If a page must serve multiple audiences, it has clear section headers per audience
 
----
-
 ## What to Look For
 
 | Severity | Problem | Detection |
@@ -96,8 +89,6 @@ Technical documentation can and should use precise technical terms. The rule is:
 | `medium` | Tutorial assumes prior tutorial was read without linking it | "As we set up in the previous tutorial..." |
 | `low` | No explicit "who this is for" on ambiguously-typed pages | Page type is unclear from title and content |
 | `low` | Examples use too-complex data for the stated audience | Beginner tutorial uses a complex multi-step nested example |
-
----
 
 ## Output Format
 
@@ -134,27 +125,12 @@ Technical documentation can and should use precise technical terms. The rule is:
 }
 ```
 
----
+## Acceptance Criteria
 
-## Task-Specific Questions
-
-When invoked directly, ask:
-
-1. **Who is the primary audience?** (developers / end users / both)
-2. **What knowledge is assumed?** (programming basics / familiarity with the product / expert in the domain)
-3. **Are there known user complaints** about content being too hard or too basic?
-
----
-
-## Tool Integrations
-
-| Tool | Purpose |
-|---|---|
-| `mcp__docsbook__list_workspaces` | Find workspace |
-| `mcp__docsbook__get_doc_graph` | Page list and structure |
-| `mcp__docsbook__read_doc_sections` | Read content for vocabulary analysis |
-
----
+- [ ] Every page in scope has a declared or inferred audience level (beginner / expert / mixed).
+- [ ] All critical and high findings include a specific, actionable suggestion.
+- [ ] No jargon is flagged as an issue when the stated prerequisites already cover it.
+- [ ] Output is valid JSON per the format above, one object per finding.
 
 ## Related Skills
 

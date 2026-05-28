@@ -15,34 +15,32 @@ metadata:
 
 # docs-analyze — Documentation Analysis Orchestrator
 
-## Before Starting
+## Workflow
 
-1. **Ask for the repository.** Request the GitHub repo URL or `{user}/{repo}` slug from the user.
-2. **Check Docsbook workspace.** Run `mcp__docsbook__list_workspaces` to see if the project is already indexed.
-   - If found → proceed with `mcp__docsbook__get_doc_graph` to fetch the full documentation graph.
-   - If not found → offer to create it: "This repo isn't in Docsbook yet. Want me to add it with `create_workspace`?"
-3. **Get the doc graph.** Use `mcp__docsbook__get_doc_graph` to retrieve all pages, their titles, sections, and link relationships.
-   - If the graph is **missing or empty** → run `mcp__docsbook__reindex_doc_graph` to generate it, then retry.
-   - If the graph returns a **stale warning** → offer to reindex: "The doc graph is over 7 days old. Reindex now for accurate results?"
-4. **Clarify scope.** Ask which analysis areas matter most, or run all by default.
+1. **Connect to Docsbook** — run `list_workspaces`, fetch the doc graph via `get_doc_graph({ format: "toon" })`. Offer `create_workspace` if repo is not indexed. Reindex with `reindex_doc_graph` if graph is empty or stale (> 7 days).
+2. **Identify Tier 1 pages** — flag quick-start, pricing, authentication, and installation pages for priority analysis.
+3. **Run sub-skills in parallel** — spawn independent Agent calls for `docs-content-types`, `docs-structure-templates`, `docs-style-tone`, `docs-audience`, `docs-seo`, `docs-accessibility`, `docs-maintenance`. Run `docs-navigation-linking` and `docs-i18n` sequentially (they depend on the full graph and workspace language settings).
+4. **Aggregate and deduplicate** — collect JSON issues from all skills; merge cross-cutting findings (e.g. missing alt = a11y + SEO — report once under higher severity, note both skills).
+5. **Produce final report** — output a prioritized markdown report with severity summary, critical issues, recommendations by area, and quick-win list.
 
----
+## Guardrails
 
-## Core Principles
+- Do not edit any documentation files — surface findings only.
+- Do not run `docs-i18n` if only one language is enabled in workspace settings.
+- A cross-skill finding (same line flagged by two skills) is reported once under the higher severity.
+- Ask the user to confirm Tier 1 pages before starting — defaults may not match the project.
+- If the graph is stale, offer to reindex before proceeding rather than analyzing stale data silently.
 
-### 1. Analyze, don't rewrite
-Report findings with severity and a concrete suggestion. Don't edit docs — surface what needs fixing and let the team decide.
+## MCP Tools
 
-### 2. Impact-first prioritization
-Fix high-traffic Tier 1 pages (quick-start, pricing, auth) before obscure reference pages. A broken quick-start costs more than a broken edge-case guide.
-
-### 3. Cross-skill findings compound
-A page with a bad title (SEO), missing image alt (accessibility), and stale content (maintenance) has triple the impact. Surface cross-cutting issues together.
-
-### 4. Use Docsbook MCP as the primary data source
-Fetch content via `mcp__docsbook__read_doc_sections` — this works for any public GitHub repo indexed in Docsbook, not just local checkouts.
-
----
+| Tool | Purpose |
+|------|---------|
+| `mcp__docsbook__list_workspaces` | Find if repo is indexed in Docsbook |
+| `mcp__docsbook__create_workspace` | Add repo to Docsbook if not yet indexed |
+| `mcp__docsbook__get_workspace` | Get workspace settings (plan, languages) |
+| `mcp__docsbook__get_doc_graph` | Full page tree in compact TOON format |
+| `mcp__docsbook__read_doc_sections` | Read content of specific pages/sections |
+| `mcp__docsbook__reindex_doc_graph` | Refresh graph if stale warning returned |
 
 ## Available Analysis Skills
 
@@ -59,9 +57,7 @@ Fetch content via `mcp__docsbook__read_doc_sections` — this works for any publ
 | `docs-media` | Images, screenshots, diagrams, file names | Media quality review |
 | `docs-maintenance` | Stale content, deprecated pages, TODO/FIXME | Quarterly audit |
 
----
-
-## Workflow
+## Checklist
 
 ### Step 1 — Connect to Docsbook
 
@@ -134,10 +130,10 @@ Collect JSON issues from all skills. Deduplicate cross-skill findings (e.g., mis
 ## Summary
 | Severity | Count |
 |---|---|
-| 🔴 Critical | N |
-| 🟠 High | N |
-| 🟡 Medium | N |
-| 🟢 Low | N |
+| Critical | N |
+| High | N |
+| Medium | N |
+| Low | N |
 
 ## Critical Issues
 {list critical issues with file, rule, suggestion}
@@ -154,8 +150,6 @@ Collect JSON issues from all skills. Deduplicate cross-skill findings (e.g., mis
 ## Quick Wins (fixable in < 30 min)
 {low-effort, high-impact items}
 ```
-
----
 
 ## Output Format
 
@@ -191,8 +185,6 @@ Each sub-skill returns JSON issues. The orchestrator aggregates them:
 ]
 ```
 
----
-
 ## Task-Specific Questions
 
 When invoked directly, ask:
@@ -203,21 +195,12 @@ When invoked directly, ask:
 4. **Languages in scope** for i18n check (if multiple languages enabled)?
 5. **Output format** — terminal report, GitHub issue list, or JSON file?
 
----
+## Acceptance Criteria
 
-## Tool Integrations
-
-| Tool | Purpose |
-|---|---|
-| `mcp__docsbook__list_workspaces` | Find if repo is indexed in Docsbook |
-| `mcp__docsbook__create_workspace` | Add repo to Docsbook if not yet indexed |
-| `mcp__docsbook__get_workspace` | Get workspace settings (plan, languages) |
-| `mcp__docsbook__get_doc_graph({ format: "toon" })` | Full page tree in compact TOON format |
-| `mcp__docsbook__read_doc_sections` | Read content of specific pages/sections |
-| `mcp__docsbook__reindex_doc_graph` | Refresh graph if stale warning returned |
-| Agent tool | Spawn sub-skill agents in parallel |
-
----
+- [ ] All enabled sub-skills have run and returned results (or been explicitly skipped with a reason).
+- [ ] Final report groups issues by severity with counts in the summary table.
+- [ ] Cross-skill duplicates are merged — no issue appears twice for the same file/line.
+- [ ] At least one Quick Win item is identified (or explicitly noted that none exist).
 
 ## Related Skills
 

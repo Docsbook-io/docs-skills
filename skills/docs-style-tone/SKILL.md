@@ -14,33 +14,29 @@ metadata:
 
 # docs-style-tone — Style and Tone Analysis
 
-## Before Starting
+## Workflow
 
-1. **Get the repository.** Ask for the GitHub repo URL or `{user}/{repo}`.
-2. **Check Docsbook.** Run `mcp__docsbook__list_workspaces` to find the workspace.
-   - If found → use `mcp__docsbook__get_doc_graph` to get all pages.
-   - If not found → offer to add it first.
-3. **Check the graph.** If `get_doc_graph` returns an empty graph or no data → run `mcp__docsbook__reindex_doc_graph` to generate it, then retry. If it returns a stale warning, offer to reindex before proceeding.
-3. **Read page content.** Use `mcp__docsbook__read_doc_sections` to access the text of each page.
-4. **Sample first, then deep-dive.** Read a few pages across different types (tutorial, reference, how-to) to calibrate the general style before flagging specifics.
+1. **Connect to Docsbook** — run `list_workspaces` to find the workspace, then `get_doc_graph` to get all pages. Offer to add the repo if not indexed. Reindex with `reindex_doc_graph` if graph is empty or stale.
+2. **Read page content** — use `read_doc_sections` to access text for each page. Sample a few pages across different types (tutorial, reference, how-to) to calibrate general style before flagging specifics.
+3. **Apply checklist** — check voice and person, filler and marketing words, sentence length and structure, headings, and terminology consistency. Apply tone expectations per page type.
+4. **Produce report** — return one JSON issue object per finding, sorted by severity.
 
----
+## Guardrails
 
-## Core Principles
+- Do not edit any documentation files — surface findings only.
+- Ask whether the project has a style guide before starting — analyze against that if yes, use defaults if no.
+- Flag passive voice in instructions; passive in reference pages may be intentional — ask the user about the strictness level.
+- "Simply", "just", "easily" — flag for review, not removal — context determines whether they're condescending.
+- Terminology inconsistency is only a problem when the same concept has multiple names — precise technical synonyms used in appropriate contexts are not flagged.
 
-### 1. Clarity over cleverness
-Technical documentation exists to transfer knowledge efficiently. Every unnecessary word, passive construction, or vague adjective adds friction.
+## MCP Tools
 
-### 2. Voice consistency across pages
-A user reading multiple pages should feel they're in the same product. Inconsistent terminology ("workspace" vs. "project" vs. "repo") creates confusion and support tickets.
-
-### 3. Second person, present tense
-Address the reader as "you". Use present tense. "Click Save" not "You will need to click Save" or "The Save button should be clicked."
-
-### 4. Marketing language belongs in marketing copy
-"Powerful", "robust", "seamless", "easy", "simply", "just" — these words are empty in documentation and can feel condescending when a reader is stuck.
-
----
+| Tool | Purpose |
+|------|---------|
+| `mcp__docsbook__list_workspaces` | Find workspace |
+| `mcp__docsbook__get_doc_graph` | Page list |
+| `mcp__docsbook__read_doc_sections` | Read content for style analysis |
+| `mcp__docsbook__reindex_doc_graph` | Refresh graph if empty or stale |
 
 ## Checklist
 
@@ -99,8 +95,6 @@ Words to flag (not ban — context matters, but flag for review):
 | Reference | Neutral, precise — no personality, just facts |
 | Explanation | Conversational but authoritative — "Here's why this matters..." |
 
----
-
 ## What to Look For
 
 | Severity | Problem | Detection |
@@ -116,8 +110,6 @@ Words to flag (not ban — context matters, but flag for review):
 | `low` | "Please note that" filler | Replace with a callout |
 | `low` | "Utilize" instead of "use" | Direct replacement |
 | `low` | Undefined abbreviation at first use | Scan for abbreviation patterns |
-
----
 
 ## Output Format
 
@@ -178,28 +170,12 @@ Words to flag (not ban — context matters, but flag for review):
 }
 ```
 
----
+## Acceptance Criteria
 
-## Task-Specific Questions
-
-When invoked directly, ask:
-
-1. **Does this project have a style guide?** If yes, analyze against that. If no, use these defaults.
-2. **Language?** Style rules differ for English vs. localized documentation.
-3. **Which pages are highest priority?** Tier 1 pages (quick-start, pricing) first.
-4. **How strict on passive voice?** Some technical writing intentionally uses passive for reference pages.
-
----
-
-## Tool Integrations
-
-| Tool | Purpose |
-|---|---|
-| `mcp__docsbook__list_workspaces` | Find workspace |
-| `mcp__docsbook__get_doc_graph` | Page list |
-| `mcp__docsbook__read_doc_sections` | Read content for style analysis |
-
----
+- [ ] Every page in scope has been scanned — no pages silently skipped.
+- [ ] All high findings include a specific before/after suggestion.
+- [ ] Terminology issues list the canonical term and all variants found.
+- [ ] Output is valid JSON per the format above, one object per finding.
 
 ## Related Skills
 

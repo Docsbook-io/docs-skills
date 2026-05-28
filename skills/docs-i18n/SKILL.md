@@ -15,34 +15,32 @@ metadata:
 
 # docs-i18n — Internationalization Analysis
 
-## Before Starting
+## Workflow
 
-1. **Check if multilingual docs exist.** Run `mcp__docsbook__get_workspace` and check `enabled_languages`. If only one language is enabled, skip this skill.
-2. **Get the repository.** Ask for the GitHub repo URL or `{user}/{repo}` if not already known.
-3. **Check Docsbook.** Run `mcp__docsbook__list_workspaces` to find the workspace.
-   - If found → use `mcp__docsbook__get_doc_graph` to get all pages across all languages.
-   - If not found → offer to add it first.
-4. **Check the graph.** If `get_doc_graph` returns an empty graph or no data → run `mcp__docsbook__reindex_doc_graph` to generate it, then retry. If it returns a stale warning, offer to reindex before proceeding.
-4. **Identify source language.** Usually English — confirm with the team. All other languages are translations from it.
-5. **Define Tier 1 pages.** Quick-start, pricing, authentication — parity is critical for these.
+1. **Check language configuration** — run `get_workspace` and check `enabled_languages`. If only one language is enabled, skip this skill entirely.
+2. **Connect to Docsbook** — run `list_workspaces` to find the workspace, then `get_doc_graph` to get all pages across all languages. Reindex if graph is empty or stale.
+3. **Apply checklist** — check language configuration, content parity by tier, navigation/UI translation, translation content rules, format localization, RTL handling, translation freshness, and SEO for multilingual.
+4. **Produce report** — return one JSON issue object per finding, sorted by severity.
 
----
+## Guardrails
 
-## Core Principles
+- Do not run this skill if only one language is enabled — exit early with a note.
+- Confirm the source-of-truth language (usually English) with the user before flagging parity gaps.
+- Content parity is priority-based: Tier 1 pages must be translated; Tier 3 can stay English-only.
+- A stale translation is worse than no translation — flag staleness even if the page exists.
+- Code inside code blocks is never translated — only surrounding prose and code comments. Flag translated code as an error.
+- Brand and product names (e.g., "Docsbook", "GitHub") are never translated.
 
-### 1. Each language version is a complete site
-Not "a translation of English" — a complete experience in the reader's language with translated navigation, UI labels, and appropriately localized content.
+## MCP Tools
 
-### 2. Content parity is prioritized, not absolute
-Tier 1 pages (quick-start, pricing, auth) must be translated to all enabled languages. Tier 3 (deep API reference) can stay English-only. Know the priority tier before flagging missing translations.
-
-### 3. A stale translation is worse than no translation
-A translated pricing page showing outdated prices in another language can cost sales or cause support issues. Better to show the English original with a "this page is not yet translated" banner than to show wrong information.
-
-### 4. Localization ≠ translation
-Dates, numbers, currencies, and example data should match the locale conventions, not just be translated word-for-word.
-
----
+| Tool | Purpose |
+|------|---------|
+| `mcp__docsbook__list_workspaces` | Find workspace |
+| `mcp__docsbook__get_workspace` | Get enabled languages and settings |
+| `mcp__docsbook__get_doc_graph` | Full page list across all languages |
+| `mcp__docsbook__read_doc_sections` | Read translation content |
+| `mcp__docsbook__update_languages` | Enable/disable languages (PRO) |
+| `mcp__docsbook__reindex_doc_graph` | Refresh graph if empty or stale |
 
 ## Checklist
 
@@ -118,8 +116,6 @@ Checks:
 - [ ] **Canonical URL on the page itself** — not pointing to the English version
 - [ ] **Sitemap includes all language versions**
 
----
-
 ## What to Look For
 
 | Severity | Problem | Detection |
@@ -135,8 +131,6 @@ Checks:
 | `medium` | UI screenshot in non-English docs with no note | Scan image references |
 | `low` | Brand name "Docsbook" translated | Grep for translations of brand |
 | `low` | Too formal or too informal register for language | Manual review |
-
----
 
 ## Output Format
 
@@ -173,30 +167,12 @@ Checks:
 }
 ```
 
----
+## Acceptance Criteria
 
-## Task-Specific Questions
-
-When invoked directly, ask:
-
-1. **Which languages are in scope?** (from `enabled_languages` in workspace settings)
-2. **Source-of-truth language?** Usually EN — confirm.
-3. **Tier 1 pages for this project?** (quick-start, pricing, auth — confirm with team)
-4. **Translation workflow?** Manual / AI with review / fully automated
-
----
-
-## Tool Integrations
-
-| Tool | Purpose |
-|---|---|
-| `mcp__docsbook__list_workspaces` | Find workspace |
-| `mcp__docsbook__get_workspace` | Get enabled languages and settings |
-| `mcp__docsbook__get_doc_graph` | Full page list across all languages |
-| `mcp__docsbook__read_doc_sections` | Read translation content |
-| `mcp__docsbook__update_languages` | Enable/disable languages (PRO) |
-
----
+- [ ] Skill exits early with a clear message if only one language is enabled.
+- [ ] All Tier 1 pages are checked for presence and freshness across every enabled language.
+- [ ] Any translated code blocks are flagged as high-severity errors.
+- [ ] Output is valid JSON per the format above, one object per finding.
 
 ## Related Skills
 

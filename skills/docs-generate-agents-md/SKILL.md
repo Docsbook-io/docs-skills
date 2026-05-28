@@ -14,91 +14,37 @@ metadata:
   keywords: [agents.md, system prompt, onboarding, agent context, docsbook, mcp, setup]
 ---
 
-# docs-generate-agents-md
+# docs-generate-agents-md — Generate AGENTS.md from a Docsbook workspace
 
-Creates `/AGENTS.md` at the root of the user's repository based on their Docsbook workspace. The file becomes a static system prompt that any coding agent (Claude Code, Cursor, Codex, Copilot, Gemini CLI) reads at session start — so the agent always knows the docs URL, where docs live, language settings, AI chat conventions, and which `@docs-skills` automations are available.
+## Workflow
 
-## Arguments
+1. Verify MCP is available. If not, print the connection command and exit gracefully.
+2. Read workspace settings: docs URL (custom domain or computed), docs path, enabled languages, AI chat status, and plan tier. If the workspace does not exist, stop and instruct the user to run `/docs-setup-workspace` first.
+3. Read the doc graph to extract top-level folder structure and total page count. If the call fails, continue with an empty structure — the template handles missing data.
+4. Render the AGENTS.md template using the collected data: site URL, owner/repo, docs path, languages, AI-chat status, folder structure summary.
+5. Write the file to the repo root. If AGENTS.md already exists, locate the managed section by its markers and replace only that section. If no markers exist, append under them. Never touch content outside the markers.
+6. Report the file path, Docsbook URL, languages, and AI chat status. Remind the user to commit the file.
 
-- `$ARGUMENTS[0]` — `owner/repo` or Docsbook workspace ID (required)
+## Guardrails
 
-## Check MCP Availability
+- Never overwrite content outside the managed section markers.
+- If the workspace is missing, do not attempt to create it — redirect to `/docs-setup-workspace`.
+- If the doc graph call fails on a plan restriction, continue with an empty structure rather than aborting.
+- The file is written to the repo root, not to the docs folder.
 
-Try calling `mcp__docsbook__list_workspaces`. If it fails or is unavailable, print:
+## MCP Tools
 
-```
-Docsbook MCP not connected. To set it up:
-  mcp add --transport http https://docsbook.io/api/mcp/server
-Then re-run /docs-generate-agents-md.
-```
+| Tool | Purpose |
+|------|---------|
+| `list_workspaces` | Verify MCP transport is available |
+| `get_workspace` | Read workspace settings (URL, language, AI, plan) |
+| `get_doc_graph` | Read top-level folder structure and page count |
 
-Exit gracefully without error.
+## Acceptance Criteria
 
-## Step 1 — Read Workspace Settings
-
-Call `mcp__docsbook__get_workspace({ id })` (or `{ github_owner, github_repo }`). Extract:
-
-- `name`, `github_owner`, `github_repo`
-- `domain` (custom domain, if set) — otherwise compose `https://docsbook.io/{owner}/{repo}`
-- `docsPath` — usually `/docs` or `README.md`
-- `enabledLanguages` (e.g. `["en", "ru", "es"]`)
-- `aiEnabled`, `aiSystemPrompt` (may be empty)
-- `plan` (free / pro / pro_plus)
-
-If the workspace does not exist, stop and tell the user to run `/docs-setup-workspace` first.
-
-## Step 2 — Read Doc Graph
-
-Call `mcp__docsbook__get_doc_graph({ workspace_id, format: "toon" })`. Extract:
-
-- Top-level folders (becomes the docs structure summary)
-- Total page count
-- Whether translated mirrors exist (folders like `/ru`, `/es`)
-
-If the call fails (plan restriction, stale graph), continue with empty structure — the template handles missing data.
-
-## Step 3 — Render Template
-
-Read `assets/AGENTS.md.hbs` from this skill's folder. Render it with the following variables:
-
-```ts
-{
-  site_url: workspace.domain || `https://docsbook.io/${owner}/${repo}`,
-  owner,
-  repo,
-  docs_path: workspace.docsPath || "/docs",
-  has_readme: doc_graph.has("README.md"),
-  languages: workspace.enabledLanguages || ["en"],
-  is_multilingual: (workspace.enabledLanguages?.length ?? 1) > 1,
-  ai_enabled: workspace.aiEnabled === true,
-  ai_citation_style: "H2",
-  top_folders: doc_graph.top_folders || [],
-  total_pages: doc_graph.total_pages || 0,
-  plan: workspace.plan || "free",
-}
-```
-
-Use a minimal Handlebars implementation (the agent can substitute `{{var}}` and `{{#if}}` blocks manually if no Handlebars runtime is available).
-
-## Step 4 — Write AGENTS.md
-
-Use the `Write` tool to create `/AGENTS.md` at the repo root.
-
-If `AGENTS.md` already exists:
-- Look for a managed section between markers `<!-- docsbook:agents-md:start -->` and `<!-- docsbook:agents-md:end -->`.
-- If present, replace only that section.
-- If absent, append the rendered content under those markers at the end of the existing file.
-
-Never silently overwrite content outside the markers.
-
-## Output
-
-```
-✅ AGENTS.md generated
-📄 Path: ./AGENTS.md
-📚 Docsbook: {site_url}
-🌐 Languages: {languages.join(", ")}
-🤖 AI chat: {ai_enabled ? "enabled" : "disabled"}
-
-Next: commit AGENTS.md so every agent session picks it up.
-```
+- [ ] MCP transport verified before reading workspace
+- [ ] Workspace settings read without prompting the user
+- [ ] Doc graph retrieved or gracefully skipped on failure
+- [ ] AGENTS.md written to repo root (or managed section updated)
+- [ ] Content outside managed markers left untouched
+- [ ] User reminded to commit the file

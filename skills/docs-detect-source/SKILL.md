@@ -8,73 +8,34 @@ metadata:
   keywords: [detect, source, mintlify, gitbook, docusaurus, platform]
 ---
 
-# docs-detect-source
+# docs-detect-source — Identify and route a docs source
 
-Identifies the type of a documentation source so the pipeline can route to the correct skill.
+## Workflow
 
-## Arguments
+1. Inspect the input: classify as a plain URL, a GitHub repo URL, or a local path.
+2. For a plain URL — fetch the page and look for platform signals in HTML meta tags, CDN links, and domain name. If no platform matches, classify as a generic website.
+3. For a GitHub repo URL — fetch root contents via the GitHub API and look for known config files (`mint.json`, `SUMMARY.md`, `docusaurus.config.js`, `.vitepress/`, `astro.config.*`, etc.). If only a README and source directory are present, classify as a code repo.
+4. For a local path — inspect the directory structure for the same config file signals.
+5. Map the detected type to a downstream skill and report both.
 
-- `$ARGUMENTS[0]` — URL or local path (required)
+## Guardrails
 
-## Detection Logic
+- Fetch the page with WebFetch first; only escalate to a browser if the HTML is empty.
+- A single ambiguous signal is not enough — require at least one platform-specific config file or meta tag before assigning a platform type.
+- If detection is inconclusive, default to `website` / `/docs-from-site` rather than blocking.
+- Never mutate the source; detection is read-only.
 
-### If the argument looks like a URL (starts with `http`)
+## Skill Routing
 
-Fetch the page and check for platform signals in the HTML:
-
-| Signal | Platform |
-|---|---|
-| `<meta name="generator" content="Mintlify">` or Mintlify CDN link | Mintlify |
-| Domain contains `gitbook.io` or `<meta name="generator" content="GitBook">` | GitBook |
-| `<meta name="generator" content="Docusaurus">` | Docusaurus |
-| Nextra HTML structure / generator meta | Nextra |
-| URL matches `github.com/{owner}/{repo}` | See GitHub repo detection below |
-
-If none match → plain website → route to `/docs-from-site`.
-
-### If the argument is a GitHub repo URL (`github.com/{owner}/{repo}`)
-
-Fetch the repo's root contents via the GitHub API and look for:
-
-| File / Directory | Platform |
-|---|---|
-| `mint.json` | Mintlify |
-| `docs.json` | Custom docs |
-| `SUMMARY.md` | GitBook |
-| `docusaurus.config.js` | Docusaurus |
-| `.vitepress/` directory | VitePress |
-| `astro.config.*` with Starlight | Starlight |
-
-- If a platform config file is found → route to `/docs-from-docs` with the detected platform.
-- If only `README.md` and a `src/` directory are present → route to `/docs-from-code`.
-
-### If the argument is a local path
-
-Run:
-
-```bash
-node scripts/detect-platform.js <path>
-```
-
-Map the result to the appropriate skill name.
-
-## Detected Types and Their Skill Mappings
-
-| Detected type | Skill |
+| Detected type | Downstream skill |
 |---|---|
 | `website` | `/docs-from-site` |
 | `github-code-repo` | `/docs-from-code` |
-| `mintlify-docs` | `/docs-from-docs` |
-| `gitbook-docs` | `/docs-from-docs` |
-| `docusaurus-docs` | `/docs-from-docs` |
-| `nextra-docs` | `/docs-from-docs` |
-| `vitepress-docs` | `/docs-from-docs` |
-| `starlight-docs` | `/docs-from-docs` |
-| `plain-markdown` | `/docs-from-docs` |
+| Any recognized docs platform | `/docs-from-docs` |
 
-## Output
+## Acceptance Criteria
 
-```
-Detected: {type}
-Recommended skill: /{skill-name}
-```
+- [ ] Input classified into exactly one type without prompting the user
+- [ ] Platform identified from signals (meta tags, config files, domain) rather than guessing
+- [ ] Downstream skill name reported alongside the detected type
+- [ ] Inconclusive inputs default to `website` gracefully

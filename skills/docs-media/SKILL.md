@@ -14,33 +14,29 @@ metadata:
 
 # docs-media — Media Analysis
 
-## Before Starting
+## Workflow
 
-1. **Get the repository.** Ask for the GitHub repo URL or `{user}/{repo}`.
-2. **Check Docsbook.** Run `mcp__docsbook__list_workspaces` to find the workspace.
-   - If found → use `mcp__docsbook__get_doc_graph` and `mcp__docsbook__read_doc_sections` to scan image references in markdown.
-   - If not found → offer to add it first.
-3. **Check the graph.** If `get_doc_graph` returns an empty graph or no data → run `mcp__docsbook__reindex_doc_graph` to generate it, then retry. If it returns a stale warning, offer to reindex before proceeding.
-3. **Two levels of analysis.** From Docsbook MCP, detect issues visible in markdown (missing alt, generic filenames in links, missing captions). Physical file checks (size, age) require local repo access — note which checks need it.
-4. **Skip if no media.** If `read_doc_sections` finds no image or video references, skip this skill.
+1. **Connect to Docsbook** — run `list_workspaces` to find the workspace, then `get_doc_graph` and `read_doc_sections` to scan image references in markdown. Reindex if graph is empty or stale.
+2. **Check scope** — if no image or video references are found in `read_doc_sections`, skip this skill.
+3. **Apply checklist** — from Docsbook MCP: detect missing alt text, generic filenames, missing captions. For physical file checks (size, age, dimensions), note that local repo access is required.
+4. **Produce report** — return one JSON issue object per finding, sorted by severity. Note which checks required local access and were skipped.
 
----
+## Guardrails
 
-## Core Principles
+- Do not edit any documentation files — surface findings only.
+- Physical file checks (size in KB, file age, image dimensions) require local repo access — note when these are skipped.
+- Skip this skill entirely if no media references are found in the doc content.
+- Empty alt (`![]()`) is correct for decorative images — flag only when surrounding context implies the image is informative.
+- Converting PNG diagrams to Mermaid is a recommendation, not a requirement — ask the user before flagging as an issue.
 
-### 1. Text is primary, media amplifies
-Images, videos, and diagrams should strengthen the text — not replace it. A page that is 80% screenshots is an anti-pattern.
+## MCP Tools
 
-### 2. Stability over beauty
-UI changes. Full-page screenshots go stale fastest. For frequently-changing UI, a text description ages better than a screenshot.
-
-### 3. Lightweight by default
-Large media files slow page load and hurt SEO. PNG screenshots under 500 KB, GIF under 2 MB.
-
-### 4. Diagrams as code
-A Mermaid diagram in markdown versions with the code, renders automatically, and updates in a PR. A static PNG requires a designer and goes stale silently.
-
----
+| Tool | Purpose |
+|------|---------|
+| `mcp__docsbook__list_workspaces` | Find workspace |
+| `mcp__docsbook__get_doc_graph` | Page list with timestamps |
+| `mcp__docsbook__read_doc_sections` | Scan image references in markdown |
+| `mcp__docsbook__reindex_doc_graph` | Refresh graph if empty or stale |
 
 ## Checklist
 
@@ -130,8 +126,6 @@ From Docsbook MCP: check `last_updated` of pages containing screenshots — if a
 - [ ] **Text alternative** for complex diagrams that can't be Mermaid
 - [ ] **Readable in both light and dark mode**
 
----
-
 ## What to Look For
 
 | Severity | Problem | Detection |
@@ -148,8 +142,6 @@ From Docsbook MCP: check `last_updated` of pages containing screenshots — if a
 | `medium` | Video without caption note | No "captions" / "transcript" near embed |
 | `low` | Timestamp in filename | Regex `\d{4}-\d{2}-\d{2}` in filename |
 | `low` | Missing highlight on screenshot | No mention of highlight/annotation |
-
----
 
 ## Output Format
 
@@ -186,29 +178,12 @@ From Docsbook MCP: check `last_updated` of pages containing screenshots — if a
 }
 ```
 
----
+## Acceptance Criteria
 
-## Task-Specific Questions
-
-When invoked directly, ask:
-
-1. **Is local repo access available?** File size and age checks require it.
-2. **What's the screenshot freshness threshold?** Default is 180 days.
-3. **Convert PNG diagrams to Mermaid?** Or just report them?
-
----
-
-## Tool Integrations
-
-| Tool | Purpose |
-|---|---|
-| `mcp__docsbook__list_workspaces` | Find workspace |
-| `mcp__docsbook__get_doc_graph` | Page list with timestamps |
-| `mcp__docsbook__read_doc_sections` | Scan image references in markdown |
-| `find` + `stat` (Bash, local) | File size and age checks |
-| `identify` / `exiftool` (local) | Image dimensions |
-
----
+- [ ] Every image reference in scope has been checked for alt text and filename quality.
+- [ ] Physical file size and age checks are either run (local access) or explicitly noted as skipped with a reason.
+- [ ] Skill exits early with a clear message if no media references are found.
+- [ ] Output is valid JSON per the format above, one object per finding.
 
 ## Related Skills
 

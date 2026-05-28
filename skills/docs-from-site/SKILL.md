@@ -8,82 +8,31 @@ metadata:
   keywords: [crawl, website, site, extract, markdown, generate]
 ---
 
-# docs-from-site
+# docs-from-site — Build docs from a product website
 
-Knowledge for building documentation from a product URL. The actual work is done by the **`docs-site-crawler`** subagent (Haiku, pinned model) shipped in the [docs-create Claude Code plugin](https://github.com/Docsbook-io/docs-claude-plugins) and the [docs-subagents npm package](https://github.com/Docsbook-io/docs-subagents). This skill is the reference notes a human or agent reads *before* running it.
+The actual work is done by the **`docs-site-crawler`** subagent (Haiku, pinned model).
 
-## What this is for
+## Workflow
 
-You have a product but no docs — only the marketing site. You want a Markdown folder you can edit, publish to GitHub, and connect to Docsbook. The crawler walks the site, converts pages, and produces `docs-output/<name>/` plus a `_branding.json` describing the visual identity.
+1. Fetch the sitemap first (`/sitemap.xml`). Fall back to crawling `<a href>` links from the homepage only if the sitemap is missing.
+2. Prioritize documentation-relevant paths (`/docs`, `/help`, `/guides`, `/features`) and cap the crawl at ~50 pages.
+3. For each page: strip navigation chrome (`<header>`, `<footer>`, `<nav>`, `<aside>`) before converting HTML to Markdown.
+4. Extract branding tokens from inline `<style>` or `:root` CSS variables (accent color, background, foreground). Detect the color scheme from background luminance. Look for a theme toggle element to decide between pinning the scheme or setting `system`.
+5. Organize output into a structured folder: intro README, getting-started section, per-feature pages, guides, API reference, and FAQ — only if that content was found.
+6. Write a `_branding.json` alongside the docs folder.
 
-## Tips & tricks
+## Guardrails
 
-- **WebFetch beats headless Chrome for marketing sites.** Almost every modern landing page returns full HTML on the first request — JS-only sites are rare. Don't pay for Chrome startup unless WebFetch returns empty `<main>`.
-- **Sitemap first, links second.** `/sitemap.xml` is the cheapest signal — one request, often returns the full URL set. Fall back to `<a href>` from the homepage only when sitemap is missing.
-- **Cap at ~50 pages.** Marketing sites with 200+ URLs are mostly blog noise. The first 50 (prioritised `/docs`, `/help`, `/guides`, `/features`) cover 95% of the user value.
-- **Skip auth and commerce paths.** `/login`, `/signup`, `/auth`, `/checkout`, `/cart` are dead weight — every crawler should hard-exclude them.
-- **Drop chrome before converting.** Strip `<header>`, `<footer>`, `<nav>`, `<aside>` *before* the HTML→Markdown pass; otherwise the same nav text ends up at the top of every page.
-- **Branding regex shortcuts.** Color tokens live in inline `<style>` or `:root` declarations — `--primary`, `--color-primary`, `--accent`, `--background`. Compute `detectedScheme` from the background luminance: `>50% → "light"`, else `"dark"`.
-- **Theme toggle = soft signal.** Look for `data-theme-toggle`, `[class*="theme-toggle"]`, or a sun/moon SVG. When present, set `defaultTheme: "system"` downstream; otherwise pin to the detected scheme.
+- Use WebFetch first; escalate to a browser only if `<main>` content is empty.
+- Hard-exclude auth and commerce paths (`/login`, `/signup`, `/auth`, `/checkout`, `/cart`).
+- Cap at 50 pages — sites with hundreds of URLs contain mostly blog noise.
+- Strip navigation chrome before the HTML-to-Markdown pass, not after.
+- Write in active voice, second person, sentence-case headings. No filler words ("simply", "just", "easily"). Tag every code block with a language. Use relative links between pages.
 
-## Output contract
+## Acceptance Criteria
 
-The crawler writes:
-
-```
-docs-output/<name>/
-├── README.md                    # Intro: what the product does, key value props
-├── getting-started/README.md    # Quick start — most important page
-├── features/<feature>.md        # One file per major feature (optional)
-├── guides/<guide>.md            # How-to guides (optional)
-├── api/reference.md             # If API docs were found (optional)
-└── faq.md                       # If a FAQ was found (optional)
-```
-
-Plus `_branding.json` at the root:
-
-```json
-{
-  "accentColor": "#xxx",
-  "background": "#xxx",
-  "foreground": "#xxx",
-  "favicon": "https://...",
-  "hasThemeToggle": true,
-  "detectedScheme": "light"
-}
-```
-
-`_branding.json` is consumed by [docs-setup-workspace](../docs-setup-workspace/SKILL.md) when configuring Docsbook.
-
-## Writing rules (apply to every generated page)
-
-- Active voice, second person ("you"), imperative mood for instructions.
-- Sentence case headings ("How to configure X", not "How To Configure X").
-- No filler: drop "simply", "just", "easily", "powerful".
-- Every code block tagged with a language.
-- Link related pages with relative paths, not absolute URLs.
-
-## How to run
-
-**Plugin (recommended):**
-
-```
-/plugin install docs-create@docs-claude-plugins
-/docs-from-site https://example.com
-```
-
-The slash command spawns the `docs-site-crawler` subagent on Haiku and returns a JSON result with the output path and page count.
-
-**Standalone subagent:**
-
-```
-npx docs-subagents install
-# then in Claude Code:
-"Use the docs-site-crawler subagent to crawl https://example.com"
-```
-
-**Next steps after the crawl:**
-
-- [docs-publish](../docs-publish/SKILL.md) — push to GitHub
-- [docs-setup-workspace](../docs-setup-workspace/SKILL.md) — configure Docsbook
-- [docs-create](../docs-create/SKILL.md) — run all three in one command
+- [ ] Sitemap or link discovery completed without manual intervention
+- [ ] Auth and commerce paths excluded from the crawl
+- [ ] Navigation chrome stripped before Markdown conversion
+- [ ] Output folder contains at minimum a README and a getting-started page
+- [ ] `_branding.json` written with accent color, background, favicon, and detected scheme

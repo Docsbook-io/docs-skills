@@ -8,98 +8,29 @@ metadata:
   keywords: [create, interactive, pipeline, checkpoints, customize]
 ---
 
-# docs-create-interactive
+# docs-create-interactive — Guided docs pipeline with checkpoints
 
-Same pipeline as `/docs-create` but pauses at five checkpoints so the user can review and adjust before each major action.
+## Workflow
 
-## Arguments
+1. Run `/docs-detect-source` logic. Show the detected type and wait for user confirmation before continuing. Re-run if the user points to a different source.
+2. Plan the full file structure. Display the proposed tree and wait for approval or modification requests. Apply changes before generating any files.
+3. Extract branding (accent color, background, theme scheme, favicon). Show detected values and let the user override before writing the branding file.
+4. Before publishing, confirm the GitHub owner and repo name. Update if the user provides a different name.
+5. Before configuring Docsbook, ask which optional features to enable (AI chat, multi-language, custom domain, SEO). Apply only the selected ones.
+6. Report the outcome with a summary of every choice made at each checkpoint.
 
-- `$ARGUMENTS[0]` — URL or GitHub repo (required)
-- `$ARGUMENTS[1]` — output name / repo name (optional)
+## Guardrails
 
-## Checkpoint 1 — Source Detection
+- Never skip a checkpoint — each pause is intentional and must wait for explicit user input.
+- If the user types a different source at checkpoint 1, re-run detection instead of assuming.
+- Apply only features the user explicitly selected at checkpoint 5; do not enable extras silently.
+- If MCP is unavailable at the Docsbook step, print connection instructions and continue — do not block the final report.
 
-Run the `/docs-detect-source` logic inline. After detecting the source type, show the result and ask:
+## Acceptance Criteria
 
-```
-Detected: {type}
-Proceed with /docs-from-{type}? (yes / use different source)
-```
-
-Wait for confirmation before continuing. If the user provides a different source, re-run detection on it.
-
-## Checkpoint 2 — Structure Review
-
-After planning the docs structure (but before creating any files), display the full proposed file tree and ask:
-
-```
-Here's the planned structure:
-
-{file tree}
-
-Proceed as-is or modify? (list files you want added / removed / renamed)
-```
-
-Wait for response. Apply any requested changes to the plan before generating files.
-
-## Checkpoint 3 — Branding
-
-After extracting branding from the source, show the detected values and ask:
-
-```
-Detected colors:
-  accent:  {color}
-  theme:   {scheme}
-  favicon: {url or "none"}
-
-Use these or provide custom values?
-```
-
-Accept custom hex colors, theme name (`light` / `dark` / `system`), or favicon URL. Apply before writing `_branding.json`.
-
-## Checkpoint 4 — Publish Target
-
-Before running `git push`, confirm:
-
-```
-Will publish to: github.com/{owner}/{repo-name}
-Proceed? (yes / change name)
-```
-
-If the user provides a different name, update the repo name before creating.
-
-## Checkpoint 5 — Docsbook Features
-
-Before applying Docsbook settings, ask which optional features to enable:
-
-```
-Which Docsbook features do you want to enable?
-  [1] AI chat          (requires PRO plan — $150 lifetime)
-  [2] Multi-language   en + zh, ja, ru by default — or specify your own
-  [3] Custom domain    docs.yourcompany.com (requires PRO plan)
-  [4] SEO optimization (requires PRO plan)
-
-Enter numbers separated by commas, or "all" / "none":
-```
-
-Apply only the selected features. For custom language choice, accept a comma-separated list of language codes.
-
-## Final Report
-
-Same format as `/docs-create`, plus a summary of all choices made at checkpoints:
-
-```
-✅ Done!
-
-📁 Local:    docs-output/{name}/
-🐙 GitHub:   https://github.com/{owner}/{name}
-📚 Docsbook: https://docsbook.io/{owner}/{name}
-
-Pages created: N
-Source type: {type}
-
-Choices made:
-- Structure: {as-is | N files modified}
-- Branding: accent #{color}, theme: {scheme}
-- Features: AI chat, SEO, languages (en, zh, ja, ru)
-```
+- [ ] Each of the 5 checkpoints reached and acknowledged by the user
+- [ ] File structure reflects any modifications requested at checkpoint 2
+- [ ] Branding file contains user-confirmed values
+- [ ] GitHub repo name matches what was confirmed at checkpoint 4
+- [ ] Only user-selected Docsbook features are enabled
+- [ ] Final report includes a summary of all choices made

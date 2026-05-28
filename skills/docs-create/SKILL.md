@@ -8,66 +8,27 @@ metadata:
   keywords: [create, pipeline, generate, docs, new]
 ---
 
-# docs-create
+# docs-create — End-to-end docs pipeline
 
-End-to-end pipeline with minimal interruptions. Detects the source, builds docs, publishes to GitHub, and configures Docsbook — all in one command.
+## Workflow
 
-## Arguments
+1. Ask at most 2 questions before starting: the source URL/repo (if missing) and the target GitHub account (only if ambiguous from `gh auth status`). Then proceed without stopping.
+2. Detect the source type using the `/docs-detect-source` logic — route to `website`, `github-code-repo`, or a specific docs platform.
+3. Build docs using the appropriate sub-skill (`/docs-from-site`, `/docs-from-code`, or `/docs-from-docs`). Extract branding if available.
+4. Publish the generated folder to GitHub using the `/docs-publish` logic.
+5. Configure the Docsbook workspace using `/docs-setup-workspace`. Skip gracefully if MCP is unavailable — print connection instructions but do not fail the pipeline.
+6. Report the local path, GitHub URL, Docsbook URL, page count, and detected source type.
 
-- `$ARGUMENTS[0]` — URL or GitHub repo (required)
-- `$ARGUMENTS[1]` — output name / repo name (optional — derived from source if not given)
+## Guardrails
 
-## Ask at Most 2 Questions Before Starting
+- Never ask more than 2 questions before starting; derive everything else from context.
+- If MCP is unavailable at step 5, print setup instructions and exit cleanly — do not abort the whole pipeline.
+- Output folder name is derived from the source; only prompt the user if there is a genuine collision.
 
-1. "What is the URL or GitHub repo you want to document?" — only if `$ARGUMENTS[0]` is missing.
-2. "What GitHub account should the repo be published under?" — derive from `gh auth status` and only ask if ambiguous.
+## Acceptance Criteria
 
-After these two questions, proceed through all steps without stopping.
-
-## Step 1 — Detect Source Type
-
-Inline the detection logic from `/docs-detect-source`:
-
-- If URL starts with `http`: fetch the page and check for Mintlify, GitBook, Docusaurus, Nextra platform signals.
-- If URL is `github.com/{owner}/{repo}`: check repo contents via GitHub API for platform config files.
-- If local path: inspect directory structure.
-
-Map result to one of: `website`, `github-code-repo`, `mintlify-docs`, `gitbook-docs`, `docusaurus-docs`, `nextra-docs`, `vitepress-docs`, `starlight-docs`, `plain-markdown`.
-
-## Step 2 — Build Docs
-
-Based on the detected type, run the corresponding sub-skill logic inline (do not spawn as a separate slash command):
-
-| Detected type | Sub-skill logic |
-|---|---|
-| `website` | `/docs-from-site` |
-| `github-code-repo` | `/docs-from-code` |
-| `*-docs` (any docs platform) | `/docs-from-docs` |
-
-Output goes to `docs-output/{name}/`. Include `_branding.json` if branding can be extracted.
-
-## Step 3 — Publish
-
-Inline the `/docs-publish` logic:
-
-1. `git init` in `docs-output/{name}/`
-2. `git add . && git commit -m "docs: initial documentation"`
-3. `gh repo create {owner}/{name} --public`
-4. Push via HTTPS using `gh auth token`
-
-## Step 4 — Configure Docsbook
-
-Inline the `/docs-setup-workspace` logic. Skip gracefully if the Docsbook MCP is unavailable — print the connection instructions but do not fail the pipeline.
-
-## Final Report
-
-```
-✅ Done!
-
-📁 Local:    docs-output/{name}/
-🐙 GitHub:   https://github.com/{owner}/{name}
-📚 Docsbook: https://docsbook.io/{owner}/{name}
-
-Pages created: N
-Source type: {type}
-```
+- [ ] Source type detected without manual input
+- [ ] Docs folder generated with at least a README and a getting-started page
+- [ ] GitHub repo created and pushed successfully
+- [ ] Docsbook workspace configured (or setup instructions printed if MCP unavailable)
+- [ ] Final report shows local path, GitHub URL, and Docsbook URL

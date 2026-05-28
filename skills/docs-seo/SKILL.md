@@ -14,34 +14,30 @@ metadata:
 
 # docs-seo — SEO Analysis for Documentation
 
-## Before Starting
+## Workflow
 
-1. **Public documentation only.** If the docs are private or internal, skip this skill.
-2. **Get the repository.** Ask for the GitHub repo URL or `{user}/{repo}`.
-3. **Check Docsbook.** Run `mcp__docsbook__list_workspaces` to find the workspace.
-   - If found → use `mcp__docsbook__get_doc_graph` to get all pages with titles and metadata.
-   - If not found → offer to add it first.
-4. **Check the graph.** If `get_doc_graph` returns an empty graph or no data → run `mcp__docsbook__reindex_doc_graph` to generate it, then retry. If it returns a stale warning, offer to reindex before proceeding.
-4. **Read pages.** Use `mcp__docsbook__read_doc_sections` to access frontmatter, headings, and content.
-5. **Cross-page checks require the full graph.** Duplicate titles and orphan pages can only be found by scanning all pages together.
+1. **Connect to Docsbook** — run `list_workspaces` to find the workspace, then `get_doc_graph` to get all pages with titles and metadata. Skip if docs are private or internal. Reindex if graph is empty or stale.
+2. **Read pages** — use `read_doc_sections` to access frontmatter, headings, and content for each page.
+3. **Apply checklist** — check titles, descriptions, heading structure, body content, images, internal links (topic clusters), URL/file path conventions, and AI Overviews / GEO criteria.
+4. **Produce report** — return one JSON issue object per finding, sorted by severity. Cross-page checks (duplicate titles, orphan pages) require the full graph.
 
----
+## Guardrails
 
-## Core Principles
+- Do not run on private or internal documentation — SEO only applies to public docs.
+- Do not edit any documentation files — surface findings only.
+- Cross-page checks (duplicate titles, orphan pages) can only be found by scanning all pages together — run these after reading individual pages.
+- Ask the user to confirm primary keywords per page before flagging title/description intent mismatches.
+- AI Overviews / GEO criteria are a separate, stricter checklist — ask the user whether to apply them.
 
-### 1. Documentation is your highest-intent organic traffic
-Users searching "{product} how to X" or "{product} error Y" have purchase or retention intent. A well-optimized docs page outranks blog posts and converts better.
+## MCP Tools
 
-### 2. Title = search intent, not a label
-"Authentication" is a label. "How to authenticate API requests with Docsbook" is a search intent. Users search for what they want to do, not for nouns.
-
-### 3. Topic clusters build authority
-Pages linked to each other on the same topic signal to search engines that you're authoritative on that topic. An isolated page has no link equity.
-
-### 4. AI Overviews reward structure
-Google AI Overviews, ChatGPT web search, and Perplexity prefer pages with a direct answer in the first paragraph, numbered lists, and self-contained sections. This is also what human readers prefer.
-
----
+| Tool | Purpose |
+|------|---------|
+| `mcp__docsbook__list_workspaces` | Find workspace |
+| `mcp__docsbook__get_doc_graph` | Full page list, metadata, link relationships |
+| `mcp__docsbook__read_doc_sections` | Read frontmatter, headings, and content |
+| `mcp__docsbook__update_seo` | Enable SEO features in Docsbook (PRO) |
+| `mcp__docsbook__reindex_doc_graph` | Refresh graph if empty or stale |
 
 ## Checklist
 
@@ -108,8 +104,6 @@ Google AI Overviews, ChatGPT web search, and Perplexity prefer pages with a dire
 - [ ] **Hierarchy reflects topic** — `/guides/integrations/github` makes sense
 - [ ] **Stable** — renames require redirects
 
----
-
 ## AI Overviews / GEO Checklist
 
 Documentation increasingly appears in AI-generated answers (ChatGPT, Perplexity, Google AI Overviews):
@@ -120,8 +114,6 @@ Documentation increasingly appears in AI-generated answers (ChatGPT, Perplexity,
 - [ ] **Definition format** — "A workspace is a Docsbook container for one GitHub repository's documentation."
 - [ ] **Specific numbers** — "under 30 seconds", "supports 15 languages", not "fast" and "many"
 - [ ] **Cited sources** for non-obvious claims
-
----
 
 ## What to Look For
 
@@ -143,8 +135,6 @@ Documentation increasingly appears in AI-generated answers (ChatGPT, Perplexity,
 | `low` | Title without brand suffix | No `| ProductName` |
 | `low` | File name not kebab-case | Pattern match |
 | `low` | No `last_reviewed` on technical page | Missing frontmatter field |
-
----
 
 ## Output Format
 
@@ -181,29 +171,12 @@ Documentation increasingly appears in AI-generated answers (ChatGPT, Perplexity,
 }
 ```
 
----
+## Acceptance Criteria
 
-## Task-Specific Questions
-
-When invoked directly, ask:
-
-1. **Primary keyword per page** — what does the team want each page to rank for?
-2. **Include GEO/AI Overviews criteria?** (stricter structure requirements)
-3. **Which pages are Tier 1?** (quick-start, pricing, auth — confirm priority order)
-4. **Auto-suggest titles/descriptions** or just flag issues?
-
----
-
-## Tool Integrations
-
-| Tool | Purpose |
-|---|---|
-| `mcp__docsbook__list_workspaces` | Find workspace |
-| `mcp__docsbook__get_doc_graph` | Full page list, metadata, link relationships |
-| `mcp__docsbook__read_doc_sections` | Read frontmatter, headings, and content |
-| `mcp__docsbook__update_seo` | Enable SEO features in Docsbook (PRO) |
-
----
+- [ ] Every page in scope has been checked for title, description, and H1 completeness.
+- [ ] Cross-page checks (duplicate titles, orphan pages) have been run against the full doc graph.
+- [ ] AI Overviews / GEO criteria are either applied (user confirmed) or skipped with a note.
+- [ ] Output is valid JSON per the format above, one object per finding.
 
 ## Related Skills
 

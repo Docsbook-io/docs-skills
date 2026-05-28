@@ -14,33 +14,29 @@ metadata:
 
 # docs-accessibility — Accessibility Analysis (WCAG 2.1 AA)
 
-## Before Starting
+## Workflow
 
-1. **Get the repository.** Ask for the GitHub repo URL or `{user}/{repo}`.
-2. **Check Docsbook.** Run `mcp__docsbook__list_workspaces` to find the workspace.
-   - If found → use `mcp__docsbook__get_doc_graph` to get all pages.
-   - If not found → offer to add it first.
-3. **Check the graph.** If `get_doc_graph` returns an empty graph or no data → run `mcp__docsbook__reindex_doc_graph` to generate it, then retry. If it returns a stale warning, offer to reindex before proceeding.
-3. **Read pages.** Use `mcp__docsbook__read_doc_sections` to access content for analysis.
-4. **Scope of this skill.** Contrast ratios and runtime keyboard behavior depend on the rendered theme — those require a live browser check. This skill covers what is detectable from markdown source.
+1. **Connect to Docsbook** — run `list_workspaces` to find the workspace, then `get_doc_graph` to get all pages. Offer to add the repo if not indexed. Reindex with `reindex_doc_graph` if graph is empty or stale.
+2. **Read pages** — use `read_doc_sections` to access content for pattern analysis. Prioritize Tier 1 pages (quick-start, pricing, auth) first.
+3. **Apply checklist** — scan each page for the three big categories: alt text, heading hierarchy, and anchor text. Then cover lists, tables, code blocks, video, and text readability.
+4. **Produce report** — return one JSON issue object per finding, sorted by severity.
 
----
+## Guardrails
 
-## Core Principles
+- Contrast ratios and runtime keyboard behavior depend on the rendered theme — these require a live browser check and are out of scope for this skill.
+- This skill covers only what is detectable from markdown source.
+- Do not edit any documentation files — surface findings only.
+- Target WCAG 2.1 AA by default; ask before applying stricter AAA criteria.
+- Empty alt (`![]()`) is correct for decorative images — flag only when the surrounding context implies the image is informative.
 
-### 1. Accessibility is baseline, not a bonus
-Docs that work only for sighted, mouse-using readers exclude a real portion of the audience — screen reader users, keyboard-only users, low-vision users, and users with cognitive differences.
+## MCP Tools
 
-### 2. Alt text, headings, and anchor text are the big three
-These three patterns cover the majority of a11y issues detectable from markdown. Fix these first.
-
-### 3. Semantic markdown beats HTML workarounds
-`## Heading` is more accessible than `<div class="heading">`. Markdown is accessible by default when used correctly — don't fight it.
-
-### 4. Color is never the only indicator
-"Red items are errors" without a label, icon, or text backup is invisible to color-blind users. This applies to prose too.
-
----
+| Tool | Purpose |
+|------|---------|
+| `mcp__docsbook__list_workspaces` | Find workspace |
+| `mcp__docsbook__get_doc_graph` | Page list |
+| `mcp__docsbook__read_doc_sections` | Read content for a11y pattern analysis |
+| `mcp__docsbook__reindex_doc_graph` | Refresh graph if empty or stale |
 
 ## Checklist
 
@@ -109,8 +105,6 @@ These three patterns cover the majority of a11y issues detectable from markdown.
 - [ ] **If HTML elements are used** (e.g., `<details>`, `<summary>`), verify ARIA attributes are correct
 - [ ] **Emoji are not used as functional indicators** — screen readers read emoji names aloud ("thumbs up emoji"), which disrupts flow when used as checkmarks or status icons
 
----
-
 ## What to Look For
 
 | Severity | Problem | Detection |
@@ -128,8 +122,6 @@ These three patterns cover the majority of a11y issues detectable from markdown.
 | `medium` | Table without header row | Parse table structure |
 | `low` | Raw HTML used where markdown equivalent exists | `<div>`, `<span>` in content |
 | `low` | Emoji used as functional indicator | Emoji at start of list items or as status |
-
----
 
 ## Output Format
 
@@ -166,27 +158,12 @@ These three patterns cover the majority of a11y issues detectable from markdown.
 }
 ```
 
----
+## Acceptance Criteria
 
-## Task-Specific Questions
-
-When invoked directly, ask:
-
-1. **Target standard?** WCAG 2.1 AA (default) or stricter AAA?
-2. **Check rendered contrast?** Requires a live Docsbook preview URL — ask if available.
-3. **Automated scanner?** axe-core or pa11y can be run on the rendered site for runtime checks.
-
----
-
-## Tool Integrations
-
-| Tool | Purpose |
-|---|---|
-| `mcp__docsbook__list_workspaces` | Find workspace |
-| `mcp__docsbook__get_doc_graph` | Page list |
-| `mcp__docsbook__read_doc_sections` | Read content for a11y pattern analysis |
-
----
+- [ ] Every page in scope has been scanned — no pages silently skipped.
+- [ ] All critical and high findings include a specific, actionable suggestion.
+- [ ] The report distinguishes issues detectable from markdown (in scope) from runtime issues (contrast, keyboard behavior) — out of scope items are noted, not flagged as findings.
+- [ ] Output is valid JSON per the format above, one object per finding.
 
 ## Related Skills
 

@@ -14,33 +14,28 @@ metadata:
 
 # docs-structure-templates — Structure and Formatting Analysis
 
-## Before Starting
+## Workflow
 
-1. **Get the repository.** Ask for the GitHub repo URL or `{user}/{repo}`.
-2. **Check Docsbook.** Run `mcp__docsbook__list_workspaces` to find the workspace.
-   - If found → use `mcp__docsbook__get_doc_graph` to get all pages and their metadata.
-   - If not found → offer to create it first.
-3. **Check the graph.** If `get_doc_graph` returns an empty graph or no data → run `mcp__docsbook__reindex_doc_graph` to generate it, then retry. If it returns a stale warning, offer to reindex before proceeding.
-3. **Read pages.** Use `mcp__docsbook__read_doc_sections` to access frontmatter and content structure.
-4. **Prioritize Tier 1.** Analyze quick-start, pricing, and auth pages before others.
+1. **Connect to Docsbook** — run `list_workspaces` to find the workspace, then `get_doc_graph` to get all pages with metadata. Offer to create the workspace if not indexed. Reindex if graph is empty or stale.
+2. **Read pages** — use `read_doc_sections` to access frontmatter and content structure. Prioritize Tier 1 pages (quick-start, pricing, auth) first.
+3. **Apply checklist** — check frontmatter fields, heading hierarchy, prerequisites and setup sections, code blocks, page length/density, and callout usage.
+4. **Produce report** — return one JSON issue object per finding, sorted by severity.
 
----
+## Guardrails
 
-## Core Principles
+- Do not edit any documentation files — surface findings only.
+- Confirm with the user which frontmatter fields are required for this project (some projects have custom fields beyond `title` and `description`).
+- A page type determines which sections are required — don't flag a reference page for missing prerequisites.
+- Do not modify the `docs-content-types` skill's output — classify page type there, not here.
 
-### 1. Structure is discoverability
-A well-structured page is scannable, predictable, and findable. Readers don't read — they scan.
+## MCP Tools
 
-### 2. Frontmatter is the contract
-Title and description are used by search engines, AI crawlers, and the Docsbook UI. Missing or weak frontmatter is a silent SEO failure.
-
-### 3. Heading hierarchy is navigation
-Screen readers and keyboard users navigate by headings. A broken hierarchy (H2 → H4) is both an a11y and a usability failure.
-
-### 4. Code blocks must be self-contained
-Readers copy-paste code. A code block missing the language, context, or expected output will produce confused support tickets.
-
----
+| Tool | Purpose |
+|------|---------|
+| `mcp__docsbook__list_workspaces` | Find workspace |
+| `mcp__docsbook__get_doc_graph` | Page list with titles and metadata |
+| `mcp__docsbook__read_doc_sections` | Read frontmatter and heading structure |
+| `mcp__docsbook__reindex_doc_graph` | Refresh graph if empty or stale |
 
 ## Checklist
 
@@ -95,8 +90,6 @@ Readers copy-paste code. A code block missing the language, context, or expected
 - [ ] **Callout type matches content**: warning (danger), note (neutral info), tip (optional best practice)
 - [ ] **No "Note:" prefix in plain text** — use a proper callout block
 
----
-
 ## What to Look For
 
 | Severity | Problem | Detection |
@@ -113,8 +106,6 @@ Readers copy-paste code. A code block missing the language, context, or expected
 | `medium` | Warning appears after the action it warns about | Callout position relative to code block |
 | `low` | No `last_reviewed` in frontmatter | Missing optional field |
 | `low` | Placeholder values not obviously fake | `key123` instead of `YOUR_API_KEY` |
-
----
 
 ## Output Format
 
@@ -165,27 +156,12 @@ Readers copy-paste code. A code block missing the language, context, or expected
 }
 ```
 
----
+## Acceptance Criteria
 
-## Task-Specific Questions
-
-When invoked directly, ask:
-
-1. **Full audit or specific pages?** All pages vs. Tier 1 only (quick-start, pricing, auth).
-2. **What frontmatter fields are required** for this project? (Some projects have custom fields.)
-3. **Is there a style guide** that defines heading conventions, callout usage, etc.?
-
----
-
-## Tool Integrations
-
-| Tool | Purpose |
-|---|---|
-| `mcp__docsbook__list_workspaces` | Find workspace |
-| `mcp__docsbook__get_doc_graph` | Page list with titles and metadata |
-| `mcp__docsbook__read_doc_sections` | Read frontmatter and heading structure |
-
----
+- [ ] Every page in scope has been checked for the required frontmatter fields (confirmed with user).
+- [ ] Heading hierarchy is validated for every page — skips are flagged regardless of page type.
+- [ ] Code blocks without a language specifier are reported as high severity.
+- [ ] Output is valid JSON per the format above, one object per finding.
 
 ## Related Skills
 

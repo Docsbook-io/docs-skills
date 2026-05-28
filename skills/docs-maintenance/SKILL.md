@@ -14,34 +14,29 @@ metadata:
 
 # docs-maintenance — Documentation Maintenance Analysis
 
-## Before Starting
+## Workflow
 
-1. **This skill is for tree-level audits.** Don't run it on a single fresh page.
-2. **Get the repository.** Ask for the GitHub repo URL or `{user}/{repo}`.
-3. **Check Docsbook.** Run `mcp__docsbook__list_workspaces` to find the workspace.
-   - If found → use `mcp__docsbook__get_doc_graph` to get all pages with timestamps.
-   - If not found → offer to add it first.
-4. **Check the graph.** If `get_doc_graph` returns an empty graph or no data → run `mcp__docsbook__reindex_doc_graph` to generate it, then retry. If it returns a stale warning, offer to reindex before proceeding.
-4. **Set staleness threshold.** Default: 90 days for Tier 1 pages, 365 days for others.
-5. **Read pages for content signals.** Use `mcp__docsbook__read_doc_sections` to find TODO/FIXME, "coming soon", past dates, deprecated mentions.
+1. **Connect to Docsbook** — run `list_workspaces` to find the workspace, then `get_doc_graph` to get all pages with timestamps. Reindex if graph is empty or stale.
+2. **Set staleness threshold** — confirm with the user: default is 90 days for Tier 1 pages, 365 days for others.
+3. **Apply checklist** — scan pages via `read_doc_sections` for TODO/FIXME, "coming soon", past dates, deprecated mentions, missing ownership, and pricing consistency. Run bash scripts on local repo when available for file-age and code consistency checks.
+4. **Produce report** — return one JSON issue object per finding, sorted by severity.
 
----
+## Guardrails
 
-## Core Principles
+- Do not run this skill on a single freshly-created page — it is designed for whole-tree audits.
+- Do not edit any documentation files — surface findings only.
+- When local repo access is unavailable, use `read_doc_sections` for content-level signals; note which file-age checks were skipped.
+- Deprecated content should NOT be removed immediately — flag for a banner + migration path, not deletion.
+- Confirm with the user which pages are Tier 1 before applying the stricter 90-day threshold.
 
-### 1. Documentation degrades at the speed of the code it describes
-Without maintenance processes, half of docs become partially or fully outdated within 6 months of active development.
+## MCP Tools
 
-### 2. Docs as code — update in the same PR
-The only sustainable way to keep docs current is to update them in the same PR that changes the feature. After-the-fact doc updates accumulate as debt.
-
-### 3. Impact-driven prioritization
-Impact = `traffic × (low satisfaction + support ticket correlation + business criticality)`. A stale quick-start seen by thousands matters more than a forgotten edge-case guide.
-
-### 4. Deprecated content needs a migration path
-Don't delete deprecated pages immediately. Add a banner, link to the replacement, give users time to migrate. Then remove.
-
----
+| Tool | Purpose |
+|------|---------|
+| `mcp__docsbook__list_workspaces` | Find workspace |
+| `mcp__docsbook__get_doc_graph` | Page list with `last_updated` timestamps |
+| `mcp__docsbook__read_doc_sections` | Scan content for maintenance signals |
+| `mcp__docsbook__reindex_doc_graph` | Refresh stale graph before analysis |
 
 ## Checklist
 
@@ -75,8 +70,6 @@ Don't delete deprecated pages immediately. Add a banner, link to the replacement
 - [ ] **Prices in docs match `constants.ts`** — `proLifetime: 150`, `proPlusMonthly: 29`
 - [ ] **Code examples compile** — at minimum, verify syntax is valid
 
----
-
 ## Severity Table
 
 | Severity | Problem | Detection |
@@ -93,8 +86,6 @@ Don't delete deprecated pages immediately. Add a banner, link to the replacement
 | `medium` | API endpoint in docs doesn't exist in codebase | Route check |
 | `low` | "Beta" label on GA feature | Label audit |
 | `low` | No owner attribution anywhere | CODEOWNERS / frontmatter check |
-
----
 
 ## Bash Scripts (for local repo access)
 
@@ -148,8 +139,6 @@ grep -rE '\$[0-9]+' docs/ | grep -iE "pro|lifetime|monthly|plan"
 grep -E 'proLifetime|proPlusMonthly' src/utils/constants.ts
 ```
 
----
-
 ## Docsbook MCP-Based Detection
 
 When local repo access is unavailable, use `mcp__docsbook__read_doc_sections` to detect content-level signals:
@@ -159,8 +148,6 @@ When local repo access is unavailable, use `mcp__docsbook__read_doc_sections` to
 - **"Coming soon"**: string search across all sections
 - **Deprecated without migration**: find "deprecated" then check if "use instead" or a link follows within 3 lines
 - **Page freshness**: use `last_updated` field from `get_doc_graph` if available
-
----
 
 ## Output Format
 
@@ -208,30 +195,12 @@ When local repo access is unavailable, use `mcp__docsbook__read_doc_sections` to
 }
 ```
 
----
+## Acceptance Criteria
 
-## Task-Specific Questions
-
-When invoked directly, ask:
-
-1. **Staleness threshold?** 90 / 180 / 365 days
-2. **Local repo access available?** For file age and pricing consistency checks
-3. **Tier 1 pages for this project?** (quick-start, pricing, auth — confirm)
-4. **Deprecated content action?** Add banner + migration path, or full removal with redirect?
-
----
-
-## Tool Integrations
-
-| Tool | Purpose |
-|---|---|
-| `mcp__docsbook__list_workspaces` | Find workspace |
-| `mcp__docsbook__get_doc_graph` | Page list with `last_updated` timestamps |
-| `mcp__docsbook__read_doc_sections` | Scan content for maintenance signals |
-| `mcp__docsbook__reindex_doc_graph` | Refresh stale graph before analysis |
-| `find` + `grep` (Bash, local) | File age, TODO/FIXME, pattern detection |
-
----
+- [ ] All Tier 1 pages have been checked for staleness against the confirmed threshold.
+- [ ] Every TODO/FIXME found in published docs is reported as critical.
+- [ ] Every deprecated page without a migration path is flagged as high.
+- [ ] Output is valid JSON per the format above, one object per finding.
 
 ## Related Skills
 

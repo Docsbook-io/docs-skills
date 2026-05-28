@@ -14,44 +14,36 @@ metadata:
 
 # docs-content-types — Content Type Analysis (Diátaxis)
 
-## Before Starting
+## Workflow
 
-1. **Get the repository.** Ask for the GitHub repo URL or `{user}/{repo}`.
-2. **Check Docsbook.** Run `mcp__docsbook__list_workspaces` to find the workspace.
-   - If found → use `mcp__docsbook__get_doc_graph` to get all pages.
-   - If not found → offer: "This repo isn't in Docsbook yet. Want me to add it?"
-3. **Check the graph.** If `get_doc_graph` returns an empty graph or no data → run `mcp__docsbook__reindex_doc_graph` to generate it, then retry. If it returns a stale warning, offer to reindex before proceeding.
-3. **Read page content.** Use `mcp__docsbook__read_doc_sections` for each page to analyze its structure and writing.
-4. **Classify, then check.** First determine what type the page *is*, then check if it follows that type's rules correctly.
+1. **Connect to Docsbook** — run `list_workspaces` to find the workspace, then `get_doc_graph` to get all pages. Offer to add the repo if not indexed. Reindex if graph is empty or stale.
+2. **Read page content** — use `read_doc_sections` for each page to analyze structure and writing style.
+3. **Classify each page** — determine what Diátaxis type the page *is* (tutorial / how-to / reference / explanation), then check whether it follows that type's rules correctly.
+4. **Produce report** — return one JSON issue object per finding; group by page.
 
----
+## Guardrails
 
-## Core Principles
+- Do not edit any documentation files — surface findings only.
+- Classify first, then check — do not flag structure violations before establishing the page type.
+- A single page that covers the same topic across all four types is a problem; a single topic appearing in four separate pages (one per type) is correct.
+- Confirm with the user whether the project uses a naming convention for types (e.g., `/guides/` = how-to, `/concepts/` = explanation) before flagging navigation issues.
 
-### 1. The four types serve four different user needs
-- **Tutorial** → learning (I want to acquire a skill)
-- **How-to guide** → task completion (I want to accomplish a specific goal)
-- **Reference** → information lookup (I want accurate facts)
-- **Explanation** → understanding (I want to know why this works)
+## MCP Tools
 
-### 2. Mixed types confuse readers
-A tutorial that explains theory mid-step loses the learner. A reference page with tutorial narrative loses the expert scanning for a parameter. Keep types pure.
+| Tool | Purpose |
+|------|---------|
+| `mcp__docsbook__list_workspaces` | Find if repo is indexed |
+| `mcp__docsbook__create_workspace` | Add repo to Docsbook if missing |
+| `mcp__docsbook__get_doc_graph` | Get full page list and structure |
+| `mcp__docsbook__read_doc_sections` | Read page content for classification |
+| `mcp__docsbook__reindex_doc_graph` | Refresh graph if empty or stale |
 
-### 3. Type determines structure, not topic
-"Authentication" can be a tutorial (set up auth step-by-step), a how-to (rotate a token), a reference (all auth parameters), or an explanation (how JWT tokens work). The same topic appears across all four.
-
-### 4. Misclassification shows in navigation
-If users can't find how-to guides because they're buried in tutorials, the navigation has a type classification problem.
-
----
-
-## The Four Content Types
+## Checklist
 
 ### Tutorial — Learning-Oriented
 
 **Goal:** Guide a beginner through a task, building confidence and skill.
 
-Checklist:
 - [ ] Step-by-step, hands-on — reader follows along in real time
 - [ ] Narrator is in control — exact commands, exact files, no choices
 - [ ] Safe path — outcome is guaranteed if steps are followed
@@ -75,7 +67,6 @@ Checklist:
 
 **Goal:** Help a competent user accomplish a specific real-world task.
 
-Checklist:
 - [ ] Assumes the reader has basic knowledge
 - [ ] Focuses on one specific goal
 - [ ] Can handle variation: "if X, do Y; if Z, do W"
@@ -97,7 +88,6 @@ Checklist:
 
 **Goal:** Give accurate, complete, structured information. Consulted, not read linearly.
 
-Checklist:
 - [ ] Machine-like consistency — same structure for every entry
 - [ ] No prose narrative — pure information
 - [ ] Complete — covers all options, parameters, return values
@@ -120,7 +110,6 @@ Checklist:
 
 **Goal:** Help the reader understand a concept, architecture, or decision.
 
-Checklist:
 - [ ] Discusses, doesn't instruct
 - [ ] Answers "why" and "how does it work" — not "how to do it"
 - [ ] Provides context and background
@@ -136,8 +125,6 @@ Checklist:
 
 **Good explanation title pattern:** "How authentication works" / "Architecture overview" / "Understanding workspaces"
 
----
-
 ## What to Look For
 
 | Severity | Problem | Detection Signal |
@@ -152,8 +139,6 @@ Checklist:
 | `medium` | How-to has rigid single path, no variation | No conditional logic, no "if X, do Y" |
 | `low` | Large page that serves two distinct audiences | Should be split into two pages |
 | `low` | Tutorial missing prerequisites / "what you'll learn" section | No setup checklist at top |
-
----
 
 ## Output Format
 
@@ -200,29 +185,12 @@ Checklist:
 }
 ```
 
----
+## Acceptance Criteria
 
-## Task-Specific Questions
-
-When invoked directly, ask:
-
-1. **Which pages to analyze?** All, or specific sections (guides / reference / concepts)?
-2. **Does the project have a naming convention for types?** (e.g., `/guides/` = how-to, `/concepts/` = explanation)
-3. **Are there pages suspected of misclassification?** Start there.
-4. **Primary audience?** (developers / end users) — affects strictness on assumed knowledge.
-
----
-
-## Tool Integrations
-
-| Tool | Purpose |
-|---|---|
-| `mcp__docsbook__list_workspaces` | Find if repo is indexed |
-| `mcp__docsbook__create_workspace` | Add repo to Docsbook if missing |
-| `mcp__docsbook__get_doc_graph` | Get full page list and structure |
-| `mcp__docsbook__read_doc_sections` | Read page content for classification |
-
----
+- [ ] Every page in scope is assigned one of the four Diátaxis types (or flagged as unclassifiable).
+- [ ] All high/critical findings include the specific line or section causing the violation.
+- [ ] Output is valid JSON per the format above, one object per finding.
+- [ ] No page is flagged for violations of a type it was not classified as (e.g., a reference page is not flagged for missing prerequisites).
 
 ## Related Skills
 

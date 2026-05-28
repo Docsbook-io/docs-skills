@@ -1,77 +1,70 @@
 ---
 name: docs-gap-finder
 description: Know exactly which docs page to write next. Cross-references real user signals — failed searches, AI-unanswered questions, popular queries — against your live doc graph and returns the top 7 pages worth creating. Optionally opens a GitHub Issue with a draft outline for each. PRO+.
-category: observability
-requires_plan: pro_plus
-requires_docsbook_mcp: true
-uses_mcp_tools:
-  - get_failed_searches
-  - get_ai_unanswered
-  - get_popular_searches
-  - get_doc_graph
-keywords:
-  - gap
-  - content
-  - missing
-  - analytics
-  - observability
 metadata:
   version: 1.0.0
+  category: observability
+  requires_plan: pro_plus
+  requires_docsbook_mcp: true
+  uses_mcp_tools:
+    - get_failed_searches
+    - get_ai_unanswered
+    - get_popular_searches
+    - get_doc_graph
+  keywords: [gap, content, missing, analytics, observability]
 ---
 
-# docs-gap-finder
+# docs-gap-finder — Content Gap Analysis
 
-Surfaces which documentation pages should be created next, based on real user signals (search misses, unanswered AI-chat questions, top external queries) instead of guesswork. Cross-references these signals against the live doc graph so already-covered topics are filtered out, then returns a prioritized list of the **top 7 pages to create**. Optionally opens a GitHub Issue per gap with a draft outline.
+Surfaces which documentation pages should be created next, based on real user signals (search misses, unanswered AI-chat questions, top external queries) instead of guesswork. Cross-references these signals against the live doc graph so already-covered topics are filtered out, then returns a prioritized list of the **top 7 pages to create**.
 
-## Arguments
+## Workflow
 
-- `$ARGUMENTS.workspace` — string, required. Workspace ID or `owner/repo`.
-- `$ARGUMENTS.period` — string, optional. Analytics window: `7d` | `14d` | `30d` (default: `30d`).
-- `$ARGUMENTS.open_issues` — boolean, optional (default: `false`). If `true`, create one GitHub Issue per gap in the workspace's source repository with a draft outline.
-- `$ARGUMENTS.limit` — number, optional (default: `7`). Max number of gaps to return.
+1. **Pull signals** — call `get_failed_searches`, `get_ai_unanswered`, and `get_popular_searches` in parallel for the target workspace and period. Retain normalized text, frequency, and source signal type for each result.
+2. **Cluster and score** — group near-duplicate queries into topic clusters. Compute priority score: `(failed_search × 3) + (ai_unanswered × 3) + (popular_search × 1)`. Failed searches and unanswered AI questions outweigh popularity — they confirm a gap.
+3. **Cross-reference doc graph** — call `get_doc_graph` and drop clusters already covered by an existing page (title/H1/H2 token overlap ≥ 0.6 with non-stub content). Mark partial matches as `expand_existing`.
+4. **Produce report** — sort surviving clusters by score, take top `limit` (default 7), emit a markdown report with draft outlines per gap.
+5. **Optionally open GitHub Issues** — if `open_issues: true`, create one issue per gap in the source repo with the draft outline and signal data.
 
-## Step 1 — Pull signals from Docsbook MCP
+## Guardrails
 
-Call the following MCP tools in parallel for the target workspace:
+- Requires PRO+ plan — `get_failed_searches` and `get_ai_unanswered` are PRO+ features. Exit early with a plan upgrade message if not on PRO+.
+- Do not create docs files — surface gaps only (or GitHub Issues if `open_issues: true`).
+- A cluster is "covered" only when the matching page has non-trivial content — stubs count as gaps.
+- Run monthly or after major product launches — search-miss patterns shift fastest then.
+- Pairs with `docs-analyze` (quality of existing pages) and `docs-stale-watcher` (freshness) — this skill answers a different question: *what's missing entirely?*
 
-1. `get_failed_searches({ workspace, period })` — internal search queries that returned zero or low-relevance results.
-2. `get_ai_unanswered({ workspace, period })` — AI-chat questions where the model could not answer (no grounded citation, or `chat.no_answer` event fired).
-3. `get_popular_searches({ workspace, period })` — top search queries by volume, including ones that *did* return results (used as demand signal).
+## MCP Tools
 
-For each query/question, retain:
-- normalized text (lowercased, trimmed)
-- frequency / count
-- representative example phrasings
-- source signal type (`failed_search` | `ai_unanswered` | `popular_search`)
+| Tool | Purpose |
+|------|---------|
+| `mcp__docsbook__get_failed_searches` | Search queries with zero/low-relevance results |
+| `mcp__docsbook__get_ai_unanswered` | AI-chat questions the model could not answer |
+| `mcp__docsbook__get_popular_searches` | Top queries by volume (demand signal) |
+| `mcp__docsbook__get_doc_graph` | Full page list for cross-reference filtering |
+| `mcp__docsbook__get_workspace` | Resolve owner/repo for GitHub Issue creation |
 
-## Step 2 — Cluster and score
+## Checklist
 
-Group near-duplicate queries into **topic clusters** (e.g. "how to set custom domain", "custom domain SSL", "docs.mycompany.com setup" → one cluster: *custom domain setup*).
+### Step 1 — Signal collection
 
-Compute a priority score per cluster:
+- [ ] `get_failed_searches` called with target workspace and period
+- [ ] `get_ai_unanswered` called with target workspace and period
+- [ ] `get_popular_searches` called with target workspace and period
+- [ ] Each result retains: normalized text, frequency, representative phrasings, source type
 
-```
-score = (failed_search_count * 3) + (ai_unanswered_count * 3) + (popular_search_count * 1)
-```
+### Step 2 — Clustering
 
-Failed searches and AI-unanswered are weighted higher because they represent *confirmed* gaps (a user actively tried to find an answer and failed). Popular searches add demand magnitude.
+- [ ] Near-duplicate queries grouped into topic clusters
+- [ ] Priority score computed per cluster: `(failed × 3) + (unanswered × 3) + (popular × 1)`
 
-## Step 3 — Cross-reference with the doc graph
+### Step 3 — Coverage check
 
-Call `get_doc_graph({ workspace, format: "toon" })` and drop clusters whose topic is already covered. A cluster is considered "covered" when:
+- [ ] `get_doc_graph` called to build the existing page set
+- [ ] Clusters with covered, non-stub pages dropped
+- [ ] Partial matches marked as `expand_existing` with path to the stub
 
-- An existing page title, H1, or H2 closely matches the cluster topic (case-insensitive token overlap ≥ 0.6), **and**
-- That page has non-trivial content (more than a stub).
-
-Keep clusters where:
-- No matching page exists, **or**
-- A matching page exists but is a stub / only mentions the topic in passing.
-
-For "stub" clusters, mark them as `expand_existing` (pointing to the existing page) rather than `create_new`.
-
-## Step 4 — Produce the prioritized report
-
-Sort surviving clusters by score, take top `limit` (default 7), and emit a markdown report:
+### Step 4 — Report output
 
 ```
 # Documentation gaps — <workspace> (<period>)
@@ -93,28 +86,34 @@ Found N high-signal gaps. Prioritized by user demand.
 ## 2. ...
 ```
 
-The draft outline is generated by the model from the cluster's example queries — it should answer the questions users actually asked.
+- [ ] Top `limit` clusters reported (default 7)
+- [ ] Each gap has a suggested path and draft outline derived from user query phrasings
 
-## Step 5 — Optionally open GitHub Issues
+### Step 5 — GitHub Issues (if `open_issues: true`)
 
-If `$ARGUMENTS.open_issues === true`:
+- [ ] `get_workspace` called to resolve `owner/repo`
+- [ ] One issue created per gap with title `docs: <Cluster topic>`, signal data, draft outline, and `documentation` + `gap-finder` labels
+- [ ] Issue URLs printed at the end of the report
 
-1. Resolve the workspace's `owner/repo` (from `get_workspace` if not given).
-2. For each gap in the final list, create one issue via `gh issue create` (or the GitHub API) with:
-   - **Title:** `docs: <Cluster topic>`
-   - **Body:** the per-gap section from the report (signals + suggested path + draft outline), plus a footer:
+## Arguments
 
-     ```
-     ---
-     Generated by docs-gap-finder. Signal window: <period>. Priority score: <X>.
-     ```
-   - **Labels:** `documentation`, `gap-finder`.
-3. Print the created issue URLs at the end of the report.
+| Argument | Type | Default | Description |
+|---|---|---|---|
+| `workspace` | string | required | Workspace ID or `owner/repo` |
+| `period` | string | `30d` | Analytics window: `7d` / `14d` / `30d` |
+| `open_issues` | boolean | `false` | Create one GitHub Issue per gap |
+| `limit` | number | `7` | Max number of gaps to return |
 
-If `open_issues` is `false`, just print the report — the user decides what to do with it.
+## Acceptance Criteria
 
-## Notes
+- [ ] Skill exits early with a clear message if the workspace is not on PRO+.
+- [ ] All three signal sources have been queried (or explicitly noted as unavailable).
+- [ ] Every reported gap includes a priority score, the source signals that drove it, and a draft outline.
+- [ ] Clusters already covered by non-stub pages are excluded from the report.
 
-- Requires PRO+ plan (the underlying analytics tools `get_failed_searches`, `get_ai_unanswered`, and `get_popular_searches` are PRO+ features).
-- Run this skill monthly or after major product launches — that's when search-miss patterns shift fastest.
-- Pairs well with `docs-analyze` (quality of existing pages) and `docs-stale-watcher` (freshness). This skill answers a different question: *what's missing entirely?*
+## Related Skills
+
+- `docs-analyze` — audit quality of existing pages
+- `docs-create` — scaffold the pages identified as gaps
+- `docs-strategy-plan` — plan documentation from scratch
+- `docs-maintenance` — find stale pages (complementary to gap-finding)

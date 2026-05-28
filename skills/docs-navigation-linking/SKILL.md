@@ -14,32 +14,29 @@ metadata:
 
 # docs-navigation-linking — Navigation and Linking Analysis
 
-## Before Starting
+## Workflow
 
-1. **Get the repository.** Ask for the GitHub repo URL or `{user}/{repo}`.
-2. **Check Docsbook.** Run `mcp__docsbook__list_workspaces` to find the workspace.
-   - If found → use `mcp__docsbook__get_doc_graph` to get all pages and their link graph.
-   - If not found → offer to add it first.
-3. **This is a cross-file skill.** You need the full doc graph to find orphan pages and broken links. Do not run on a single page in isolation.
-4. **Check the graph.** If `get_doc_graph` returns an empty graph or no data → run `mcp__docsbook__reindex_doc_graph` to generate it, then retry. If it returns a stale warning, offer to reindex before proceeding.
+1. **Connect to Docsbook** — run `list_workspaces` to find the workspace, then `get_doc_graph` to get all pages and their link relationships. Reindex if graph is empty or stale. This skill requires the full doc graph — do not run on a single page in isolation.
+2. **Build link sets** — extract all `href` values from every page; compare to the full page list to identify orphans and broken links.
+3. **Apply checklist** — check internal links, orphan pages, anchor text quality, navigation hierarchy, next steps / cross-references, and external links.
+4. **Produce report** — return one JSON issue object per finding, sorted by severity.
 
----
+## Guardrails
 
-## Core Principles
+- Do not edit any documentation files — surface findings only.
+- This skill is cross-file: orphan detection requires the full graph. Never run on a single page in isolation.
+- The root index/home page is expected to have no inbound links from docs — exclude it from orphan detection.
+- Checking external link validity requires HTTP requests — ask the user before making outbound calls.
+- Confirm Tier 1 pages with the user before flagging navigation accessibility as medium vs. high severity.
 
-### 1. Navigation is the product's information architecture
-Bad navigation means users can't find correct answers even when the content exists. Every orphan page, dead link, and vague "click here" erodes trust.
+## MCP Tools
 
-### 2. Orphan pages are invisible pages
-A page with no inbound links won't be discovered through navigation — only through search. If it's not linked, it effectively doesn't exist for most users.
-
-### 3. Anchor text is the link's promise
-"Click here" gives the reader no context. "See the custom domain setup guide" tells the reader exactly what they'll find. Screen readers read anchor text aloud — make it meaningful.
-
-### 4. Hierarchy depth is a UX signal
-A navigation tree 5 levels deep hides content. If users can't reach a page in 3 clicks from the homepage, it's buried.
-
----
+| Tool | Purpose |
+|------|---------|
+| `mcp__docsbook__list_workspaces` | Find workspace |
+| `mcp__docsbook__get_doc_graph` | Full page list, link relationships, structure |
+| `mcp__docsbook__read_doc_sections` | Read page content for anchor text analysis |
+| `mcp__docsbook__reindex_doc_graph` | Refresh stale graph before analysis |
 
 ## Checklist
 
@@ -83,7 +80,13 @@ A navigation tree 5 levels deep hides content. If users can't reach a page in 3 
 - [ ] **No broken external links** — check periodically; flag pages with external links in the report
 - [ ] **External links open in a new tab** (if controlled at markdown level) or are explicitly labeled
 
----
+## Orphan Detection Pattern
+
+Using the doc graph from `mcp__docsbook__get_doc_graph`:
+
+1. Build a set of all page paths: `all_pages = {page.path for page in graph}`
+2. Build a set of linked pages: `linked = {href for page in graph for href in page.links}`
+3. Orphans: `all_pages - linked - {homepage}`
 
 ## What to Look For
 
@@ -99,18 +102,6 @@ A navigation tree 5 levels deep hides content. If users can't reach a page in 3 
 | `medium` | Full URL used as anchor text | grep for `\[https://` |
 | `low` | External link to unstable source (blog post, forum) | Non-official domain in external links |
 | `low` | Related pages not cross-linked | Thematically adjacent pages with no links between them |
-
----
-
-## Orphan Detection Pattern
-
-Using the doc graph from `mcp__docsbook__get_doc_graph`:
-
-1. Build a set of all page paths: `all_pages = {page.path for page in graph}`
-2. Build a set of linked pages: `linked = {href for page in graph for href in page.links}`
-3. Orphans: `all_pages - linked - {homepage}`
-
----
 
 ## Output Format
 
@@ -158,28 +149,12 @@ Using the doc graph from `mcp__docsbook__get_doc_graph`:
 }
 ```
 
----
+## Acceptance Criteria
 
-## Task-Specific Questions
-
-When invoked directly, ask:
-
-1. **Full doc graph or specific section?** Orphan detection requires the full graph.
-2. **External links in scope?** Checking external link validity requires HTTP requests.
-3. **What are the Tier 1 pages?** (quick-start, pricing, auth — confirm with user)
-
----
-
-## Tool Integrations
-
-| Tool | Purpose |
-|---|---|
-| `mcp__docsbook__list_workspaces` | Find workspace |
-| `mcp__docsbook__get_doc_graph` | Full page list, link relationships, structure |
-| `mcp__docsbook__read_doc_sections` | Read page content for anchor text analysis |
-| `mcp__docsbook__reindex_doc_graph` | Refresh stale graph before analysis |
-
----
+- [ ] The full doc graph has been used — orphan detection covers all pages, not a sample.
+- [ ] All broken internal links include the exact file path and target that does not exist.
+- [ ] External link checks are either completed or explicitly noted as skipped (no outbound calls without user confirmation).
+- [ ] Output is valid JSON per the format above, one object per finding.
 
 ## Related Skills
 
