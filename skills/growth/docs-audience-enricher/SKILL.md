@@ -52,6 +52,7 @@ Optional:
 
 | Input | Default | Meaning |
 |---|---|---|
+| `DISTRO_DIR` | _(none)_ | Folder of collected, LLM-enriched distribution signals (e.g. `.distro/_media/`) — real posts/threads from where the audience hangs out, tagged with an analyst layer (`signal_type`, `icp_segment`, `jtbd`, `watering_hole`, `pain_quote`, `competitor_mentioned`, routed by `analyst_for`). Each lens reads its own slice for grounded, citable off-site signal. Omit → lenses reason without external signal. |
 | `LENSES` | `segment,funnel,competitor` | Which of the three lenses to run |
 | `PERIOD` | `30d` | Analytics window for the funnel lens |
 | `FUNNEL_FOCUS` | _(none)_ | A channel to weight extra — e.g. `mcp` to stress-test the AI-agent / MCP entry path |
@@ -60,9 +61,10 @@ Optional:
 
 **Real data beats imagination.** Before any lens reasons, it looks for evidence in this order:
 
-1. **Existing insight reports** — read `.docsbook/insights/latest/*.json` if present (funnel/utm/cohort runs already done by `docs-insights`). Reuse them; don't re-pull.
-2. **Fresh analytics** — if `WORKSPACE` is set and no recent report covers what a lens needs, the lens drives the **docs-insights pipeline** (the `analytics-collector` → `analytics-clusterer` chain) for the slice it needs, rather than calling MCP tools directly. This keeps one analytics path in the codebase.
-3. **Simulation** — only where no data can exist yet (a brand-new channel, the clarity of MCP onboarding for a non-developer, a competitor's unshipped roadmap). Simulated reasoning is **always labelled** `evidence_basis: "simulated"` in its finding and in the prose it writes, so a human can tell a measured claim from a reasoned guess.
+1. **Existing insight reports** — read `.docsbook/insights/latest/*.json` if present (funnel/utm/cohort runs already done by `docs-insights`). Reuse them; don't re-pull. *(on-site behavior)*
+2. **Distribution signals** — if `DISTRO_DIR` is set, each lens reads its own slice (segment → `analyst_for=segment`, competitor → `analyst_for=competitor`, funnel → `analyst_for=funnel`) for measured *off-site* signal: real posts with verbatim `pain_quote`, recurring `watering_hole`, and named `competitor_mentioned`, each citable by `url`. This is the strongest grounding for watering holes, voice-of-customer JTBD, and competitor deltas.
+3. **Fresh analytics** — if `WORKSPACE` is set and no recent report covers what a lens needs, the lens drives the **docs-insights pipeline** (the `analytics-collector` → `analytics-clusterer` chain) for the slice it needs, rather than calling MCP tools directly. This keeps one analytics path in the codebase.
+4. **Simulation** — only where no data can exist yet (a brand-new channel, the clarity of MCP onboarding for a non-developer, a competitor's unshipped roadmap). Simulated reasoning is **always labelled** `evidence_basis: "simulated"` in its finding and in the prose it writes, so a human can tell a measured claim from a reasoned guess.
 
 A lens must never present a simulated claim as if it were measured. When in doubt, label it simulated and lower its `confidence`.
 
@@ -76,9 +78,9 @@ A lens must never present a simulated claim as if it were measured. When in doub
 
    | Lens | Subagent | Reads | Produces |
    |---|---|---|---|
-   | **Segment** — "who are our buyers, really" | `segment-analyst` | ICP/persona section of SOT + the product's own docs + cohort/journey data | Per-segment deep dive: JTBD, watering holes, buying triggers, the entry path that segment actually uses |
-   | **Funnel** — "every way in, and how good each is" | `funnel-analyst` | The funnel/GTM section + funnel/UTM analytics + (simulated) walk of each entry path | Per-entry-point: the path, its friction, a coverage score (0–100%), what would measure it |
-   | **Competitor** — "what changed, who's new" | `competitor-analyst` | The competitor section + web research | A freshness delta: price/feature changes, new entrants, new counter-arguments |
+   | **Segment** — "who are our buyers, really" | `segment-analyst` | ICP/persona section of SOT + the product's own docs + cohort/journey data + `DISTRO_DIR` `analyst_for=segment` signals | Per-segment deep dive: JTBD, watering holes, buying triggers, the entry path that segment actually uses |
+   | **Funnel** — "every way in, and how good each is" | `funnel-analyst` | The funnel/GTM section + funnel/UTM analytics + `DISTRO_DIR` `analyst_for=funnel` signals + (simulated) walk of each entry path | Per-entry-point: the path, its friction, a coverage score (0–100%), what would measure it |
+   | **Competitor** — "what changed, who's new" | `competitor-analyst` | The competitor section + `DISTRO_DIR` `analyst_for=competitor` signals + web research | A freshness delta: price/feature changes, new entrants, new counter-arguments |
 
    Each lens returns (a) a list of findings conforming to `insight.schema.json`, and (b) a **proposed enrichment block** — the markdown it suggests appending to a specific SOT file, with a target file + anchor.
 
@@ -151,6 +153,7 @@ Every `suggested_action` carries `auto_apply_safe: false` for anything that chan
 |---|---|---|---|
 | `sot_dir` | string | required | Path to the product source-of-truth to read and enrich |
 | `workspace` | string | _(none)_ | Docsbook workspace id or `owner/repo` for real analytics |
+| `distro_dir` | string | _(none)_ | Path to collected distribution signals (`.distro/_media/`); each lens reads its `analyst_for` slice |
 | `lenses` | string | `segment,funnel,competitor` | Comma list of lenses to run |
 | `period` | string | `30d` | Analytics window for the funnel lens |
 | `funnel_focus` | string | _(none)_ | A channel to weight extra (e.g. `mcp`) |
