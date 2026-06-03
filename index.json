@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-28T13:12:34.800Z",
+  "generated_at": "2026-06-03T05:42:05.046Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -616,6 +616,36 @@
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-style-tone/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-style-tone/SKILL.md"
+    },
+    {
+      "name": "docs-audience-enricher",
+      "description": "Reasons about who your buyers are, how they enter the product, and who you compete with — then enriches your private product source-of-truth (an about/ folder, a product-marketing context file, or any markdown knowledge base) so future growth work has richer ground to stand on. Runs three lenses — segment (JTBD, watering holes, buying triggers per ICP segment), funnel (every entry path, its friction, how complete it is), competitor (live changes, new entrants, fresh counter-arguments) — grounded in real analytics via the docs-insights pipeline where data exists, simulated only where it does not. Proposes and appends; never touches product code or client docs. Produces an insight JSON report consumable by downstream actor agents.",
+      "category": "growth",
+      "requires_plan": "pro",
+      "keywords": [
+        "growth",
+        "icp",
+        "segments",
+        "persona",
+        "funnel",
+        "entry-points",
+        "competitors",
+        "jtbd",
+        "source-of-truth",
+        "distribution"
+      ],
+      "uses_mcp_tools": [
+        "get_analytics",
+        "get_page_journeys",
+        "query_events",
+        "get_failed_searches",
+        "get_popular_searches",
+        "get_workspace"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/growth/docs-audience-enricher/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/growth/docs-audience-enricher/SKILL.md"
     },
     {
       "name": "docs-engagement-analyzer",

@@ -79,7 +79,7 @@ npx docs-skills list
 
 ## Skills Catalog
 
-**29 skills** across 6 categories. Browse live: [docsbook.io/skills](https://docsbook.io/skills).
+**30 skills** across 7 categories. Browse live: [docsbook.io/skills](https://docsbook.io/skills).
 
 ### Analysis — audit existing documentation
 
@@ -283,6 +283,19 @@ Use when you want to act on real user signal rather than guesswork.
 **What you get:** A prioritized report of the top 7 missing pages, each with a priority score (`failed_search × 3 + ai_unanswered × 3 + popular_search × 1`), the user queries that drove it, a suggested file path, and a draft outline. Optionally opens one GitHub Issue per gap.  
 **Requires:** Docsbook MCP • PRO+ plan  
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-gap-finder/SKILL.md)
+
+---
+
+### Growth — understand who buys, how they enter, and who you compete with
+
+Use when you want your docs to *grow the product*, not just document it — and to keep your private product knowledge base honest about your buyers and your market.
+
+#### `/docs-audience-enricher`
+
+**When to use:** Monthly, or before any growth-strategy pass, when your product source-of-truth (an `about/` folder, a product-marketing context file) has blank spots about who actually buys, how they enter the product, or how the competitive landscape has shifted.  
+**What you get:** Three lenses — *segment* (JTBD, watering holes, buying triggers per ICP segment), *funnel* (every entry path, its friction, a 0–100% coverage score, what would measure it), and *competitor* (live price/feature changes and new entrants since you last wrote) — reasoning grounded in real analytics via the docs-insights pipeline where data exists and clearly labelled as simulated where it can't. It **appends** what it learns back into your knowledge base (additive, reversible, marker-wrapped — never touching your hand-written prose) and emits a schema-validated insight JSON for downstream opportunity-mapping. Proposes and enriches; never touches product code or client docs.  
+**Requires:** Docsbook MCP • PRO plan (falls back to simulation on Free)  
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/growth/docs-audience-enricher/SKILL.md)
 
 ---
 
