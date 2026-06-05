@@ -15,6 +15,7 @@ The actual work is done by the **`docs-site-crawler`** subagent (Haiku, pinned m
 ## Workflow
 
 1. Fetch the sitemap first (`/sitemap.xml`). Fall back to crawling `<a href>` links from the homepage only if the sitemap is missing.
+   - Take the **project name from the site's brand** — its `<title>` or `og:site_name`, normalized (drop taglines like " — Docs"). Use that for the `docs-output/<name>/` folder and the workspace display name. Never invent a name; if the brand is unreadable, ask the user.
 2. Prioritize documentation-relevant paths (`/docs`, `/help`, `/guides`, `/features`) and cap the crawl at ~50 pages.
 3. For each page: strip navigation chrome (`<header>`, `<footer>`, `<nav>`, `<aside>`) before converting HTML to Markdown.
 4. Extract branding tokens from inline `<style>` or `:root` CSS variables (accent color, background, foreground). Detect the color scheme from background luminance. Look for a theme toggle element to decide between pinning the scheme or setting `system`.
@@ -27,6 +28,8 @@ The actual work is done by the **`docs-site-crawler`** subagent (Haiku, pinned m
 - Hard-exclude auth and commerce paths (`/login`, `/signup`, `/auth`, `/checkout`, `/cart`).
 - Cap at 50 pages — sites with hundreds of URLs contain mostly blog noise.
 - Strip navigation chrome before the HTML-to-Markdown pass, not after.
+- The project name comes from the site brand, not from a guess — ask the user if it can't be read from the page.
+- When committing into an existing repo, write pages to the repo **root** (or into an existing `docs/` folder if one is already present) — never create a new top-level `docs/` wrapper for a fresh repo.
 - Write in active voice, second person, sentence-case headings. No filler words ("simply", "just", "easily"). Tag every code block with a language. Use relative links between pages.
 
 ## Acceptance Criteria

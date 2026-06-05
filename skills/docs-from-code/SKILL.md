@@ -15,6 +15,7 @@ The actual work is done by the **`docs-code-crawler`** subagent (Haiku, pinned m
 ## Workflow
 
 1. **Resolve the repo.** Accept `github.com/<owner>/<repo>` or a local path. For GitHub URLs, use `gh repo clone --depth 1` into a temp directory; for local paths, work in place.
+   - Take the **project name from the repo name** (the `<repo>` part after `owner/`), not from a guess. Use it for the `docs-output/<name>/` folder and the workspace display name. If you're working from an unnamed local path with no clear name, ask the user rather than inventing one.
 2. **Detect the project type.** Inspect root files: `package.json` (Node/TS), `pyproject.toml` / `setup.py` (Python), `go.mod` (Go), `Cargo.toml` (Rust), `*.csproj` (.NET). Pick the strongest signal; on conflict, prefer the one with a `lib` / `src` / `pkg` directory.
 3. **Extract the README spine.** Convert the root `README.md` into `docs-output/<name>/README.md`. Split long top-level sections (`## Installation`, `## Usage`, `## API`) into dedicated pages under `getting-started/`, `guides/`, `api/`.
 4. **Enumerate the public API surface.** For Node/TS: read `package.json#exports` and the entry files; for Python: read `__all__` from the top package; for Go: list exported identifiers from each top-level package. Generate one Markdown file per module / package under `api/`.
@@ -28,6 +29,8 @@ The actual work is done by the **`docs-code-crawler`** subagent (Haiku, pinned m
 - Cap output at ~50 pages. If the repo has 200 source files, group by package, not by file.
 - Active voice, second person, sentence-case headings, no filler words. Tag every code block with the language inferred from the file extension.
 - Do not invent API documentation. If a function has no docstring / comment, list its signature only and add `TODO: describe what this does`.
+- The project name comes from the repo name, never invented — ask the user when it can't be determined.
+- When committing into an existing repo, write pages to the repo **root** (`README.md`, `getting-started/…`, `guides/…`, `api/…`), or into an existing `docs/` folder if the repo already has one. Never wrap a fresh repo's pages in a new top-level `docs/` directory.
 - Use relative links between pages (`./guides/configuration.md`, not `https://...`).
 
 ## Acceptance Criteria

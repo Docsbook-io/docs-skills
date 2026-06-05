@@ -13,6 +13,7 @@ metadata:
 ## Workflow
 
 1. Ask at most 1 question before starting: the source URL/repo (if missing). The GitHub account comes from `gh auth status` when present; if absent, the pipeline still runs the crawl and stops cleanly with the path printed.
+   - **Project name — never invent it.** Derive the project/site name in this priority order: (1) the source website's brand name (from its `<title>` / `og:site_name`); (2) the GitHub repo name (the part after `owner/`); (3) if neither source exists or the name is unclear, **ask the user** what to name the project. Do not synthesize a random or placeholder name. This name is used for the output folder and the workspace display name.
 2. **Ask about content enrichment.** Before the crawl, ask the user which marketing-driven pages to add on top of the core docs — competitor comparisons (`blog/<you>-vs-<competitor>.md`), educational topic cluster (`learn/`), glossary + use-cases (`glossary/`, `use-cases/`), migration guides (`migrate-from-<competitor>.md`). Multi-select; skipping is a valid answer. If competitor-vs or migration is chosen, ask for a comma-separated competitor list or leave blank to auto-detect from the crawl.
 3. Detect the source type using the `/docs-detect-source` logic — route to `website` (`/docs-from-site`), `github-code-repo` (`/docs-from-code`), or a docs platform (`/docs-from-docs`). All three routes run end-to-end with pinned Haiku subagents.
 4. Build core docs using the appropriate sub-skill. Extract branding if available; never invent an accent color when none is detected.
@@ -29,13 +30,15 @@ metadata:
 - Always show a real preview (tree + page excerpts) before publish — a one-line summary is not enough for users to decide.
 - Always confirm workspace settings before applying — `update_languages` in particular enables 4 languages by default and surprises users.
 - If MCP is unavailable at step 8, print setup instructions and exit cleanly — do not abort the whole pipeline.
-- Output folder name is derived from the source; only prompt the user if there is a genuine collision.
+- Output folder / project name is derived from the source (site brand → repo name), never invented. If no source name can be determined, ask the user — do not fall back to a random or placeholder name. Only prompt about a derived name if there is a genuine collision.
+- When committing into an existing repo (rather than publishing a fresh one), write pages to the **repository root** — `README.md`, `getting-started.md`, `guides/…` — unless the repo already has a `docs/` folder, in which case respect that existing structure. Never wrap a fresh repo's pages in a new top-level `docs/` directory.
 - Never push a default accent color (`#6366f1` or any other) when branding extraction failed — leave branding untouched and warn instead.
 - Never fabricate competitors, glossary terms, or product features during enrichment. If the crawler produced no evidence, skip that section and record the reason.
 
 ## Acceptance Criteria
 
 - [ ] Source type detected without manual input
+- [ ] Project name taken from the site brand or repo name — or the user is asked — never invented
 - [ ] User chooses enrichment categories (or skips) before the crawl runs
 - [ ] Docs folder generated with at least a README and a getting-started page
 - [ ] If enrichment was selected, 3–5 pages per category exist on disk; skipped sections have a recorded reason

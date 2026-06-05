@@ -14,6 +14,7 @@ The actual work is done by the **`docs-platform-importer`** subagent (Haiku, pin
 
 ## Workflow
 
+0. **Name the project — don't invent it.** Take the name from the source repo name, the existing docs site's brand (`<title>` / `og:site_name`), or the platform config's title field. Use it for the `docs-output/<name>/` folder and the workspace display name. If none is readable, ask the user — never use a placeholder.
 1. **Identify the platform.** Read the repo root for the marker file:
 
    | Marker | Platform |
@@ -46,6 +47,7 @@ The actual work is done by the **`docs-platform-importer`** subagent (Haiku, pin
 - Preserve heading hierarchy — do not flatten H3s into H2s to "look cleaner".
 - Hard-skip `.mdx` files that are pure React (no markdown text) — log to `warnings`, don't error.
 - Keep slugs URL-stable: if the original was `/docs/getting-started/installation`, write to `getting-started/installation.md`, not `installation.md`.
+- When committing into an existing repo, write to the repo **root** (or an existing `docs/` folder if present) — never add a new top-level `docs/` wrapper for a fresh repo. The project name comes from the source, not a guess.
 - Active voice, second person — but only when rewriting your own additions. Imported content stays as-is.
 
 ## Acceptance Criteria

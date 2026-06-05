@@ -15,7 +15,7 @@ The actual work is done by the **`docs-publisher`** subagent (Haiku, pinned mode
 ## Workflow
 
 1. Run `gh auth status` as the first step. If it fails, return manual instructions and exit — do not attempt to recover.
-2. Derive the repo name from the folder name. Only ask the user if there is a genuine collision with an existing repo on their account.
+2. Derive the repo name from the folder name (which upstream skills set from the site brand or source repo — not a guess). If the folder name looks placeholder-ish or generic (e.g. `docs-output`, `untitled`, a timestamp), ask the user for a real name instead of publishing under it. Also ask if there is a genuine collision with an existing repo on their account.
 3. If the folder is not already a git repo, run `git init` and make an initial commit. If `.git` already exists, skip init and reuse the current branch.
 4. Create a new public GitHub repo without `--source`. Add the remote manually, then push `main`.
 5. Use HTTPS with the `gh auth token` for the push, not SSH.

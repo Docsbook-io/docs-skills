@@ -21,7 +21,7 @@ metadata:
    - `migration` — `migrate-from-<competitor>.md` capturing users actively churning from competitors.
    Multi-select. If `competitor-vs` or `migration` is picked, also confirm the competitor list (auto-detected from the crawl, with the user able to add/remove). Confirm the page count per section (default 4, allowed 3–5). Skipping is valid.
 4. Extract branding (accent color, background, theme scheme, favicon). Show detected values and let the user override before writing the branding file.
-5. Before publishing, confirm the GitHub owner and repo name. Update if the user provides a different name.
+5. Before publishing, confirm the GitHub owner and repo name. Propose a name derived from the source (site brand or source repo name) — never a made-up or placeholder name; if none can be derived, ask the user outright. Update if the user provides a different name.
 6. Before configuring Docsbook, ask which optional features to enable (AI chat, multi-language, custom domain, SEO). Apply only the selected ones.
 7. Report the outcome with a summary of every choice made at each checkpoint — including which enrichment categories ran and how many pages each produced.
 
