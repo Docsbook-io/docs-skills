@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-05T11:22:43.741Z",
+  "generated_at": "2026-06-05T14:08:43.813Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -223,6 +223,30 @@
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-audience/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-audience/SKILL.md"
+    },
+    {
+      "name": "docs-branding",
+      "description": "Set a Docsbook workspace's brand — accent/muted colors (light + dark), Google Font, theme, logo, icon, name — by deriving values from real signals instead of inventing them. Pulls the source site's theme-color and og:image, the dominant color of the logo or icon, branding already on the workspace, and brand mentions in the README, then proposes contrast-checked palettes and asks the user to choose. Never writes a value the user did not confirm. Pair with /docs-create, /docs-setup-workspace, /docs-style-tone, or /docs-analyze.",
+      "category": "creation",
+      "keywords": [
+        "branding",
+        "colors",
+        "palette",
+        "logo",
+        "theme",
+        "font",
+        "accent",
+        "design"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "get_workspace",
+        "update_branding"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-branding/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-branding/SKILL.md"
     },
     {
       "name": "docs-content-types",
