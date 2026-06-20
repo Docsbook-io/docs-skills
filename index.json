@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-20T07:00:00.000Z",
+  "generated_at": "2026-06-20T06:55:28.351Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -249,34 +249,6 @@
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-branding/SKILL.md"
     },
     {
-      "name": "docs-first-run-enrichment",
-      "description": "Make a freshly-generated docs site rich and on-brand instead of a bare skeleton. Bundles two passes in sequence — (1) auto-brand from the source project's real signals (README, website theme-color, og:image, logo/favicon, repo name), and (2) enriched-structure generation that produces a multi-section site (getting-started, concepts, guides, reference, hero/landing) from audience, style-tone, content-type, and navigation heuristics. Run during first-generation, before commit_docs. Pair with docs-create.",
-      "category": "creation",
-      "requires_plan": "free",
-      "keywords": [
-        "first-run",
-        "branding",
-        "enrichment",
-        "multi-section",
-        "hero",
-        "auto-brand",
-        "generation",
-        "sellable",
-        "create",
-        "onboarding"
-      ],
-      "uses_mcp_tools": [
-        "get_workspace",
-        "update_branding",
-        "read_website",
-        "scan_github_repo"
-      ],
-      "requires_docsbook_mcp": true,
-      "version": "1.0.0",
-      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-first-run-enrichment/SKILL.md",
-      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-first-run-enrichment/SKILL.md"
-    },
-    {
       "name": "docs-content-types",
       "description": "Stop mixing tutorials with reference. Classifies each page against the Diátaxis framework (tutorial / how-to / reference / explanation), flags misclassified or hybrid pages, and reports structural violations — the #1 reason users can't find answers in your docs.",
       "category": "analysis",
@@ -346,6 +318,31 @@
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-detect-source/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-detect-source/SKILL.md"
+    },
+    {
+      "name": "docs-first-run-enrichment",
+      "description": "Make a freshly-generated docs site rich and on-brand instead of a bare skeleton. Bundles two passes in sequence — (1) auto-brand from the source project's real signals (README, website theme-color, og:image, logo/favicon, repo name), and (2) enriched-structure generation that produces a multi-section site (getting-started, concepts, guides, reference, hero/landing) from audience, style-tone, content-type, and navigation heuristics. Run during first-generation, before commit_docs. Pair with docs-create.",
+      "category": "creation",
+      "keywords": [
+        "first-run",
+        "branding",
+        "enrichment",
+        "multi-section",
+        "hero",
+        "auto-brand",
+        "generation",
+        "sellable"
+      ],
+      "uses_mcp_tools": [
+        "get_workspace",
+        "update_branding",
+        "read_website",
+        "scan_github_repo"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-first-run-enrichment/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-first-run-enrichment/SKILL.md"
     },
     {
       "name": "docs-from-code",
