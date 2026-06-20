@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-06T08:32:50.828Z",
+  "generated_at": "2026-06-20T04:55:56.902Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -321,7 +321,7 @@
     },
     {
       "name": "docs-from-code",
-      "description": "Build Markdown docs from a code repository — README, source tree, exported APIs, examples, comments. Use when the source of truth is GitHub source code rather than a marketing site. Produces docs-output/<name>/ ready for /docs-publish or the full /docs-create pipeline.",
+      "description": "Build Markdown docs from a GitHub URL or code repository — README, source tree, exported APIs, examples, comments. Use when the user provides a GitHub URL, repo URL, or says \"from GitHub\", \"from repo\", \"import repo\". Produces docs-output/<name>/ then publishes to GitHub and configures the Docsbook workspace automatically.",
       "category": "creation",
       "keywords": [
         "code",
@@ -330,10 +330,16 @@
         "source",
         "generate",
         "api",
-        "readme"
+        "readme",
+        "github-url",
+        "from-github",
+        "github-link",
+        "repository-url",
+        "repo-url",
+        "import-repo"
       ],
       "requires_docsbook_mcp": false,
-      "version": "1.0.0",
+      "version": "1.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-from-code/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-from-code/SKILL.md"
     },
@@ -358,7 +364,7 @@
     },
     {
       "name": "docs-from-site",
-      "description": "Spin up Markdown docs from any product website. Crawls the site, extracts content, and produces a clean docs-output/<name>/ folder ready for Docsbook or GitHub — useful when your only source of truth today is the marketing site. Use /docs-create for the full crawl→publish→setup pipeline.",
+      "description": "Spin up Markdown docs from any product website URL. Crawls the site, extracts content, and produces a clean docs-output/<name>/ folder — then publishes to GitHub and configures the Docsbook workspace automatically. Use when the user provides a website URL, site URL, or says \"from website\", \"import site\", \"from URL\".",
       "category": "creation",
       "keywords": [
         "crawl",
@@ -366,10 +372,16 @@
         "site",
         "extract",
         "markdown",
-        "generate"
+        "generate",
+        "website-url",
+        "from-website",
+        "site-url",
+        "url",
+        "import-site",
+        "product-site"
       ],
       "requires_docsbook_mcp": false,
-      "version": "2.0.0",
+      "version": "2.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-from-site/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-from-site/SKILL.md"
     },
@@ -441,6 +453,43 @@
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-i18n/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-i18n/SKILL.md"
+    },
+    {
+      "name": "docs-imagine",
+      "description": "Generate a complete, conversion-optimised docs site from a product name or idea alone — no URL, no repo needed. Invents the right pages, messaging, and structure for your product, then publishes and configures the Docsbook workspace automatically. Use when the user says imagine docs, create docs for X, придумай документацию, invent docs, make up docs, from scratch, no source, for better selling, marketing-grade docs, wow me, or provides only a product name with no URL.",
+      "category": "creation",
+      "keywords": [
+        "imagine",
+        "invent",
+        "idea",
+        "scratch",
+        "from-scratch",
+        "no-source",
+        "selling",
+        "conversion",
+        "marketing",
+        "придумай",
+        "придумать",
+        "generate",
+        "design",
+        "wow",
+        "make-up",
+        "product-name",
+        "just-an-idea"
+      ],
+      "uses_mcp_tools": [
+        "list_workspaces",
+        "create_workspace",
+        "update_branding",
+        "update_ui_settings",
+        "update_navigation",
+        "update_seo",
+        "update_languages"
+      ],
+      "requires_docsbook_mcp": true,
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-imagine/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-imagine/SKILL.md"
     },
     {
       "name": "docs-maintenance",

@@ -1,11 +1,11 @@
 ---
 name: docs-from-code
-description: Build Markdown docs from a code repository — README, source tree, exported APIs, examples, comments. Use when the source of truth is GitHub source code rather than a marketing site. Produces docs-output/<name>/ ready for /docs-publish or the full /docs-create pipeline.
+description: Build Markdown docs from a GitHub URL or code repository — README, source tree, exported APIs, examples, comments. Use when the user provides a GitHub URL, repo URL, or says "from GitHub", "from repo", "import repo". Produces docs-output/<name>/ then publishes to GitHub and configures the Docsbook workspace automatically.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   category: creation
   requires_docsbook_mcp: false
-  keywords: [code, repo, github, source, generate, api, readme]
+  keywords: [code, repo, github, source, generate, api, readme, github-url, from-github, github-link, repository-url, repo-url, import-repo]
 ---
 
 # docs-from-code — Build docs from a code repository
@@ -22,6 +22,10 @@ The actual work is done by the **`docs-code-crawler`** subagent (Haiku, pinned m
 5. **Pull in examples.** If `examples/`, `samples/`, or `demo/` exists, copy each subfolder's README (or generate one from the file tree) into `guides/<example>.md`.
 6. **Read configuration docs.** Look for `.env.example`, `config/*.example.*`, `docker-compose.yml` — generate a `guides/configuration.md` listing variables with descriptions pulled from adjacent comments.
 7. **Write `_branding.json`.** Source: `package.json#author`, GitHub repo description, repo avatar from `https://github.com/<owner>.png`. No accent color is detected here — leave `accentColor` absent so the workspace configurator skips `update_branding` rather than picking a default.
+8. **Preview.** Print the folder tree and excerpts from up to 3 representative pages. Ask the user to confirm before publishing: "Does this look right? Type **yes** to publish, or describe what to change."
+9. **Publish.** Apply `/docs-publish` logic — if `gh` is authenticated and the user confirmed, push to GitHub. If `gh` is NOT authenticated, stop cleanly with `status: crawl_only`, print the local path and the command `/docs-publish <path>` to run after `gh auth login`. Do not error.
+10. **Configure the workspace.** Apply `/docs-setup-workspace` unconditionally after a successful publish — wire branding, UI, navigation, and plan-gated settings via Docsbook MCP. If the MCP transport is unreachable, print the connection command and exit cleanly; the local folder and GitHub URL are already delivered.
+11. **Final report.** Print the local path, GitHub URL (if published), and Docsbook site URL (if workspace configured).
 
 ## Guardrails
 
@@ -32,6 +36,7 @@ The actual work is done by the **`docs-code-crawler`** subagent (Haiku, pinned m
 - The project name comes from the repo name, never invented — ask the user when it can't be determined.
 - When committing into an existing repo, write pages to the repo **root** (`README.md`, `getting-started/…`, `guides/…`, `api/…`), or into an existing `docs/` folder if the repo already has one. Never wrap a fresh repo's pages in a new top-level `docs/` directory.
 - Use relative links between pages (`./guides/configuration.md`, not `https://...`).
+- Always run `/docs-setup-workspace` after publish — do not skip unless MCP transport is unreachable.
 
 ## Acceptance Criteria
 
@@ -41,4 +46,7 @@ The actual work is done by the **`docs-code-crawler`** subagent (Haiku, pinned m
 - [ ] Examples and configuration captured as separate pages when sources exist
 - [ ] `_branding.json` written without a fabricated accent color
 - [ ] No secrets present in the output folder
+- [ ] Preview (tree + page excerpts) printed before any publish prompt
+- [ ] Published to GitHub (or `crawl_only` status printed with local path and instructions)
+- [ ] Docsbook workspace configured (or setup instructions printed if MCP unavailable)
 
