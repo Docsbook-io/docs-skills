@@ -1,6 +1,6 @@
 {
   "name": "docs-skills",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "AI agent skills for documentation analysis, creation, and observability — 36 specialized skills for Claude Code, Cursor, Codex, and other AI coding tools. New in 1.7: docs-first-run-enrichment skill makes freshly-generated docs sites rich and on-brand (auto-brand from source signals + multi-section Diátaxis structure) instead of bare skeletons.",
   "keywords": [
     "documentation",
