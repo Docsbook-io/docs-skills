@@ -4,12 +4,9 @@ description: Run a full audit of your documentation in one command. Orchestrates
 metadata:
   version: 1.0.0
   category: analysis
-  requires_docsbook_mcp: true
-  uses_mcp_tools:
-    - list_workspaces
-    - get_workspace
-    - get_doc_graph
-    - read_doc_sections
+  accelerated_by:
+    - markdown-lsp      # semantic/graph search over the docs folder (self-hosted) — faster & cheaper than grep
+    - docsbook-mcp      # same capability in the cloud if the docs live in a Docsbook workspace
   keywords: [audit, review, analysis, quality, orchestrator, documentation]
 ---
 
@@ -17,7 +14,7 @@ metadata:
 
 ## Workflow
 
-1. **Connect to Docsbook** — run `list_workspaces`, fetch the doc graph via `get_doc_graph({ format: "toon" })`. Offer `create_workspace` if repo is not indexed. Reindex with `reindex_doc_graph` if graph is empty or stale (> 7 days).
+1. **Gather the docs** — get the list of pages in scope and read their content. If a semantic/graph search tool over the markdown is available (self-hosted `markdown-lsp`, or a connected Docsbook workspace), prefer it — faster and cheaper than scanning files; otherwise read the files directly with `grep`/`find`. Prioritize Tier 1 pages (quick-start, pricing, auth, install) first.
 2. **Identify Tier 1 pages** — flag quick-start, pricing, authentication, and installation pages for priority analysis.
 3. **Run sub-skills in parallel** — spawn independent Agent calls for `docs-content-types`, `docs-structure-templates`, `docs-style-tone`, `docs-audience`, `docs-seo`, `docs-accessibility`, `docs-maintenance`. Run `docs-navigation-linking` and `docs-i18n` sequentially (they depend on the full graph and workspace language settings).
 4. **Aggregate and deduplicate** — collect JSON issues from all skills; merge cross-cutting findings (e.g. missing alt = a11y + SEO — report once under higher severity, note both skills).
@@ -29,18 +26,15 @@ metadata:
 - Do not run `docs-i18n` if only one language is enabled in workspace settings.
 - A cross-skill finding (same line flagged by two skills) is reported once under the higher severity.
 - Ask the user to confirm Tier 1 pages before starting — defaults may not match the project.
-- If the graph is stale, offer to reindex before proceeding rather than analyzing stale data silently.
+- If you rely on a cached doc index, make sure it is fresh before proceeding rather than analyzing stale data silently.
 
-## MCP Tools
+## Inputs
 
-| Tool | Purpose |
-|------|---------|
-| `mcp__docsbook__list_workspaces` | Find if repo is indexed in Docsbook |
-| `mcp__docsbook__create_workspace` | Add repo to Docsbook if not yet indexed |
-| `mcp__docsbook__get_workspace` | Get workspace settings (plan, languages) |
-| `mcp__docsbook__get_doc_graph` | Full page tree in compact TOON format |
-| `mcp__docsbook__read_doc_sections` | Read content of specific pages/sections |
-| `mcp__docsbook__reindex_doc_graph` | Refresh graph if stale warning returned |
+This skill needs two things, by whatever means are available:
+- **The list of pages in scope** — a docs folder, a sitemap, or a doc graph.
+- **The content of each page** — read on demand.
+
+> **Acceleration (optional).** Graph/semantic search over the docs makes navigation faster and cheaper than scanning files. You can self-host it with [`markdown-lsp`](https://github.com/Docsbook-io/markdown-lsp), or get the same capability in the cloud by connecting a Docsbook workspace. With nothing connected, plain file reads and `grep`/`find` work fine.
 
 ## Available Analysis Skills
 
@@ -59,15 +53,11 @@ metadata:
 
 ## Checklist
 
-### Step 1 — Connect to Docsbook
+### Step 1 — Gather the docs
 
-```
-mcp__docsbook__list_workspaces                          → find the workspace
-mcp__docsbook__get_workspace                            → get workspace details (plan, languages, settings)
-mcp__docsbook__get_doc_graph({ format: "toon" })        → get full page tree (compact TOON format)
-```
+Get the tree of pages in scope by whatever means are available — a graph/search tool over the markdown, or a plain walk of the docs folder. Then read the content of the pages you need on demand, addressing each by its link or path.
 
-The graph is returned in TOON format — a compact tree notation:
+If a tool returns the tree as a compact tree notation (e.g. TOON), it looks like this:
 ```
 docs/
   quick-start.md [Quick Start] @quick-start
@@ -77,15 +67,9 @@ docs/
     custom-domain.md [Custom Domain] @guides/custom-domain
       #dns-setup @guides/custom-domain/dns-setup
 ```
-Use `@ref` values as `canonical_ref` arguments when calling `mcp__docsbook__read_doc_sections`.
+Use the per-page references (e.g. `@quick-start`) to read individual pages/sections; with a plain folder walk, the file path serves the same role.
 
-If the workspace doesn't exist yet:
-```
-mcp__docsbook__create_workspace({
-  github_owner: "{user}",
-  github_repo: "{repo}"
-})
-```
+If there are no docs yet, generate them first — see `/docs-create`.
 
 ### Step 2 — Identify Tier 1 pages
 
@@ -112,8 +96,8 @@ Agent(docs-maintenance)         → check stale content, TODOs
 ```
 
 Run sequentially when one depends on another:
-- `docs-navigation-linking` needs the full doc graph (from Step 1)
-- `docs-i18n` needs `get_workspace` language settings first
+- `docs-navigation-linking` needs the full doc tree (from Step 1)
+- `docs-i18n` needs the workspace language settings first, if available
 
 ### Step 4 — Aggregate results
 

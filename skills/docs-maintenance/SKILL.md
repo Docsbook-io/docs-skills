@@ -4,11 +4,9 @@ description: Surface the docs that are quietly lying to your users. A quarterly-
 metadata:
   version: 1.0.0
   category: analysis
-  requires_docsbook_mcp: true
-  uses_mcp_tools:
-    - list_workspaces
-    - get_doc_graph
-    - read_doc_sections
+  accelerated_by:
+    - markdown-lsp      # semantic/graph search over the docs folder (self-hosted) — faster & cheaper than grep
+    - docsbook-mcp      # same capability in the cloud if the docs live in a Docsbook workspace
   keywords: [maintenance, stale, freshness, deprecated, todo, ownership]
 ---
 
@@ -16,27 +14,26 @@ metadata:
 
 ## Workflow
 
-1. **Connect to Docsbook** — run `list_workspaces` to find the workspace, then `get_doc_graph` to get all pages with timestamps. Reindex if graph is empty or stale.
+1. **Gather the docs** — get the list of pages in scope (with timestamps if the source provides them) and read their content. If a semantic/graph search tool over the markdown is available (self-hosted `markdown-lsp`, or a connected Docsbook workspace), prefer it — faster and cheaper than scanning files; otherwise read the files directly with `grep`/`find`.
 2. **Set staleness threshold** — confirm with the user: default is 90 days for Tier 1 pages, 365 days for others.
-3. **Apply checklist** — scan pages via `read_doc_sections` for TODO/FIXME, "coming soon", past dates, deprecated mentions, missing ownership, and pricing consistency. Run bash scripts on local repo when available for file-age and code consistency checks.
+3. **Apply checklist** — scan pages for TODO/FIXME, "coming soon", past dates, deprecated mentions, missing ownership, and pricing consistency. Run bash scripts on local repo when available for file-age and code consistency checks.
 4. **Produce report** — return one JSON issue object per finding, sorted by severity.
 
 ## Guardrails
 
 - Do not run this skill on a single freshly-created page — it is designed for whole-tree audits.
 - Do not edit any documentation files — surface findings only.
-- When local repo access is unavailable, use `read_doc_sections` for content-level signals; note which file-age checks were skipped.
+- When local repo access is unavailable, read page content through whatever doc source you have for content-level signals; note which file-age checks were skipped.
 - Deprecated content should NOT be removed immediately — flag for a banner + migration path, not deletion.
 - Confirm with the user which pages are Tier 1 before applying the stricter 90-day threshold.
 
-## MCP Tools
+## Inputs
 
-| Tool | Purpose |
-|------|---------|
-| `mcp__docsbook__list_workspaces` | Find workspace |
-| `mcp__docsbook__get_doc_graph` | Page list with `last_updated` timestamps |
-| `mcp__docsbook__read_doc_sections` | Scan content for maintenance signals |
-| `mcp__docsbook__reindex_doc_graph` | Refresh stale graph before analysis |
+This skill needs two things, by whatever means are available:
+- **The list of pages in scope** — a docs folder, a sitemap, or a doc graph.
+- **The content of each page** — read on demand.
+
+> **Acceleration (optional).** Graph/semantic search over the docs makes navigation faster and cheaper than scanning files. You can self-host it with [`markdown-lsp`](https://github.com/Docsbook-io/markdown-lsp), or get the same capability in the cloud by connecting a Docsbook workspace. With nothing connected, plain file reads and `grep`/`find` work fine.
 
 ## Checklist
 
@@ -47,7 +44,7 @@ metadata:
 - [ ] **No TODO / FIXME / XXX** in published documentation
 - [ ] **No "this feature is in beta"** if it shipped to GA
 - [ ] **Version numbers are current** — docs mentioning v1 when product is at v3
-- [ ] **Pricing matches production** — check against `src/utils/constants.ts` if local access
+- [ ] **Pricing matches production** — check docs against your app's source-of-truth for prices (a constants file, config, or pricing API) if you have local access
 
 ### Deprecated Content
 
@@ -65,9 +62,9 @@ metadata:
 
 ### Code/Docs Consistency
 
-- [ ] **API endpoints mentioned in docs exist** — check against `src/app/api/` routes
+- [ ] **API endpoints mentioned in docs exist** — check against the codebase's route definitions
 - [ ] **CLI commands work** on the current version
-- [ ] **Prices in docs match `constants.ts`** — `proLifetime: 150`, `proPlusMonthly: 29`
+- [ ] **Prices in docs match the app's pricing source-of-truth**
 - [ ] **Code examples compile** — at minimum, verify syntax is valid
 
 ## Severity Table
@@ -80,7 +77,7 @@ metadata:
 | `high` | Past date presented as future promise | "by end of 2024", "Q1 2025" |
 | `high` | Old version mentioned prominently | `v1` when current is `v3` |
 | `high` | Deprecated page with no migration path | "deprecated" with no "use instead" |
-| `high` | Pricing in docs doesn't match constants.ts | Compare values |
+| `high` | Pricing in docs doesn't match the app's pricing source-of-truth | Compare values |
 | `medium` | No `last_reviewed` in frontmatter | Missing field |
 | `medium` | Any page not updated in 365+ days | Timestamp check |
 | `medium` | API endpoint in docs doesn't exist in codebase | Route check |
@@ -131,23 +128,23 @@ grep -rln -i "deprecated\|no longer supported" docs/ | while read file; do
 done
 ```
 
-### Pricing consistency (Docsbook-specific)
+### Pricing consistency
 
 ```bash
-# Check docs pricing vs constants.ts
-grep -rE '\$[0-9]+' docs/ | grep -iE "pro|lifetime|monthly|plan"
-grep -E 'proLifetime|proPlusMonthly' src/utils/constants.ts
+# Find prices quoted in the docs
+grep -rE '\$[0-9]+' docs/ | grep -iE "price|plan|lifetime|monthly"
+# then compare against your app's pricing source-of-truth (constants file / config / API)
 ```
 
-## Docsbook MCP-Based Detection
+## Detecting signals without local files
 
-When local repo access is unavailable, use `mcp__docsbook__read_doc_sections` to detect content-level signals:
+When local repo access is unavailable, read page content through whatever doc source you have (a doc graph/search tool, a sitemap, the live site) to detect content-level signals:
 
 - **TODO/FIXME**: scan section text for these strings
 - **Past dates**: regex for years like `2024`, `2023` in promise context
 - **"Coming soon"**: string search across all sections
 - **Deprecated without migration**: find "deprecated" then check if "use instead" or a link follows within 3 lines
-- **Page freshness**: use `last_updated` field from `get_doc_graph` if available
+- **Page freshness**: use the page's `last_updated` metadata if the source provides it
 
 ## Output Format
 
@@ -168,8 +165,8 @@ When local repo access is unavailable, use `mcp__docsbook__read_doc_sections` to
   "line": 45,
   "severity": "critical",
   "rule": "outdated-pricing",
-  "found": "Page shows 'PRO $99 lifetime' but constants.ts contains proLifetime: 150. Documentation pricing is out of sync with production.",
-  "suggestion": "Update docs/pricing.md to $150. Add to release checklist: 'Update docs/pricing.md if pricing changed'. Long-term: inject prices from constants.ts at build time."
+  "found": "Page shows '$OLD' but the app's pricing source-of-truth says '$CURRENT'. Documentation pricing is out of sync with production.",
+  "suggestion": "Update docs/pricing.md to $CURRENT. Add to release checklist: 'Update docs/pricing.md if pricing changed'. Long-term: inject prices from your pricing source-of-truth at build time."
 }
 ```
 

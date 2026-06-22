@@ -34,7 +34,7 @@ metadata:
 |------|---------|
 | None required | This skill is a guided interview — no Docsbook MCP tools needed |
 
-> If the user provides a Docsbook workspace, optionally call `list_workspaces` + `get_doc_graph` to see what already exists and skip redundant questions.
+> If the user already has published docs (a folder, a sitemap, or a connected Docsbook workspace), optionally read the existing page tree first to see what's there and skip redundant questions.
 
 ## Checklist
 

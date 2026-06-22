@@ -4,12 +4,9 @@ description: Stop letting translations rot silently. Audits multilingual docs fo
 metadata:
   version: 1.0.0
   category: analysis
-  requires_docsbook_mcp: true
-  uses_mcp_tools:
-    - list_workspaces
-    - get_workspace
-    - get_doc_graph
-    - read_doc_sections
+  accelerated_by:
+    - markdown-lsp      # semantic/graph search over the docs folder (self-hosted) — faster & cheaper than grep
+    - docsbook-mcp      # same capability in the cloud + language settings, if the docs live in a Docsbook workspace
   keywords: [i18n, translation, localization, multilingual, hreflang, languages]
 ---
 
@@ -17,8 +14,8 @@ metadata:
 
 ## Workflow
 
-1. **Check language configuration** — run `get_workspace` and check `enabled_languages`. If only one language is enabled, skip this skill entirely.
-2. **Connect to Docsbook** — run `list_workspaces` to find the workspace, then `get_doc_graph` to get all pages across all languages. Reindex if graph is empty or stale.
+1. **Check language setup** — find which languages are enabled and which pages exist per language. If the docs are published on a platform with language settings (e.g. a Docsbook workspace), read them from there; otherwise infer from the folder structure (e.g. `docs/en`, `docs/fr`) or frontmatter. If only one language is in scope, skip this skill entirely.
+2. **Gather the docs** — get the list of pages across all languages and read their content. If a semantic/graph search tool over the markdown is available (self-hosted `markdown-lsp`, or a connected Docsbook workspace), prefer it — faster and cheaper than scanning files; otherwise read the files directly with `grep`/`find`.
 3. **Apply checklist** — check language configuration, content parity by tier, navigation/UI translation, translation content rules, format localization, RTL handling, translation freshness, and SEO for multilingual.
 4. **Produce report** — return one JSON issue object per finding, sorted by severity.
 
@@ -31,16 +28,15 @@ metadata:
 - Code inside code blocks is never translated — only surrounding prose and code comments. Flag translated code as an error.
 - Brand and product names (e.g., "Docsbook", "GitHub") are never translated.
 
-## MCP Tools
+## Inputs
 
-| Tool | Purpose |
-|------|---------|
-| `mcp__docsbook__list_workspaces` | Find workspace |
-| `mcp__docsbook__get_workspace` | Get enabled languages and settings |
-| `mcp__docsbook__get_doc_graph` | Full page list across all languages |
-| `mcp__docsbook__read_doc_sections` | Read translation content |
-| `mcp__docsbook__update_languages` | Enable/disable languages (PRO) |
-| `mcp__docsbook__reindex_doc_graph` | Refresh graph if empty or stale |
+This skill needs two things, by whatever means are available:
+- **The list of pages in scope** — a docs folder, a sitemap, or a doc graph.
+- **The content of each page** — read on demand.
+
+> **Acceleration (optional).** Graph/semantic search over the docs makes navigation faster and cheaper than scanning files. You can self-host it with [`markdown-lsp`](https://github.com/Docsbook-io/markdown-lsp), or get the same capability in the cloud by connecting a Docsbook workspace. With nothing connected, plain file reads and `grep`/`find` work fine.
+
+> Enabling/disabling languages is a publishing-platform action (e.g. Docsbook PRO); this skill only reports parity and freshness — apply language changes where you publish.
 
 ## Checklist
 
@@ -141,7 +137,7 @@ Checks:
   "severity": "critical",
   "rule": "missing-tier1-translation",
   "found": "Russian language is enabled, but docs/ru/quick-start.md does not exist. Tier 1 page missing for an enabled language.",
-  "suggestion": "Translate docs/en/quick-start.md → docs/ru/quick-start.md. Use AI translation via Docsbook's translate API with human review. Alternative: temporarily disable Russian until the translation is ready."
+  "suggestion": "Translate docs/en/quick-start.md → docs/ru/quick-start.md. Use your translation pipeline (AI translation, a translation service, or manual) with human review. Alternative: temporarily disable Russian until the translation is ready."
 }
 ```
 

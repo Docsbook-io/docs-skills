@@ -28,10 +28,12 @@ AI agents are powerful — but they have no shared standard for **what good docu
 
 | Before | After |
 |--------|-------|
-| Agent hallucinates doc structure | Agent reads live graph via Docsbook MCP |
+| Agent hallucinates doc structure | Agent works from your real docs — files, sitemap, or doc graph |
 | One-off prompts per project | Reusable skill catalog, works everywhere |
 | No acceptance criteria | Every skill ships with pass/fail checklist |
 | Hours of prompting per audit | `/docs-analyze` → unified report in minutes |
+
+Skills describe **what the agent needs and how to think** — not which tool to call. They run on a bare agent (`grep`/`find` over a docs folder) and get **faster and cheaper** when an optional graph/semantic search tool is connected. See [Optional acceleration](#optional-acceleration).
 
 ---
 
@@ -89,7 +91,7 @@ Run when your docs exist but you're not sure they're correct, readable, or compl
 
 **When to use:** You want a full health check of your docs in one command — instead of running 10 audits separately. Run before a major release or after a big restructure.  
 **What you get:** A single prioritized Markdown report combining SEO, accessibility, style, structure, i18n, media and maintenance findings — ranked by severity (Critical / High / Medium / Low), with a Quick Wins list of fixes that take under 30 minutes.  
-**Requires:** Docsbook MCP • Free plan  
+**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-analyze/SKILL.md)
 
 ---
@@ -98,7 +100,7 @@ Run when your docs exist but you're not sure they're correct, readable, or compl
 
 **When to use:** Users say they can't find answers, or your docs feel confusing — a sign that tutorials, how-to guides, reference and explanation are mixed together on the same pages.  
 **What you get:** Every page classified against the Diátaxis framework (tutorial / how-to / reference / explanation), with a JSON issue list flagging misclassified pages, hybrid pages that mix types, and specific split or rewrite suggestions.  
-**Requires:** Docsbook MCP • Free plan  
+**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-content-types/SKILL.md)
 
 ---
@@ -107,7 +109,7 @@ Run when your docs exist but you're not sure they're correct, readable, or compl
 
 **When to use:** Before merging a batch of new pages, or when running a structural audit to make sure every page has a title, description, correct heading hierarchy, and tagged code blocks.  
 **What you get:** A JSON report per page listing missing frontmatter fields, heading-level skips (H2 → H4), code blocks without a language tag, and missing prerequisites sections — sorted by severity, with the exact fix for each.  
-**Requires:** Docsbook MCP • Free plan  
+**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-structure-templates/SKILL.md)
 
 ---
@@ -116,7 +118,7 @@ Run when your docs exist but you're not sure they're correct, readable, or compl
 
 **When to use:** When you receive feedback that your docs feel corporate, condescending or hard to follow. Run after onboarding a new writer or before a public launch.  
 **What you get:** A per-page JSON issue list flagging passive voice in instructions, filler words ("simply", "just"), marketing adjectives without specifics ("powerful", "seamless"), oversized sentences, and terminology inconsistencies — each with a before/after rewrite suggestion.  
-**Requires:** Docsbook MCP • Free plan  
+**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-style-tone/SKILL.md)
 
 ---
@@ -125,7 +127,7 @@ Run when your docs exist but you're not sure they're correct, readable, or compl
 
 **When to use:** When junior developers bounce off a page, or when a single page is trying to serve beginners and experts at the same time.  
 **What you get:** Every page assigned an audience level (beginner / expert / mixed), with JSON findings for undefined jargon on beginner pages, prerequisite mismatches, and mixed-audience pages — each with a concrete split or rewrite recommendation.  
-**Requires:** Docsbook MCP • Free plan  
+**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-audience/SKILL.md)
 
 ---
@@ -134,7 +136,7 @@ Run when your docs exist but you're not sure they're correct, readable, or compl
 
 **When to use:** After a docs restructure, when users report dead ends, or as part of a quarterly audit to catch orphan pages and broken internal links.  
 **What you get:** A full cross-file JSON report listing broken internal links (with the exact missing path), orphan pages with zero inbound links, "click here" anchor text violations, navigation depth over 3 levels, and tutorials missing a Next Steps section.  
-**Requires:** Docsbook MCP • Free plan  
+**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-navigation-linking/SKILL.md)
 
 ---
@@ -143,7 +145,7 @@ Run when your docs exist but you're not sure they're correct, readable, or compl
 
 **When to use:** When organic traffic is flat, after a site migration, or before launching a new docs section you want to rank in Google and appear in AI Overviews.  
 **What you get:** A JSON report covering missing or duplicate titles/descriptions, heading hierarchy violations, orphan pages with no link equity, images without alt text, and an optional AI Overviews / GEO checklist — all sorted by SEO impact.  
-**Requires:** Docsbook MCP • Free plan  
+**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-seo/SKILL.md)
 
 ---
@@ -152,7 +154,7 @@ Run when your docs exist but you're not sure they're correct, readable, or compl
 
 **When to use:** Before a public launch, for WCAG 2.1 AA compliance, or when a user reports that your docs are difficult to use with a screen reader.  
 **What you get:** A JSON issue list per page covering missing alt text on informative images, heading hierarchy skips, vague link anchor text ("click here"), code blocks without language tags, and color-only meaning in prose — each with the exact WCAG criterion and a specific fix.  
-**Requires:** Docsbook MCP • Free plan  
+**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-accessibility/SKILL.md)
 
 ---
@@ -161,7 +163,7 @@ Run when your docs exist but you're not sure they're correct, readable, or compl
 
 **When to use:** When enabling a new language, after a large content update, or when you suspect translations are lagging behind the English source. Automatically skipped if only one language is enabled.  
 **What you get:** A JSON report of missing Tier 1 page translations, stale translations more than 30 days behind the source, translated code blocks (a syntax error risk), broken hreflang tags, and un-localized date/number formats — covering all 15 languages Docsbook supports.  
-**Requires:** Docsbook MCP • Free plan  
+**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-i18n/SKILL.md)
 
 ---
@@ -170,7 +172,7 @@ Run when your docs exist but you're not sure they're correct, readable, or compl
 
 **When to use:** When images are loading slowly, screenshots look outdated after a UI redesign, or before a public launch to catch missing alt text and generic filenames.  
 **What you get:** A JSON issue list covering informative images without alt text, generic filenames (`screenshot1.png`), JPG used for UI screenshots (degrades text), video files committed to the repo, and pages with screenshots not updated in 180+ days — with a specific fix for each.  
-**Requires:** Docsbook MCP • Free plan  
+**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-media/SKILL.md)
 
 ---
@@ -178,8 +180,8 @@ Run when your docs exist but you're not sure they're correct, readable, or compl
 #### `/docs-maintenance`
 
 **When to use:** As a quarterly audit, or when users report that your docs reference features, prices or API endpoints that no longer exist.  
-**What you get:** A whole-tree JSON report flagging TODO/FIXME in published docs, "coming soon" banners older than 30 days, past dates presented as future promises, deprecated pages without migration paths, and pricing values out of sync with `constants.ts` — each marked critical/high/medium/low.  
-**Requires:** Docsbook MCP • Free plan  
+**What you get:** A whole-tree JSON report flagging TODO/FIXME in published docs, "coming soon" banners older than 30 days, past dates presented as future promises, deprecated pages without migration paths, and pricing values out of sync with your app's pricing source-of-truth — each marked critical/high/medium/low.  
+**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-maintenance/SKILL.md)
 
 ---
@@ -268,7 +270,7 @@ Use after generating docs locally to push them live and configure the workspace.
 
 **When to use:** After setting up a Docsbook workspace, to give every AI agent in the repo — Claude Code, Cursor, Codex, Copilot, Gemini CLI — consistent context about your docs site from the very first session.  
 **What you get:** An `AGENTS.md` written to repo root (or a managed section updated if it already exists) containing the docs URL, enabled languages, AI chat status, top-level folder structure, and the list of available `/docs-skills` commands.  
-**Requires:** Docsbook MCP • Free plan  
+**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-generate-agents-md/SKILL.md)
 
 ---
@@ -385,28 +387,40 @@ Install once, run forever.
 
 ## How It Works
 
-Skills use the **Docsbook MCP server** to read the live documentation graph — pages, headings, sections, link relationships — without cloning the repo locally.
+Each skill states a **need** ("get the list of pages in scope and read their content") and **how to reason about it** — never a hardcoded tool call. The agent satisfies the need with whatever it has connected:
 
 ```
 AI Tool (Claude Code / Cursor / Codex / Copilot)
         │
         ▼
-  docs-skill runs
+  docs-skill runs  ──▶  states the need + how to think
         │
-        ▼
-  Docsbook MCP  ──▶  GitHub repo docs/  +  webhooks  +  workspace settings
+        ├─ nothing connected ──▶  grep / find over the docs folder
+        ├─ markdown-lsp       ──▶  semantic / graph search, self-hosted
+        └─ Docsbook MCP       ──▶  same capability in the cloud + workspace settings
         │
         ▼
   Audit report / generated files / configured workspace
 ```
 
-**One-time MCP setup** (optional — only needed for skills that read the doc graph):
+The skill never names the tool. The agent sees what's available and picks the cheapest path that satisfies the need.
+
+### Optional acceleration
+
+Most analysis skills need to **list the pages in scope** and **read their content**. That works on a bare agent with `grep`/`find`. It gets faster and cheaper when graph/semantic search over the docs is available — two interchangeable transports for the same capability:
+
+| Path | What you get | Cost |
+|------|--------------|------|
+| **Nothing** (default) | `grep`/`find` over the docs folder | free, works everywhere |
+| **`markdown-lsp`** (self-hosted) | semantic + graph search, runs locally — [repo](https://github.com/Docsbook-io/markdown-lsp) | free, you host it |
+| **Docsbook MCP** (cloud) | the same search in the cloud, plus workspace settings (branding, languages, analytics) | optional account |
 
 ```bash
+# Optional cloud transport
 mcp add --transport http https://docsbook.io/api/mcp/server
 ```
 
-No account required for reading public repos. Sign up at [docsbook.io](https://docsbook.io) for PRO features (doc graph, section reading, AI tuning, webhooks).
+> The cloud transport runs `markdown-lsp` for you — so self-hosted and cloud are the **same capability**, your choice of where it runs. The cloud path is still maturing; the self-hosted path and the bare `grep`/`find` fallback always work. A handful of skills are intentionally about a hosted platform (`/docs-setup-workspace`, `/docs-branding`, the webhook-based automation skills) and genuinely need it — they say so and fall back to printed instructions when it's absent.
 
 ---
 
@@ -433,7 +447,7 @@ The tool searches by name + description + keywords and returns matching SKILL.md
 ✅ **29 reusable skills** — analysis, creation, publishing, observability, planning, automation  
 ✅ **Acceptance Criteria** — every skill ships with a pass/fail checklist  
 ✅ **Agent-agnostic** — Claude Code, Cursor, Copilot, Codex  
-✅ **Live doc graph** — reads structure via Docsbook MCP, no repo clone needed  
+✅ **Tool-agnostic** — describes the *need*, not the tool; runs on bare `grep`/`find`, accelerates with `markdown-lsp` or Docsbook MCP  
 ✅ **Offline-first** — works after `npx docs-skills install`, no network required  
 ✅ **Open source** — fork, extend, contribute back  
 
