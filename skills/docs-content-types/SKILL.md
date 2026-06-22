@@ -4,11 +4,9 @@ description: Stop mixing tutorials with reference. Classifies each page against 
 metadata:
   version: 1.0.0
   category: analysis
-  requires_docsbook_mcp: true
-  uses_mcp_tools:
-    - list_workspaces
-    - get_doc_graph
-    - read_doc_sections
+  accelerated_by:
+    - markdown-lsp      # semantic/graph search over the docs folder (self-hosted) — faster & cheaper than grep
+    - docsbook-mcp      # same capability in the cloud if the docs live in a Docsbook workspace
   keywords: [diataxis, tutorial, how-to, reference, explanation, content-type]
 ---
 
@@ -16,10 +14,9 @@ metadata:
 
 ## Workflow
 
-1. **Connect to Docsbook** — run `list_workspaces` to find the workspace, then `get_doc_graph` to get all pages. Offer to add the repo if not indexed. Reindex if graph is empty or stale.
-2. **Read page content** — use `read_doc_sections` for each page to analyze structure and writing style.
-3. **Classify each page** — determine what Diátaxis type the page *is* (tutorial / how-to / reference / explanation), then check whether it follows that type's rules correctly.
-4. **Produce report** — return one JSON issue object per finding; group by page.
+1. **Gather the docs** — get the list of pages in scope and read their content. If a semantic/graph search tool over the markdown is available (self-hosted `markdown-lsp`, or a connected Docsbook workspace), prefer it — it's faster and cheaper than scanning files; otherwise read the files directly with `grep`/`find`. Prioritize Tier 1 pages (quick-start, pricing, auth, install) first.
+2. **Classify each page** — determine what Diátaxis type the page *is* (tutorial / how-to / reference / explanation), then check whether it follows that type's rules correctly.
+3. **Produce report** — return one JSON issue object per finding; group by page.
 
 ## Guardrails
 
@@ -28,15 +25,13 @@ metadata:
 - A single page that covers the same topic across all four types is a problem; a single topic appearing in four separate pages (one per type) is correct.
 - Confirm with the user whether the project uses a naming convention for types (e.g., `/guides/` = how-to, `/concepts/` = explanation) before flagging navigation issues.
 
-## MCP Tools
+## Inputs
 
-| Tool | Purpose |
-|------|---------|
-| `mcp__docsbook__list_workspaces` | Find if repo is indexed |
-| `mcp__docsbook__create_workspace` | Add repo to Docsbook if missing |
-| `mcp__docsbook__get_doc_graph` | Get full page list and structure |
-| `mcp__docsbook__read_doc_sections` | Read page content for classification |
-| `mcp__docsbook__reindex_doc_graph` | Refresh graph if empty or stale |
+This skill needs two things, by whatever means are available:
+- **The list of pages in scope** — a docs folder, a sitemap, or a doc graph.
+- **The content of each page** — read on demand.
+
+> **Acceleration (optional).** Graph/semantic search over the docs makes navigation faster and cheaper than scanning files. You can self-host it with [`markdown-lsp`](https://github.com/Docsbook-io/markdown-lsp), or get the same capability in the cloud by connecting a Docsbook workspace. With nothing connected, plain file reads and `grep`/`find` work fine.
 
 ## Checklist
 

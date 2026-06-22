@@ -4,11 +4,9 @@ description: Make your docs rankable — by Google and by AI. A documentation-aw
 metadata:
   version: 1.0.0
   category: analysis
-  requires_docsbook_mcp: true
-  uses_mcp_tools:
-    - list_workspaces
-    - get_doc_graph
-    - read_doc_sections
+  accelerated_by:
+    - markdown-lsp      # semantic/graph search over the docs folder (self-hosted) — faster & cheaper than grep
+    - docsbook-mcp      # same capability in the cloud if the docs live in a Docsbook workspace
   keywords: [seo, meta, titles, descriptions, keywords, geo, ai-overviews]
 ---
 
@@ -16,10 +14,9 @@ metadata:
 
 ## Workflow
 
-1. **Connect to Docsbook** — run `list_workspaces` to find the workspace, then `get_doc_graph` to get all pages with titles and metadata. Skip if docs are private or internal. Reindex if graph is empty or stale.
-2. **Read pages** — use `read_doc_sections` to access frontmatter, headings, and content for each page.
-3. **Apply checklist** — check titles, descriptions, heading structure, body content, images, internal links (topic clusters), URL/file path conventions, and AI Overviews / GEO criteria.
-4. **Produce report** — return one JSON issue object per finding, sorted by severity. Cross-page checks (duplicate titles, orphan pages) require the full graph.
+1. **Gather the docs** — get the list of pages in scope (with titles and frontmatter) and read their content. If a semantic/graph search tool over the markdown is available (self-hosted `markdown-lsp`, or a connected Docsbook workspace), prefer it — faster and cheaper than scanning files; otherwise read the files directly with `grep`/`find`. Prioritize Tier 1 pages (quick-start, pricing, auth, install) first. Skip if docs are private or internal.
+2. **Apply checklist** — check titles, descriptions, heading structure, body content, images, internal links (topic clusters), URL/file path conventions, and AI Overviews / GEO criteria.
+3. **Produce report** — return one JSON issue object per finding, sorted by severity. Cross-page checks (duplicate titles, orphan pages) require the full graph.
 
 ## Guardrails
 

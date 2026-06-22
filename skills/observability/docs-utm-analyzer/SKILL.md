@@ -35,7 +35,7 @@ Marketing posts promise X. Users arrive with `?utm_campaign=launch-hn` expecting
 
 ## Workflow (4-stage pipeline)
 
-This skill is a thin orchestrator over four pinned subagents that already live in the `docs-insights` Claude Code plugin. If those subagents are not installed, instruct the user to `/plugin install docs-insights@docs-claude-plugins` first.
+This skill is a thin orchestrator over four pinned subagents. If those subagents are not installed, see the [docs-subagents README](https://github.com/Docsbook-io/docs-subagents) for setup.
 
 ### Stage 1 — Collect (Haiku)
 
@@ -70,7 +70,7 @@ Invoke `analytics-reporter`:
 
 ```
 CLUSTERED: <path from stage 2>
-SCHEMA: <plugin-root>/schemas/insight.schema.json
+SCHEMA: .docsbook/schemas/insight.schema.json
 OUTDIR: .docsbook/insights/
 SKILL: docs-utm-analyzer
 SKILL_VERSION: 1.0.0
@@ -126,7 +126,7 @@ Next steps:
 
 ## Output for downstream consumption
 
-The JSON report at `.docsbook/insights/latest/docs-utm-analyzer.json` conforms to [`insight.schema.json`](https://github.com/Docsbook-io/docs-claude-plugins/blob/main/plugins/docs-insights/schemas/insight.schema.json).
+The JSON report at `.docsbook/insights/latest/docs-utm-analyzer.json` conforms to `insight.schema.json` (schema version 1).
 
 Each finding's `suggested_actions[]` is pre-filled so a future actor agent can:
 

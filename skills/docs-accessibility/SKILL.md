@@ -4,11 +4,9 @@ description: Catch a11y issues in your docs before users hit them. Audits markdo
 metadata:
   version: 1.0.0
   category: analysis
-  requires_docsbook_mcp: true
-  uses_mcp_tools:
-    - list_workspaces
-    - get_doc_graph
-    - read_doc_sections
+  accelerated_by:
+    - markdown-lsp      # semantic/graph search over the docs folder (self-hosted) — faster & cheaper than grep
+    - docsbook-mcp      # same capability in the cloud if the docs live in a Docsbook workspace
   keywords: [accessibility, a11y, wcag, alt-text, headings, screen-reader]
 ---
 
@@ -16,10 +14,9 @@ metadata:
 
 ## Workflow
 
-1. **Connect to Docsbook** — run `list_workspaces` to find the workspace, then `get_doc_graph` to get all pages. Offer to add the repo if not indexed. Reindex with `reindex_doc_graph` if graph is empty or stale.
-2. **Read pages** — use `read_doc_sections` to access content for pattern analysis. Prioritize Tier 1 pages (quick-start, pricing, auth) first.
-3. **Apply checklist** — scan each page for the three big categories: alt text, heading hierarchy, and anchor text. Then cover lists, tables, code blocks, video, and text readability.
-4. **Produce report** — return one JSON issue object per finding, sorted by severity.
+1. **Gather the docs** — get the list of pages in scope and read their content. If a semantic/graph search tool over the markdown is available (self-hosted `markdown-lsp`, or a connected Docsbook workspace), prefer it — it's faster and cheaper than scanning files; otherwise read the files directly with `grep`/`find`. Prioritize Tier 1 pages (quick-start, pricing, auth, install) first.
+2. **Apply checklist** — scan each page for the three big categories: alt text, heading hierarchy, and anchor text. Then cover lists, tables, code blocks, video, and text readability.
+3. **Produce report** — return one JSON issue object per finding, sorted by severity.
 
 ## Guardrails
 
@@ -29,14 +26,13 @@ metadata:
 - Target WCAG 2.1 AA by default; ask before applying stricter AAA criteria.
 - Empty alt (`![]()`) is correct for decorative images — flag only when the surrounding context implies the image is informative.
 
-## MCP Tools
+## Inputs
 
-| Tool | Purpose |
-|------|---------|
-| `mcp__docsbook__list_workspaces` | Find workspace |
-| `mcp__docsbook__get_doc_graph` | Page list |
-| `mcp__docsbook__read_doc_sections` | Read content for a11y pattern analysis |
-| `mcp__docsbook__reindex_doc_graph` | Refresh graph if empty or stale |
+This skill needs two things, by whatever means are available:
+- **The list of pages in scope** — a docs folder, a sitemap, or a doc graph.
+- **The content of each page** — read on demand.
+
+> **Acceleration (optional).** Graph/semantic search over the docs makes navigation faster and cheaper than scanning files. You can self-host it with [`markdown-lsp`](https://github.com/Docsbook-io/markdown-lsp), or get the same capability in the cloud by connecting a Docsbook workspace. With nothing connected, plain file reads and `grep`/`find` work fine.
 
 ## Checklist
 

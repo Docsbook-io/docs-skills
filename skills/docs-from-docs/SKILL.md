@@ -10,7 +10,7 @@ metadata:
 
 # docs-from-docs — Import from another docs platform
 
-The actual work is done by the **`docs-platform-importer`** subagent (Haiku, pinned model) shipped in [docs-claude-plugins](https://github.com/Docsbook-io/docs-claude-plugins/blob/main/plugins/docs-create/agents/docs-platform-importer.md). This skill is the knowledge base — the subagent is the executor.
+The actual work is done by the **`docs-platform-importer`** subagent (Haiku, pinned model) available via the [docs-subagents](https://github.com/Docsbook-io/docs-subagents) package. This skill is the knowledge base — the subagent is the executor.
 
 ## Workflow
 

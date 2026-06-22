@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-20T06:55:28.351Z",
+  "generated_at": "2026-06-22T10:38:10.673Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -170,12 +170,6 @@
         "headings",
         "screen-reader"
       ],
-      "uses_mcp_tools": [
-        "list_workspaces",
-        "get_doc_graph",
-        "read_doc_sections"
-      ],
-      "requires_docsbook_mcp": true,
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-accessibility/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-accessibility/SKILL.md"
@@ -214,12 +208,6 @@
         "prerequisites",
         "vocabulary"
       ],
-      "uses_mcp_tools": [
-        "list_workspaces",
-        "get_doc_graph",
-        "read_doc_sections"
-      ],
-      "requires_docsbook_mcp": true,
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-audience/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-audience/SKILL.md"
@@ -260,12 +248,6 @@
         "explanation",
         "content-type"
       ],
-      "uses_mcp_tools": [
-        "list_workspaces",
-        "get_doc_graph",
-        "read_doc_sections"
-      ],
-      "requires_docsbook_mcp": true,
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-content-types/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-content-types/SKILL.md"
@@ -550,12 +532,6 @@
         "diagrams",
         "alt-text"
       ],
-      "uses_mcp_tools": [
-        "list_workspaces",
-        "get_doc_graph",
-        "read_doc_sections"
-      ],
-      "requires_docsbook_mcp": true,
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-media/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-media/SKILL.md"
@@ -572,12 +548,6 @@
         "anchor",
         "hierarchy"
       ],
-      "uses_mcp_tools": [
-        "list_workspaces",
-        "get_doc_graph",
-        "read_doc_sections"
-      ],
-      "requires_docsbook_mcp": true,
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-navigation-linking/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-navigation-linking/SKILL.md"
@@ -612,12 +582,6 @@
         "geo",
         "ai-overviews"
       ],
-      "uses_mcp_tools": [
-        "list_workspaces",
-        "get_doc_graph",
-        "read_doc_sections"
-      ],
-      "requires_docsbook_mcp": true,
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-seo/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-seo/SKILL.md"
@@ -682,12 +646,6 @@
         "headings",
         "formatting"
       ],
-      "uses_mcp_tools": [
-        "list_workspaces",
-        "get_doc_graph",
-        "read_doc_sections"
-      ],
-      "requires_docsbook_mcp": true,
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-structure-templates/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-structure-templates/SKILL.md"

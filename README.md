@@ -314,7 +314,7 @@ Use when starting from scratch or when the existing docs need a strategic rethin
 
 ### Automation — wire docs maintenance into your CI/CD pipeline
 
-Install once, run forever. For the full pre-push automation stack: [docs-claude-plugins](https://github.com/Docsbook-io/docs-claude-plugins).
+Install once, run forever.
 
 #### `/docs-sync`
 

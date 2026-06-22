@@ -4,11 +4,9 @@ description: Find out where your docs talk past their reader. Detects vocabulary
 metadata:
   version: 1.0.0
   category: analysis
-  requires_docsbook_mcp: true
-  uses_mcp_tools:
-    - list_workspaces
-    - get_doc_graph
-    - read_doc_sections
+  accelerated_by:
+    - markdown-lsp      # semantic/graph search over the docs folder (self-hosted) — faster & cheaper than grep
+    - docsbook-mcp      # same capability in the cloud if the docs live in a Docsbook workspace
   keywords: [audience, persona, jargon, prerequisites, vocabulary]
 ---
 
@@ -16,7 +14,7 @@ metadata:
 
 ## Workflow
 
-1. **Connect to Docsbook** — run `list_workspaces` to find the workspace, then `get_doc_graph` to get all pages. Reindex if graph is empty or stale.
+1. **Gather the docs** — get the list of pages in scope and read their content. If a semantic/graph search tool over the markdown is available (self-hosted `markdown-lsp`, or a connected Docsbook workspace), prefer it — it's faster and cheaper than scanning files; otherwise read the files directly with `grep`/`find`. Prioritize Tier 1 pages (quick-start, pricing, auth, install) first.
 2. **Identify stated audience** — before flagging vocabulary issues, read each page's stated prerequisites, "who this is for" sections, and content type signals.
 3. **Apply checklist** — check audience declaration, vocabulary and jargon, beginner-page conventions, expert-page conventions, and mixed-audience red flags.
 4. **Produce report** — return one JSON issue object per finding, sorted by severity. Group issues by page.
@@ -28,14 +26,13 @@ metadata:
 - A single page may legitimately serve both beginner and expert sections if they are clearly separated with headers — flag as mixed-audience only when no separation exists.
 - Ask the user to confirm the primary audience and assumed knowledge level before deep-diving.
 
-## MCP Tools
+## Inputs
 
-| Tool | Purpose |
-|------|---------|
-| `mcp__docsbook__list_workspaces` | Find workspace |
-| `mcp__docsbook__get_doc_graph` | Page list and structure |
-| `mcp__docsbook__read_doc_sections` | Read content for vocabulary analysis |
-| `mcp__docsbook__reindex_doc_graph` | Refresh graph if empty or stale |
+This skill needs two things, by whatever means are available:
+- **The list of pages in scope** — a docs folder, a sitemap, or a doc graph.
+- **The content of each page** — read on demand.
+
+> **Acceleration (optional).** Graph/semantic search over the docs makes navigation faster and cheaper than scanning files. You can self-host it with [`markdown-lsp`](https://github.com/Docsbook-io/markdown-lsp), or get the same capability in the cloud by connecting a Docsbook workspace. With nothing connected, plain file reads and `grep`/`find` work fine.
 
 ## Checklist
 
