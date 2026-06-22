@@ -4,13 +4,9 @@ description: Know exactly which docs page to write next. Cross-references real u
 metadata:
   version: 1.0.0
   category: observability
-  requires_plan: pro_plus
-  requires_docsbook_mcp: true
-  uses_mcp_tools:
-    - get_failed_searches
-    - get_ai_unanswered
-    - get_popular_searches
-    - get_doc_graph
+  accelerated_by:
+    - markdown-lsp      # graph search over the docs folder (self-hosted)
+    - docsbook-mcp      # search-miss & unanswered-question analytics + doc graph, if a Docsbook workspace is connected (PRO+)
   keywords: [gap, content, missing, analytics, observability]
 ---
 

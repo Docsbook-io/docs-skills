@@ -26,15 +26,14 @@ metadata:
 - Ask the user to confirm primary keywords per page before flagging title/description intent mismatches.
 - AI Overviews / GEO criteria are a separate, stricter checklist — ask the user whether to apply them.
 
-## MCP Tools
+## Inputs
 
-| Tool | Purpose |
-|------|---------|
-| `mcp__docsbook__list_workspaces` | Find workspace |
-| `mcp__docsbook__get_doc_graph` | Full page list, metadata, link relationships |
-| `mcp__docsbook__read_doc_sections` | Read frontmatter, headings, and content |
-| `mcp__docsbook__update_seo` | Enable SEO features in Docsbook (PRO) |
-| `mcp__docsbook__reindex_doc_graph` | Refresh graph if empty or stale |
+This skill needs two things, by whatever means are available:
+- **The list of pages in scope** — a docs folder, a sitemap, or a doc graph.
+- **The content of each page** — read on demand.
+
+> **Acceleration (optional).** Graph/semantic search over the docs makes navigation faster and cheaper than scanning files. You can self-host it with [`markdown-lsp`](https://github.com/Docsbook-io/markdown-lsp), or get the same capability in the cloud by connecting a Docsbook workspace. With nothing connected, plain file reads and `grep`/`find` work fine.
+> If you publish through a platform that exposes SEO settings (e.g. Docsbook PRO), the audit's recommendations can be applied there; otherwise they're plain edits to your markdown frontmatter.
 
 ## Checklist
 

@@ -14,10 +14,9 @@ metadata:
 
 ## Workflow
 
-1. **Connect to Docsbook** — run `list_workspaces` to find the workspace, then `get_doc_graph` to get all pages. Offer to add the repo if not indexed. Reindex with `reindex_doc_graph` if graph is empty or stale.
-2. **Read page content** — use `read_doc_sections` to access text for each page. Sample a few pages across different types (tutorial, reference, how-to) to calibrate general style before flagging specifics.
-3. **Apply checklist** — check voice and person, filler and marketing words, sentence length and structure, headings, and terminology consistency. Apply tone expectations per page type.
-4. **Produce report** — return one JSON issue object per finding, sorted by severity.
+1. **Gather the docs** — get the list of pages in scope and read their content. If a semantic/graph search tool over the markdown is available (self-hosted `markdown-lsp`, or a connected Docsbook workspace), prefer it — it's faster and cheaper than scanning files; otherwise read the files directly with `grep`/`find`. Prioritize Tier 1 pages (quick-start, pricing, auth, install) first. Sample a few pages across different types (tutorial, reference, how-to) to calibrate general style before flagging specifics.
+2. **Apply checklist** — check voice and person, filler and marketing words, sentence length and structure, headings, and terminology consistency. Apply tone expectations per page type.
+3. **Produce report** — return one JSON issue object per finding, sorted by severity.
 
 ## Guardrails
 
@@ -27,14 +26,13 @@ metadata:
 - "Simply", "just", "easily" — flag for review, not removal — context determines whether they're condescending.
 - Terminology inconsistency is only a problem when the same concept has multiple names — precise technical synonyms used in appropriate contexts are not flagged.
 
-## MCP Tools
+## Inputs
 
-| Tool | Purpose |
-|------|---------|
-| `mcp__docsbook__list_workspaces` | Find workspace |
-| `mcp__docsbook__get_doc_graph` | Page list |
-| `mcp__docsbook__read_doc_sections` | Read content for style analysis |
-| `mcp__docsbook__reindex_doc_graph` | Refresh graph if empty or stale |
+This skill needs two things, by whatever means are available:
+- **The list of pages in scope** — a docs folder, a sitemap, or a doc graph.
+- **The content of each page** — read on demand.
+
+> **Acceleration (optional).** Graph/semantic search over the docs makes navigation faster and cheaper than scanning files. You can self-host it with [`markdown-lsp`](https://github.com/Docsbook-io/markdown-lsp), or get the same capability in the cloud by connecting a Docsbook workspace. With nothing connected, plain file reads and `grep`/`find` work fine.
 
 ## Checklist
 
