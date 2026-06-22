@@ -2,37 +2,38 @@ name: Publish to npm
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+
+permissions:
+  contents: write
 
 jobs:
   publish:
+    runs-on: ubuntu-latest
     # Skip if the push was made by the github-actions bot (version bump commit)
     # to avoid an infinite loop.
     if: github.actor != 'github-actions[bot]'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
+
     steps:
       - uses: actions/checkout@v4
         with:
-          # Fetch full history so we can push the bump commit back
-          fetch-depth: 0
+          # Use GITHUB_TOKEN with write permission so git push works
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: 20
+          registry-url: https://registry.npmjs.org
 
       - name: Bump patch version
         run: npm version patch --no-git-tag-version
 
-      - name: Commit and push version bump
+      - name: Commit version bump
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add package.json package-lock.json
-          git commit -m "chore: release $(node -p "require('./package.json').version") [skip ci]"
+          git add package.json
+          git commit -m "chore: release v$(node -p "require('./package.json').version") [skip ci]"
           git push
 
       - name: Publish to npm
