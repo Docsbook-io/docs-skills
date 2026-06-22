@@ -8,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
 
-[Install](#install) • [Skills Catalog](#skills-catalog) • [How It Works](#how-it-works) • [Two Modes](#two-consumption-modes) • [CLI](#cli-reference) • [Contributing](#contributing)
+[Quickstart](#quickstart) • [Skills Catalog](#skills-catalog) • [How It Works](#how-it-works) • [CLI](#cli-reference) • [Contributing](#contributing)
 
 </div>
 
@@ -50,138 +50,187 @@ Skills are **agent-agnostic**: the same SKILL.md works in Claude Code, Cursor, C
 
 ---
 
-## Install
+# Quickstart
+
+Install the whole catalog (or one skill) into your AI agent — Claude Code, Cursor, Codex, Copilot:
 
 ```bash
-npx docs-skills install
+# everything
+npx skills add Docsbook-io/docs-skills --skill '*'
+
+# or just one
+npx skills add Docsbook-io/docs-skills --skill docs-analyze
 ```
 
-Copies SKILL.md files into the right place for your tool — automatically detected:
+Then just ask your agent in plain language:
 
-| Tool | Install location | Trigger |
-|------|-----------------|---------|
-| **Claude Code** | `.claude/skills/` | `/docs-analyze` in chat |
-| **Cursor** | `.cursor/rules/` | `@docs-analyze` mention |
-| **GitHub Copilot** | `.github/copilot-instructions.md` | reference in prompt |
-| **OpenAI Codex** | `AGENTS.md` | reference in prompt |
+> "Audit my docs and give me one prioritized report"
+> "Turn this GitHub repo into a live docs site"
+> "Which pages are users searching for but not finding?"
+> "Translate my docs into 15 languages"
 
-Works offline once installed. To install globally for Claude Code:
-
-```bash
-npx docs-skills install ~/
-```
-
-### Verify
-
-```bash
-npx docs-skills list
-```
+No flags, no config — the skill fires from your request. Browse the full catalog below.
 
 ---
 
 ## Skills Catalog
 
-**30 skills** across 7 categories. Browse live: [docsbook.io/skills](https://docsbook.io/skills).
+**39 skills** across 7 categories. Browse live: [docsbook.io/skills](https://docsbook.io/skills).
 
 ### Analysis — audit existing documentation
 
 Run when your docs exist but you're not sure they're correct, readable, or complete.
 
-#### `/docs-analyze`
+#### `docs-analyze`
 
-**When to use:** You want a full health check of your docs in one command — instead of running 10 audits separately. Run before a major release or after a big restructure.  
-**What you get:** A single prioritized Markdown report combining SEO, accessibility, style, structure, i18n, media and maintenance findings — ranked by severity (Critical / High / Medium / Low), with a Quick Wins list of fixes that take under 30 minutes.  
-**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-analyze
+```
+> "Audit my docs and give me one prioritized report"
+> "Run a full health check before our release"
+> "What's wrong with my documentation?"
+> "Do a complete review of the docs/ folder"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-analyze/SKILL.md)
 
 ---
 
-#### `/docs-content-types`
+#### `docs-content-types`
 
-**When to use:** Users say they can't find answers, or your docs feel confusing — a sign that tutorials, how-to guides, reference and explanation are mixed together on the same pages.  
-**What you get:** Every page classified against the Diátaxis framework (tutorial / how-to / reference / explanation), with a JSON issue list flagging misclassified pages, hybrid pages that mix types, and specific split or rewrite suggestions.  
-**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-content-types
+```
+> "Users say they can't find answers — are my page types mixed up?"
+> "Check my docs against Diátaxis"
+> "Which pages mix tutorials with reference material?"
+> "Are my how-to guides actually how-to guides?"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-content-types/SKILL.md)
 
 ---
 
-#### `/docs-structure-templates`
+#### `docs-structure-templates`
 
-**When to use:** Before merging a batch of new pages, or when running a structural audit to make sure every page has a title, description, correct heading hierarchy, and tagged code blocks.  
-**What you get:** A JSON report per page listing missing frontmatter fields, heading-level skips (H2 → H4), code blocks without a language tag, and missing prerequisites sections — sorted by severity, with the exact fix for each.  
-**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-structure-templates
+```
+> "Check these new pages for missing frontmatter before I merge"
+> "Are my headings nested correctly?"
+> "Which code blocks are missing a language tag?"
+> "Validate the structure of every page in docs/"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-structure-templates/SKILL.md)
 
 ---
 
-#### `/docs-style-tone`
+#### `docs-style-tone`
 
-**When to use:** When you receive feedback that your docs feel corporate, condescending or hard to follow. Run after onboarding a new writer or before a public launch.  
-**What you get:** A per-page JSON issue list flagging passive voice in instructions, filler words ("simply", "just"), marketing adjectives without specifics ("powerful", "seamless"), oversized sentences, and terminology inconsistencies — each with a before/after rewrite suggestion.  
-**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-style-tone
+```
+> "My docs feel corporate — flag the marketing fluff"
+> "Find passive voice and filler words in my docs"
+> "Tighten the prose without rewriting it for me"
+> "Where am I using 'simply' and 'just' and 'powerful'?"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-style-tone/SKILL.md)
 
 ---
 
-#### `/docs-audience`
+#### `docs-audience`
 
-**When to use:** When junior developers bounce off a page, or when a single page is trying to serve beginners and experts at the same time.  
-**What you get:** Every page assigned an audience level (beginner / expert / mixed), with JSON findings for undefined jargon on beginner pages, prerequisite mismatches, and mixed-audience pages — each with a concrete split or rewrite recommendation.  
-**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-audience
+```
+> "Junior devs keep bouncing off this page — why?"
+> "Which pages talk over the reader's head?"
+> "Find undefined jargon and missing prerequisites"
+> "Is this page trying to serve beginners and experts at once?"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-audience/SKILL.md)
 
 ---
 
-#### `/docs-navigation-linking`
+#### `docs-navigation-linking`
 
-**When to use:** After a docs restructure, when users report dead ends, or as part of a quarterly audit to catch orphan pages and broken internal links.  
-**What you get:** A full cross-file JSON report listing broken internal links (with the exact missing path), orphan pages with zero inbound links, "click here" anchor text violations, navigation depth over 3 levels, and tutorials missing a Next Steps section.  
-**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-navigation-linking
+```
+> "Find the broken internal links in my docs"
+> "Which pages are orphans with nothing linking to them?"
+> "Hunt down the dead ends and 'click here' anchors"
+> "Check my doc graph after this restructure"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-navigation-linking/SKILL.md)
 
 ---
 
-#### `/docs-seo`
+#### `docs-seo`
 
-**When to use:** When organic traffic is flat, after a site migration, or before launching a new docs section you want to rank in Google and appear in AI Overviews.  
-**What you get:** A JSON report covering missing or duplicate titles/descriptions, heading hierarchy violations, orphan pages with no link equity, images without alt text, and an optional AI Overviews / GEO checklist — all sorted by SEO impact.  
-**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-seo
+```
+> "Make my docs rank in Google and AI Overviews"
+> "Find missing or duplicate titles and descriptions"
+> "Run an SEO audit on my documentation"
+> "Why isn't this docs section getting organic traffic?"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-seo/SKILL.md)
 
 ---
 
-#### `/docs-accessibility`
+#### `docs-accessibility`
 
-**When to use:** Before a public launch, for WCAG 2.1 AA compliance, or when a user reports that your docs are difficult to use with a screen reader.  
-**What you get:** A JSON issue list per page covering missing alt text on informative images, heading hierarchy skips, vague link anchor text ("click here"), code blocks without language tags, and color-only meaning in prose — each with the exact WCAG criterion and a specific fix.  
-**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-accessibility
+```
+> "Check my docs for WCAG 2.1 AA violations"
+> "Find images missing alt text"
+> "Are my docs usable with a screen reader?"
+> "Run an a11y audit before we launch publicly"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-accessibility/SKILL.md)
 
 ---
 
-#### `/docs-i18n`
+#### `docs-i18n`
 
-**When to use:** When enabling a new language, after a large content update, or when you suspect translations are lagging behind the English source. Automatically skipped if only one language is enabled.  
-**What you get:** A JSON report of missing Tier 1 page translations, stale translations more than 30 days behind the source, translated code blocks (a syntax error risk), broken hreflang tags, and un-localized date/number formats — covering all 15 languages Docsbook supports.  
-**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-i18n
+```
+> "Are my translations lagging behind the English source?"
+> "Check content parity across all my languages"
+> "Find stale translations and broken hreflang tags"
+> "Which pages aren't translated yet?"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-i18n/SKILL.md)
 
 ---
 
-#### `/docs-media`
+#### `docs-media`
 
-**When to use:** When images are loading slowly, screenshots look outdated after a UI redesign, or before a public launch to catch missing alt text and generic filenames.  
-**What you get:** A JSON issue list covering informative images without alt text, generic filenames (`screenshot1.png`), JPG used for UI screenshots (degrades text), video files committed to the repo, and pages with screenshots not updated in 180+ days — with a specific fix for each.  
-**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-media
+```
+> "Find the bloated images slowing my docs down"
+> "Which screenshots are out of date after the UI redesign?"
+> "Flag images with no alt text or generic filenames"
+> "Audit every image and video in my docs"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-media/SKILL.md)
 
 ---
 
-#### `/docs-maintenance`
+#### `docs-maintenance`
 
-**When to use:** As a quarterly audit, or when users report that your docs reference features, prices or API endpoints that no longer exist.  
-**What you get:** A whole-tree JSON report flagging TODO/FIXME in published docs, "coming soon" banners older than 30 days, past dates presented as future promises, deprecated pages without migration paths, and pricing values out of sync with your app's pricing source-of-truth — each marked critical/high/medium/low.  
-**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-maintenance
+```
+> "Find docs that reference features or prices that no longer exist"
+> "Run a quarterly maintenance audit on the whole tree"
+> "Which pages still have TODO/FIXME left in them?"
+> "Find deprecated pages with no migration path"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-maintenance/SKILL.md)
 
 ---
@@ -190,57 +239,129 @@ Run when your docs exist but you're not sure they're correct, readable, or compl
 
 Use when you need to produce docs from scratch or migrate from another platform.
 
-#### `/docs-create`
+#### `docs-create`
 
-**When to use:** You have a product URL, a GitHub repo, or an existing docs platform (Mintlify, GitBook, Docusaurus) and want a live Docsbook site with minimal questions asked.  
-**What you get:** A fully scaffolded Markdown docs folder published to a new GitHub repo, a configured Docsbook workspace with branding applied, and a final report with local path, GitHub URL, and Docsbook URL — end-to-end in one command.  
-**Requires:** No MCP needed (MCP enhances workspace setup step) • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-create
+```
+> "Turn this GitHub repo into a live docs site"
+> "Create documentation from my product website"
+> "Build me a docs site from scratch and publish it"
+> "I have a Mintlify site — make it a Docsbook site"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-create/SKILL.md)
 
 ---
 
-#### `/docs-create-interactive`
+#### `docs-create-interactive`
 
-**When to use:** Same scenario as `/docs-create`, but you want to review and approve each decision — file structure, branding, GitHub repo name, and which Docsbook features to enable — before anything is published.  
-**What you get:** Identical output to `/docs-create`, but with five explicit checkpoints where you confirm or adjust before the next step runs. A final summary lists every choice made at each checkpoint.  
-**Requires:** No MCP needed • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-create-interactive
+```
+> "Create my docs but let me approve each step"
+> "Build a docs site — pause before publishing so I can review"
+> "I want to pick the structure and branding myself"
+> "Walk me through creating docs with checkpoints"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-create-interactive/SKILL.md)
 
 ---
 
-#### `/docs-detect-source`
+#### `docs-detect-source`
 
-**When to use:** Before running `/docs-create` when you're unsure whether your input is a plain website, a code repo, or an existing docs platform — or use it standalone to route correctly before building.  
-**What you get:** A single classified source type (`website`, `github-code-repo`, Mintlify, GitBook, Docusaurus, etc.) derived from meta tags, config file inspection, and domain signals, plus the name of the downstream skill to run next.  
-**Requires:** No MCP needed • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-detect-source
+```
+> "Is this a website, a repo, or an existing docs platform?"
+> "Figure out what kind of docs source I have"
+> "What should I run to build docs from this URL?"
+> "Detect whether this is Mintlify or GitBook"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-detect-source/SKILL.md)
 
 ---
 
-#### `/docs-from-site`
+#### `docs-from-site`
 
-**When to use:** Your only source of truth is a marketing or product website and you need structured Markdown docs from it — useful as a starting point before a full `/docs-create` run.  
-**What you get:** A `docs-output/<name>/` folder with a README, getting-started section, per-feature pages, guides, and FAQ (only sections found on the site), plus a `_branding.json` with accent color, background, favicon, and color scheme extracted from the site's CSS.  
-**Requires:** No MCP needed • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-from-site
+```
+> "Make docs from my product website"
+> "Crawl this site and turn it into Markdown docs"
+> "Import my marketing site as documentation"
+> "Generate docs from this URL"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-from-site/SKILL.md)
 
 ---
 
-#### `/docs-from-code`
+#### `docs-from-code`
 
-**When to use:** Your source of truth is a code repository (Node, Python, Go, Rust, .NET, JVM) and you want docs built from its README, exported API surface, examples, and configuration — useful when the marketing site is a thin SPA or doesn't exist yet.  
-**What you get:** A `docs-output/<name>/` folder with the README split into structured pages, one `api/<module>.md` per public export (signatures + docstrings, with `TODO` markers for undocumented items), a `guides/configuration.md` from `.env.example` and `docker-compose.yml`, and a `_branding.json` (no fabricated accent color — omitted when undetected). Secrets in env files are redacted.  
-**Requires:** `gh` CLI or `git` • No MCP needed • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-from-code
+```
+> "Build docs from my GitHub repo"
+> "Generate API docs from this codebase"
+> "Import the repo's README and exported API as docs"
+> "Make documentation from this code — the marketing site doesn't exist yet"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-from-code/SKILL.md)
 
 ---
 
-#### `/docs-from-docs`
+#### `docs-from-docs`
 
-**When to use:** You're migrating off Mintlify, GitBook, Docusaurus, Nextra, VitePress, or Starlight and want a clean Docsbook-ready Markdown folder with the original structure preserved.  
-**What you get:** A `docs-output/<name>/` folder mirroring the source navigation, with platform-specific MDX components normalised to plain Markdown (`<Card>`, `<Tabs>`, `{% hint %}`, `:::note`, `<Callout>`, `<Aside>` → headings + blockquotes), internal links rewritten to relative paths, images copied into `_assets/`, and `_branding.json` carrying the platform's accent color when present.  
-**Requires:** `gh` CLI or `git` • No MCP needed • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-from-docs
+```
+> "Migrate my docs off Mintlify"
+> "Import my GitBook into a clean Markdown folder"
+> "Move my Docusaurus site to Docsbook"
+> "Convert my Nextra docs to plain Markdown, structure intact"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-from-docs/SKILL.md)
+
+---
+
+#### `docs-branding`
+
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-branding
+```
+> "Set up the branding for my docs workspace"
+> "Pull brand colors from my website and apply them"
+> "Pick an accent color and font that match my product"
+> "Brand my docs from my logo and README"
+
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-branding/SKILL.md)
+
+---
+
+#### `docs-first-run-enrichment`
+
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-first-run-enrichment
+```
+> "Make my freshly generated docs rich instead of a bare skeleton"
+> "Auto-brand and flesh out this new docs site before I publish"
+> "Turn this skeleton into a real multi-section site"
+> "Enrich the docs with a proper getting-started and landing page"
+
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-first-run-enrichment/SKILL.md)
+
+---
+
+#### `docs-imagine`
+
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-imagine
+```
+> "Imagine docs for my product — I only have a name"
+> "Invent documentation for X, no URL or repo"
+> "Make up a marketing-grade docs site from scratch"
+> "придумай документацию for better selling"
+
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-imagine/SKILL.md)
 
 ---
 
@@ -248,29 +369,44 @@ Use when you need to produce docs from scratch or migrate from another platform.
 
 Use after generating docs locally to push them live and configure the workspace.
 
-#### `/docs-publish`
+#### `docs-publish`
 
-**When to use:** You have a local docs folder ready and want to push it to GitHub in one step — the natural follow-up to `/docs-from-site` or any other generation skill.  
-**What you get:** A new public GitHub repo with your docs pushed to `main` over HTTPS, plus a computed Docsbook URL printed in the result. The skill handles `git init`, initial commit, and `gh repo create` automatically.  
-**Requires:** `gh` CLI authenticated • No MCP needed • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-publish
+```
+> "Push my local docs folder to GitHub"
+> "Publish these docs to a new repo"
+> "Commit and push my docs and give me the Docsbook URL"
+> "Ship the docs I just generated"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-publish/SKILL.md)
 
 ---
 
-#### `/docs-setup-workspace`
+#### `docs-setup-workspace`
 
-**When to use:** Right after `/docs-publish`, to wire branding, AI chat, SEO, languages, and a custom domain for your new Docsbook workspace — without clicking through the UI.  
-**What you get:** A fully configured Docsbook workspace: branding applied from `_branding.json` (or sensible defaults), UI toggles set, navigation back-link added. Plan-gated features (SEO, languages, AI chat, custom domain) are applied if your plan allows; each failure is recorded without blocking the rest of the run.  
-**Requires:** Docsbook MCP • Free plan (PRO/PRO+ for advanced settings)  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-setup-workspace
+```
+> "Configure my Docsbook workspace from one command"
+> "Wire up branding, SEO, languages and AI chat"
+> "Set up my workspace without clicking through the UI"
+> "Apply my branding and turn on the right features"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-setup-workspace/SKILL.md)
 
 ---
 
-#### `/docs-generate-agents-md`
+#### `docs-generate-agents-md`
 
-**When to use:** After setting up a Docsbook workspace, to give every AI agent in the repo — Claude Code, Cursor, Codex, Copilot, Gemini CLI — consistent context about your docs site from the very first session.  
-**What you get:** An `AGENTS.md` written to repo root (or a managed section updated if it already exists) containing the docs URL, enabled languages, AI chat status, top-level folder structure, and the list of available `/docs-skills` commands.  
-**Requires:** Any docs folder • Optional: `markdown-lsp` or Docsbook MCP to accelerate • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-generate-agents-md
+```
+> "Generate an AGENTS.md so every AI agent knows about my docs"
+> "Give Cursor and Claude Code context about my documentation"
+> "Write the AGENTS.md file at repo root"
+> "Make sure my agents start each session knowing the docs URL"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-generate-agents-md/SKILL.md)
 
 ---
@@ -279,12 +415,101 @@ Use after generating docs locally to push them live and configure the workspace.
 
 Use when you want to act on real user signal rather than guesswork.
 
-#### `/docs-gap-finder`
+#### `docs-gap-finder`
 
-**When to use:** Monthly, or after a major product launch, to find out which docs pages users are looking for but not finding — based on real failed searches and unanswered AI chat questions.  
-**What you get:** A prioritized report of the top 7 missing pages, each with a priority score (`failed_search × 3 + ai_unanswered × 3 + popular_search × 1`), the user queries that drove it, a suggested file path, and a draft outline. Optionally opens one GitHub Issue per gap.  
-**Requires:** Docsbook MCP • PRO+ plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-gap-finder
+```
+> "Which docs page should I write next?"
+> "What are users searching for but not finding?"
+> "Find the top missing pages from real user signal"
+> "Open GitHub issues for the biggest content gaps"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-gap-finder/SKILL.md)
+
+---
+
+#### `docs-question-clusterer`
+
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-question-clusterer
+```
+> "Group every question users ask the AI chat into topics"
+> "Which questions are content gaps vs the chat just missing the page?"
+> "Cluster my AI chat questions and tell me what's missing"
+> "Did my new docs actually reduce AI chat failures?"
+
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-question-clusterer/SKILL.md)
+
+---
+
+#### `docs-engagement-analyzer`
+
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-engagement-analyzer
+```
+> "Which long-read pages are loved vs which are confusing?"
+> "Split my high-dwell pages into deep interest vs stuck users"
+> "Find pages where people spend ages but leave unhappy"
+> "Did my rewrite actually improve engagement?"
+
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-engagement-analyzer/SKILL.md)
+
+---
+
+#### `docs-funnel-mapper`
+
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-funnel-mapper
+```
+> "Map the most common journeys through my docs"
+> "Where are users dropping before they reach a conversion page?"
+> "Find the high-volume paths with low completion rates"
+> "Which links does the doc graph imply that users never actually take?"
+
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-funnel-mapper/SKILL.md)
+
+---
+
+#### `docs-link-click-analyzer`
+
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-link-click-analyzer
+```
+> "Which CTA buttons are underperforming on my docs?"
+> "Measure click-through on every internal link"
+> "Is my Upgrade button buried where nobody clicks it?"
+> "Find pages with pageviews but zero outgoing clicks"
+
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-link-click-analyzer/SKILL.md)
+
+---
+
+#### `docs-utm-analyzer`
+
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-utm-analyzer
+```
+> "Which campaigns send traffic that bounces on the docs?"
+> "Match my UTM traffic against the pages people land on"
+> "Where does the ad promise not match the doc reality?"
+> "We got a referrer surge but no signups — find the mismatch"
+
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-utm-analyzer/SKILL.md)
+
+---
+
+#### `docs-visitor-cohort`
+
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-visitor-cohort
+```
+> "Who are my most active visitors and what are they doing?"
+> "Cluster my top visitors by behavior pattern"
+> "Find the buyer-blockers — people who hit pricing then leave unhappy"
+> "What's the current profile of my power users before a pricing change?"
+
+[SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-visitor-cohort/SKILL.md)
 
 ---
 
@@ -292,11 +517,16 @@ Use when you want to act on real user signal rather than guesswork.
 
 Use when you want your docs to *grow the product*, not just document it — and to keep your private product knowledge base honest about your buyers and your market.
 
-#### `/docs-audience-enricher`
+#### `docs-audience-enricher`
 
-**When to use:** Monthly, or before any growth-strategy pass, when your product source-of-truth (an `about/` folder, a product-marketing context file) has blank spots about who actually buys, how they enter the product, or how the competitive landscape has shifted.  
-**What you get:** Three lenses — *segment* (JTBD, watering holes, buying triggers per ICP segment), *funnel* (every entry path, its friction, a 0–100% coverage score, what would measure it), and *competitor* (live price/feature changes and new entrants since you last wrote) — reasoning grounded in real analytics via the docs-insights pipeline where data exists and clearly labelled as simulated where it can't. It **appends** what it learns back into your knowledge base (additive, reversible, marker-wrapped — never touching your hand-written prose) and emits a schema-validated insight JSON for downstream opportunity-mapping. Proposes and enriches; never touches product code or client docs.  
-**Requires:** Docsbook MCP • PRO plan (falls back to simulation on Free)  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-audience-enricher
+```
+> "Figure out who actually buys my product and how they enter"
+> "Enrich my about/ folder with buyer segments and competitors"
+> "What's changed in my competitive landscape since I last wrote?"
+> "Fill the blind spots in my product source-of-truth before a growth pass"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/growth/docs-audience-enricher/SKILL.md)
 
 ---
@@ -305,11 +535,16 @@ Use when you want your docs to *grow the product*, not just document it — and 
 
 Use when starting from scratch or when the existing docs need a strategic rethink.
 
-#### `/docs-strategy-plan`
+#### `docs-strategy-plan`
 
-**When to use:** When you have no docs yet and aren't sure what to write, or when your team wants docs to serve more than just getting-started (SEO, sales funnel, support deflection, AI citability).  
-**What you get:** A `docs-plan.md` file with product summary, confirmed goals, 2–3 audience roles with funnels (Awareness → Activation → Retention), an information architecture, and a prioritized content backlog with P0/P1/P2 labels and effort estimates — plus a 5-line chat summary and the suggested next command to run.  
-**Requires:** No MCP needed (optional: Docsbook MCP to read existing graph) • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-strategy-plan
+```
+> "I have no docs and don't know where to start"
+> "What should I document, for whom, and in what order?"
+> "Help me build a documentation roadmap"
+> "Give me a prioritized content backlog before I start writing"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-strategy-plan/SKILL.md)
 
 ---
@@ -318,70 +553,101 @@ Use when starting from scratch or when the existing docs need a strategic rethin
 
 Install once, run forever.
 
-#### `/docs-sync`
+#### `docs-sync`
 
-**When to use:** To prevent code↔docs drift on every push — install once as a pre-push git hook and it runs automatically before each push, detecting and fixing drifted documentation sections.  
-**What you get:** A four-subagent pipeline (planner → parallel searchers → editors → curator) that detects which docs sections drifted relative to code changes, rewrites only the affected sections, and amends the commit atomically. In `warn` mode (default) it never blocks a push.  
-**Requires:** `markdown-lsp` MCP server • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-sync
+```
+> "Stop my docs from drifting out of sync with the code"
+> "Install a pre-push hook that fixes drifted docs automatically"
+> "Detect and fix code↔docs drift before this push"
+> "Which docs sections did my last code change make stale?"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-sync/SKILL.md)
 
 ---
 
-#### `/docs-pr-check`
+#### `docs-pr-check`
 
-**When to use:** To add a CI gate to every pull request that enforces docs hygiene — catches missing frontmatter, broken internal links, and code changes shipped without any doc updates.  
-**What you get:** A ready-to-use `.github/workflows/docsbook-docs-check.yml` file with three jobs: code-vs-docs change ratio check, frontmatter validation (`title` and `description` required), and internal link integrity. Broken-links job uses `continue-on-error` by default so it never blocks merges unless you explicitly opt in.  
-**Requires:** No MCP needed • Free plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-pr-check
+```
+> "Add a CI gate that flags code changes shipped without docs"
+> "Generate a GitHub Action to check docs on every PR"
+> "Catch missing frontmatter and broken links in pull requests"
+> "Make sure no PR merges with stale documentation"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-pr-check/SKILL.md)
 
 ---
 
-#### `/docs-enable-translation`
+#### `docs-enable-translation`
 
-**When to use:** When launching docs in a new market and you want AI auto-translation switched on across up to 15 languages in one command, with an optional Slack notification when each translation batch completes.  
-**What you get:** Languages enabled on the workspace, translation mode switched to `auto` (translates new and changed pages on every push), an optional Slack webhook registered with a fresh HMAC secret, and a managed `## Docsbook Translation` section added to `AGENTS.md`.  
-**Requires:** Docsbook MCP • PRO plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-enable-translation
+```
+> "Translate my docs into 15 languages"
+> "Turn on AI auto-translation for my workspace"
+> "Enable Spanish, French and German and notify Slack when each batch finishes"
+> "We're launching in a new market — switch on translations"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-enable-translation/SKILL.md)
 
 ---
 
-#### `/docs-tune-ai-chat`
+#### `docs-tune-ai-chat`
 
-**When to use:** When users give thumbs-down to AI chat answers, or when the chatbot frequently says "I don't know" — use monthly or after a major docs overhaul.  
-**What you get:** Failure patterns from the last 30 days clustered into 3–8 topics, a minimally invasive system prompt update (capped at 1,500 tokens) that addresses the top clusters without touching brand voice or persona rules, and a before/after diff. The update is applied only after you type `yes`.  
-**Requires:** Docsbook MCP • PRO plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-tune-ai-chat
+```
+> "Users keep thumbs-downing the AI chat — fix the prompt"
+> "Improve my AI chat using last month's negative feedback"
+> "The chatbot says 'I don't know' too often — tune it"
+> "Cluster chat failures and propose a prompt update I can approve"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-tune-ai-chat/SKILL.md)
 
 ---
 
-#### `/docs-release-announce`
+#### `docs-release-announce`
 
-**When to use:** When you want Slack and/or email notifications sent automatically every time a new release is published, without manually posting announcements.  
-**What you get:** A `.github/workflows/docsbook-release-announce.yml` workflow triggered on `release: published`, a Docsbook release webhook registered with a fresh HMAC secret, and a list of repository secrets you need to configure for each notification channel.  
-**Requires:** Docsbook MCP • PRO plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-release-announce
+```
+> "Announce every release to Slack automatically"
+> "Send an email when a new release is published"
+> "Wire up release notifications so I stop posting them by hand"
+> "Set up a GitHub Action that fires on release: published"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-release-announce/SKILL.md)
 
 ---
 
-#### `/docs-stale-watcher`
+#### `docs-stale-watcher`
 
-**When to use:** When you want stale pages to surface automatically as GitHub Issues in your team's issue tracker, rather than requiring manual quarterly audits.  
-**What you get:** A `.github/workflows/docsbook-stale-handler.yml` workflow that converts each `content.outdated` webhook event into a GitHub Issue linking to the source file, plus a registered webhook with a configurable staleness threshold (default 180 days).  
-**Requires:** Docsbook MCP • PRO+ plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-stale-watcher
+```
+> "Turn stale-content alerts into GitHub Issues automatically"
+> "Surface outdated docs in our normal issue triage"
+> "Watch for stale pages and file an issue for each one"
+> "Stop relying on manual quarterly audits for outdated docs"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-stale-watcher/SKILL.md)
 
 ---
 
-#### `/docs-translate-webhook`
+#### `docs-translate-webhook`
 
-**When to use:** When you want to bypass Docsbook's built-in AI translator and route translation work to your own TMS, DeepL integration, or custom translation pipeline.  
-**What you get:** Translation mode switched to `external`, a `translation.requested` webhook registered with a fresh HMAC secret, and a scaffolded handler file (`api/docsbook-translate.ts` for Vercel, or `src/routes/docsbook-translate.ts` for Express) with HMAC signature verification and a TODO placeholder for your translation logic.  
-**Requires:** Docsbook MCP • PRO+ plan  
+```bash
+npx skills add Docsbook-io/docs-skills --skill docs-translate-webhook
+```
+> "Route translation to my own DeepL pipeline instead of the built-in one"
+> "Bypass the built-in translator and use my TMS over webhooks"
+> "Scaffold a webhook handler for custom translation"
+> "Switch my workspace to external translation mode"
+
 [SKILL.md →](https://github.com/Docsbook-io/docs-skills/blob/main/skills/automation/docs-translate-webhook/SKILL.md)
-
----
-
-> **Looking for event-driven automation?** Subagents that execute on webhook events (pre-push, PR merge, release tags) live in **[docs-subagents](https://github.com/Docsbook-io/docs-subagents)**.
 
 ---
 
@@ -424,41 +690,30 @@ mcp add --transport http https://docsbook.io/api/mcp/server
 
 ---
 
-## Two Consumption Modes
-
-### 1. Local install
-
-`npx docs-skills install` copies SKILL.md files into your project. Works offline.
-
-### 2. Runtime discovery via Docsbook MCP
-
-If your agent is already connected to the Docsbook MCP server, no install needed:
-
-```
-@docsbook find_skill "audit my docs for accessibility"
-```
-
-The tool searches by name + description + keywords and returns matching SKILL.md URLs. Your agent reads them via WebFetch and runs the steps inline.
-
 ---
 
 ## Features
 
-✅ **29 reusable skills** — analysis, creation, publishing, observability, planning, automation  
+✅ **39 reusable skills** — analysis, creation, publishing, observability, growth, planning, automation  
+✅ **One command, plain-language trigger** — `npx skills add` then just ask your agent  
 ✅ **Acceptance Criteria** — every skill ships with a pass/fail checklist  
 ✅ **Agent-agnostic** — Claude Code, Cursor, Copilot, Codex  
 ✅ **Tool-agnostic** — describes the *need*, not the tool; runs on bare `grep`/`find`, accelerates with `markdown-lsp` or Docsbook MCP  
-✅ **Offline-first** — works after `npx docs-skills install`, no network required  
 ✅ **Open source** — fork, extend, contribute back  
 
 ---
 
 ## CLI Reference
 
+Powered by the [`skills`](https://github.com/vercel-labs/skills) CLI:
+
 ```bash
-docs-skills install [dir]    # Install catalog into dir (default: current directory)
-docs-skills list             # List all skills with descriptions
-docs-skills info <skill>     # Show full skill definition
+npx skills add Docsbook-io/docs-skills --skill '*'        # install the whole catalog
+npx skills add Docsbook-io/docs-skills --skill docs-seo   # install one skill
+npx skills add Docsbook-io/docs-skills -a claude-code -a cursor --skill '*'   # target specific agents
+npx skills list                                           # list installed skills
+npx skills find <keyword>                                 # search for a skill
+npx skills update                                          # update installed skills
 ```
 
 ---
