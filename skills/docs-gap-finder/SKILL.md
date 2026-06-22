@@ -25,21 +25,19 @@ Surfaces which documentation pages should be created next, based on real user si
 
 ## Guardrails
 
-- Requires PRO+ plan — `get_failed_searches` and `get_ai_unanswered` are PRO+ features. Exit early with a plan upgrade message if not on PRO+.
+- Demand-signal analytics (search misses, unanswered AI questions) come from a connected docs-analytics source — in Docsbook these are PRO+ features. If none is connected, don't exit: run on whatever search-log / support / question data the user provides, and note in the report which signal sources were unavailable.
 - Do not create docs files — surface gaps only (or GitHub Issues if `open_issues: true`).
 - A cluster is "covered" only when the matching page has non-trivial content — stubs count as gaps.
 - Run monthly or after major product launches — search-miss patterns shift fastest then.
 - Pairs with `docs-analyze` (quality of existing pages) and `docs-stale-watcher` (freshness) — this skill answers a different question: *what's missing entirely?*
 
-## MCP Tools
+## Inputs
 
-| Tool | Purpose |
-|------|---------|
-| `mcp__docsbook__get_failed_searches` | Search queries with zero/low-relevance results |
-| `mcp__docsbook__get_ai_unanswered` | AI-chat questions the model could not answer |
-| `mcp__docsbook__get_popular_searches` | Top queries by volume (demand signal) |
-| `mcp__docsbook__get_doc_graph` | Full page list for cross-reference filtering |
-| `mcp__docsbook__get_workspace` | Resolve owner/repo for GitHub Issue creation |
+This skill needs two things, by whatever means are available:
+- **Demand signals** — failed searches, unanswered AI/support questions, popular queries. From a connected docs-analytics source if you have one, or from exported logs the user provides.
+- **The current doc tree** — to see which topics are already covered.
+
+> **Acceleration (optional).** A connected Docsbook workspace (PRO+) exposes search-miss and unanswered-question analytics plus the doc graph directly. Without it, feed the skill whatever search/support data you have, and read the docs folder normally.
 
 ## Checklist
 
