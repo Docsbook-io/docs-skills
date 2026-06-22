@@ -43,9 +43,9 @@ This skill needs two things, by whatever means are available:
 
 ### Step 1 — Signal collection
 
-- [ ] `get_failed_searches` called with target workspace and period
-- [ ] `get_ai_unanswered` called with target workspace and period
-- [ ] `get_popular_searches` called with target workspace and period
+- [ ] Failed / zero-result searches collected for the target docs and period
+- [ ] Unanswered AI/support questions collected for the target docs and period
+- [ ] Popular queries (demand signal) collected for the target docs and period
 - [ ] Each result retains: normalized text, frequency, representative phrasings, source type
 
 ### Step 2 — Clustering
@@ -55,7 +55,7 @@ This skill needs two things, by whatever means are available:
 
 ### Step 3 — Coverage check
 
-- [ ] `get_doc_graph` called to build the existing page set
+- [ ] The existing page set built from the doc tree (graph search if available, otherwise file listing)
 - [ ] Clusters with covered, non-stub pages dropped
 - [ ] Partial matches marked as `expand_existing` with path to the stub
 
@@ -86,7 +86,7 @@ Found N high-signal gaps. Prioritized by user demand.
 
 ### Step 5 — GitHub Issues (if `open_issues: true`)
 
-- [ ] `get_workspace` called to resolve `owner/repo`
+- [ ] Source `owner/repo` resolved for issue creation
 - [ ] One issue created per gap with title `docs: <Cluster topic>`, signal data, draft outline, and `documentation` + `gap-finder` labels
 - [ ] Issue URLs printed at the end of the report
 
@@ -101,8 +101,7 @@ Found N high-signal gaps. Prioritized by user demand.
 
 ## Acceptance Criteria
 
-- [ ] Skill exits early with a clear message if the workspace is not on PRO+.
-- [ ] All three signal sources have been queried (or explicitly noted as unavailable).
+- [ ] All three signal sources have been queried, or the report explicitly notes which were unavailable (e.g. no connected analytics source) and what data was used instead.
 - [ ] Every reported gap includes a priority score, the source signals that drove it, and a draft outline.
 - [ ] Clusters already covered by non-stub pages are excluded from the report.
 
