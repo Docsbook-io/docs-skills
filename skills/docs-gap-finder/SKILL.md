@@ -16,11 +16,12 @@ Surfaces which documentation pages should be created next, based on real user si
 
 ## Workflow
 
-1. **Pull signals** — call `get_failed_searches`, `get_ai_unanswered`, and `get_popular_searches` in parallel for the target workspace and period. Retain normalized text, frequency, and source signal type for each result.
-2. **Cluster and score** — group near-duplicate queries into topic clusters. Compute priority score: `(failed_search × 3) + (ai_unanswered × 3) + (popular_search × 1)`. Failed searches and unanswered AI questions outweigh popularity — they confirm a gap.
-3. **Cross-reference doc graph** — call `get_doc_graph` and drop clusters already covered by an existing page (title/H1/H2 token overlap ≥ 0.6 with non-stub content). Mark partial matches as `expand_existing`.
-4. **Produce report** — sort surviving clusters by score, take top `limit` (default 7), emit a markdown report with draft outlines per gap.
-5. **Optionally open GitHub Issues** — if `open_issues: true`, create one issue per gap in the source repo with the draft outline and signal data.
+1. **Collect demand signals** — gather what users searched for but didn't find, questions the AI/support couldn't answer, and the most popular queries. If a docs analytics source is connected (e.g. a Docsbook workspace, PRO+), pull these directly; otherwise work from whatever search-log / support-ticket / question data the user can provide. Retain normalized text, frequency, and source signal type for each result.
+2. **Gather the docs** — get the list of pages in scope and read their titles/headings. If a semantic/graph search tool over the markdown is available (self-hosted `markdown-lsp`, or a connected Docsbook workspace), prefer it — faster and cheaper than scanning files; otherwise read the files directly with `grep`/`find`.
+3. **Cluster and score** — group near-duplicate queries into topic clusters. Compute priority score: `(failed_search × 3) + (ai_unanswered × 3) + (popular_search × 1)`. Failed searches and unanswered AI questions outweigh popularity — they confirm a gap.
+4. **Cross-reference doc graph** — drop clusters already covered by an existing page (title/H1/H2 token overlap ≥ 0.6 with non-stub content). Mark partial matches as `expand_existing`.
+5. **Produce report** — sort surviving clusters by score, take top `limit` (default 7), emit a markdown report with draft outlines per gap.
+6. **Optionally open GitHub Issues** — if `open_issues: true`, create one issue per gap in the source repo with the draft outline and signal data.
 
 ## Guardrails
 
