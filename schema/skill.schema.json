@@ -45,7 +45,13 @@
         },
         "requires_docsbook_mcp": {
           "type": "boolean",
-          "description": "True if the skill calls Docsbook MCP tools."
+          "description": "True only for skills that genuinely need the Docsbook platform (e.g. workspace configuration, webhooks). Analysis/read skills must NOT set this — they state a need and work on any docs folder; declare optional accelerators via `accelerated_by` instead."
+        },
+        "accelerated_by": {
+          "type": "array",
+          "description": "Optional, NON-gating list of tools that make the skill faster/cheaper when connected (e.g. markdown-lsp, docsbook-mcp). The skill still works without them via plain file reads / grep / find. Entries are bare tool names; inline YAML comments are allowed.",
+          "items": { "type": "string" },
+          "uniqueItems": true
         },
         "requires_plan": {
           "type": "string",

@@ -4,15 +4,8 @@ description: "Generate a complete, conversion-optimised docs site from a product
 metadata:
   version: 1.0.0
   category: creation
-  requires_docsbook_mcp: true
-  uses_mcp_tools:
-    - list_workspaces
-    - create_workspace
-    - update_branding
-    - update_ui_settings
-    - update_navigation
-    - update_seo
-    - update_languages
+  accelerated_by:
+    - docsbook-mcp      # create the workspace and apply branding/UI/navigation, if you publish through Docsbook
   keywords:
     - imagine
     - invent
@@ -60,11 +53,11 @@ metadata:
 5. **Preview.** Print a folder tree of `docs-output/<product-slug>/` and show excerpts (first 20–30 lines) from 2–3 representative pages (hero + one feature + FAQ). Ask the user to confirm or give feedback before publishing: "Does this look right? Type **yes** to publish, or describe what to change."
 
 6. **Publish.** Apply `/docs-publish` logic:
-   - If `gh` is authenticated and the user confirmed, push to GitHub using the `commit_docs` tool.
+   - If `gh` is authenticated and the user confirmed, commit and push the generated docs to GitHub (via `git`/`gh`, or your publishing step).
    - If `gh` is NOT authenticated or the user is not connected to Docsbook MCP, stop cleanly: print the local path and the command `/docs-publish <path>` to run after `gh auth login`. Do not error — this is a valid stopping point (`status: crawl_only`).
 
 7. **Configure the workspace.** Apply `/docs-setup-workspace` unconditionally after a successful publish:
-   - Wire branding, UI, navigation, and any plan-gated settings via the Docsbook MCP tools.
+   - Wire branding, UI, and navigation on your publishing platform (e.g. a connected Docsbook workspace), or write them into your docs config.
    - If the MCP transport is unreachable, print the connection command and exit cleanly — do not abort the overall pipeline; the local folder and GitHub URL are already delivered.
 
 8. **Final report.** Print all three outcomes:

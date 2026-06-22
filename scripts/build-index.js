@@ -236,12 +236,21 @@ function buildIndex() {
     const uses_mcp_tools = (Array.isArray(parsed.uses_mcp_tools) && parsed.uses_mcp_tools) ||
       (Array.isArray(md.uses_mcp_tools) && md.uses_mcp_tools) || null;
     const requires_docsbook_mcp = md.requires_docsbook_mcp;
+    // accelerated_by: optional, non-gating list of tools that make the skill faster/cheaper
+    // when connected. The skill still works without them (bare grep/find). Strip inline
+    // comments (e.g. "markdown-lsp      # semantic search") down to the tool name.
+    const accelerated_by_raw = (Array.isArray(parsed.accelerated_by) && parsed.accelerated_by) ||
+      (Array.isArray(md.accelerated_by) && md.accelerated_by) || null;
+    const accelerated_by = accelerated_by_raw
+      ? accelerated_by_raw.map((t) => String(t).split('#')[0].trim()).filter(Boolean)
+      : null;
 
     if (category) entry.category = category;
     if (requires_plan) entry.requires_plan = requires_plan;
     if (keywords && keywords.length) entry.keywords = keywords;
     if (uses_mcp_tools && uses_mcp_tools.length) entry.uses_mcp_tools = uses_mcp_tools;
     if (requires_docsbook_mcp !== undefined) entry.requires_docsbook_mcp = requires_docsbook_mcp === true || requires_docsbook_mcp === 'true';
+    if (accelerated_by && accelerated_by.length) entry.accelerated_by = accelerated_by;
 
     if (md.version) entry.version = md.version;
 

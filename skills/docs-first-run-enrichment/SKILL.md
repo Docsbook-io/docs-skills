@@ -1,23 +1,19 @@
 ---
 name: docs-first-run-enrichment
-description: Make a freshly-generated docs site rich and on-brand instead of a bare skeleton. Bundles two passes in sequence — (1) auto-brand from the source project's real signals (README, website theme-color, og:image, logo/favicon, repo name), and (2) enriched-structure generation that produces a multi-section site (getting-started, concepts, guides, reference, hero/landing) from audience, style-tone, content-type, and navigation heuristics. Run during first-generation, before commit_docs. Pair with docs-create.
+description: Make a freshly-generated docs site rich and on-brand instead of a bare skeleton. Bundles two passes in sequence — (1) auto-brand from the source project's real signals (README, website theme-color, og:image, logo/favicon, repo name), and (2) enriched-structure generation that produces a multi-section site (getting-started, concepts, guides, reference, hero/landing) from audience, style-tone, content-type, and navigation heuristics. Run during first-generation, before publishing. Pair with docs-create.
 metadata:
   version: 1.0.0
   category: creation
-  requires_docsbook_mcp: true
-  uses_mcp_tools:
-    - get_workspace
-    - update_branding
-    - read_website
-    - scan_github_repo
+  accelerated_by:
+    - docsbook-mcp      # read workspace branding & apply derived branding, if a Docsbook workspace is connected
   keywords: [first-run, branding, enrichment, multi-section, hero, auto-brand, generation, sellable]
 ---
 
 # docs-first-run-enrichment — Rich + Auto-Branded First Generation
 
-The problem this skill solves: a freshly-generated docs site produced by bare defaults looks like a skeleton — one or two thin pages, no visible brand, generic typography. This skill runs **before** `commit_docs` and wires two passes together so the first thing the user sees is a sellable site, not a stub.
+The problem this skill solves: a freshly-generated docs site produced by bare defaults looks like a skeleton — one or two thin pages, no visible brand, generic typography. This skill runs **before** the docs are published and wires two passes together so the first thing the user sees is a sellable site, not a stub.
 
-**Pass 1 — auto-brand from the source.** Extract real brand signals from whatever the user gave as source (URL, GitHub repo, description). Map those to the `update_branding` fields and apply silently. No invented colors.
+**Pass 1 — auto-brand from the source.** Extract real brand signals from whatever the user gave as source (URL, GitHub repo, description). Apply the derived branding to the workspace if one is connected; otherwise write the values into the docs config / theme files. No invented colors.
 
 **Pass 2 — enriched structure generation.** Decide on a multi-section outline derived from what the crawl found, then generate each section with the right content type (Diátaxis-aware), audience fit, style/tone, and navigation links wired between pages.
 
@@ -27,7 +23,7 @@ The problem this skill solves: a freshly-generated docs site produced by bare de
 
 Load it automatically during first-time docs generation:
 - The user gave a GitHub repo URL, a website URL, or a product description.
-- No `commit_docs` has succeeded yet for this workspace.
+- The docs have not been published yet for this workspace.
 - auto-mode is ON or the user chose this skill from the skill-selection question.
 
 Skip it (or skip Pass 1 only) when:
@@ -45,9 +41,9 @@ Gather these in order; stop once you have enough (anchor color + name):
 
 | Source | What to pull | How |
 |---|---|---|
-| Source **website URL** | `theme-color` meta, `og:image`, `<title>` / `og:site_name`, favicon `href` | `read_website(url)` |
-| **GitHub repo** | README brand mentions (hex codes, "our teal/blue/…"), `package.json` `name` + `description`, social preview image | `scan_github_repo(owner, repo)` |
-| Workspace **current branding** | `accent_color`, `logo_url`, `icon_url`, `custom_name` — anything already set by a human | `get_workspace()` |
+| Source **website URL** | `theme-color` meta, `og:image`, `<title>` / `og:site_name`, favicon `href` | Fetch the product's website and extract these branding signals |
+| **GitHub repo** | README brand mentions (hex codes, "our teal/blue/…"), `package.json` `name` + `description`, social preview image | Read the repo's README and metadata for brand signals (file read / GitHub API) |
+| Workspace **current branding** | `accent_color`, `logo_url`, `icon_url`, `custom_name` — anything already set by a human | Read current workspace branding, if a Docsbook workspace is connected |
 | **Logo/icon URL** | Dominant non-neutral color | Describe by hex from the visible hue if the URL is an SVG/PNG you can read |
 
 Record every signal with its source string. A missing signal is noted as missing — never filled with a guess.
@@ -64,7 +60,7 @@ On first-run, apply the best available palette silently (no `ask_user`). The use
 6. **Font** = leave unchanged unless the repo README or website CSS explicitly names a Google Font.
 7. **custom_name** = site brand name → GitHub repo name (the part after `/`). Only set if not already set.
 
-Call `update_branding` with exactly the derived fields. Echo what was set and from which signal.
+Apply the derived branding to the workspace (if a Docsbook workspace is connected); otherwise write the derived fields into the docs config / theme files. Echo what was set and from which signal.
 
 ### 1.3 Logo / favicon
 
@@ -151,7 +147,7 @@ The index / hero page links to every section. Every leaf page links back to the 
 ## Guardrails
 
 - **Never invent brand colors, logos, or product names.** If no signal exists, skip that field.
-- **Never overwrite human-set branding** already on the workspace. Check `get_workspace()` first; if `accent_color` is already set (non-null, non-default `#000000`), skip the color update and say so.
+- **Never overwrite human-set branding** already on the workspace. Read the current workspace branding first (if a workspace is connected); if `accent_color` is already set (non-null, non-default `#000000`), skip the color update and say so.
 - **Never generate placeholder content** ("Lorem ipsum", "Company Name", "Add description here"). Every sentence must come from or be derivable from the crawled content. If the crawl was too thin to write a page, skip that page and note it.
 - **First-run only.** This skill applies to brand-new workspaces or first-time generation. Do not re-apply Pass 1 (branding) on a subsequent run unless the user explicitly asks for a re-brand.
 - **No `ask_user` in Pass 1 or Pass 2** on the auto-mode path. The whole point is silent enrichment that shows results without asking. If auto-mode is OFF, surface a single summary ask_user at the end: "I've applied these branding values and generated a 5-page site — approve to commit or adjust first?"
@@ -159,14 +155,12 @@ The index / hero page links to every section. Every leaf page links back to the 
 
 ---
 
-## MCP Tools
+## Inputs
 
-| Tool | Purpose |
-|------|---------|
-| `mcp__docsbook__get_workspace` | Read existing branding to avoid overwriting human-set values |
-| `mcp__docsbook__update_branding` | Write only the derived color / name / logo fields |
-| `mcp__docsbook__read_website` | Extract theme-color, og:image, title, favicon from source URL |
-| `mcp__docsbook__scan_github_repo` | Read README and package.json for brand signals and product content |
+- **Branding signals** — derive them: fetch the product site (theme color, og:image, logo) and read the repo's README/metadata. Do not invent values.
+- **Current workspace branding** — read it if a workspace is connected, to avoid overwriting what the user set.
+
+> **Acceleration (optional).** If a Docsbook workspace is connected, the derived branding can be applied to it directly. Without it, write the values into your docs config / theme files.
 
 ---
 
