@@ -1,11 +1,11 @@
 ---
 name: docs-from-site
-description: Spin up Markdown docs from any product website URL. Crawls the site, extracts content, and produces a clean docs-output/<name>/ folder — then publishes to GitHub and configures the Docsbook workspace automatically. Use when the user provides a website URL, site URL, or says "from website", "import site", "from URL".
+description: Spin up Markdown docs from any product website URL or live site. Crawls the site, extracts content, and produces a clean docs-output/<name>/ folder — then publishes to GitHub and configures the Docsbook workspace automatically. Use when the user provides a website URL, site URL, or pastes a link and says "from website", "import site", "from URL", "from a live site", "recreate this site's docs", "copy this link", "повтори документацию по ссылке", or "сделай доки по этому сайту".
 metadata:
-  version: 2.1.0
+  version: 2.1.1
   category: creation
   requires_docsbook_mcp: false
-  keywords: [crawl, website, site, extract, markdown, generate, website-url, from-website, site-url, url, import-site, product-site]
+  keywords: [crawl, website, site, extract, markdown, generate, website-url, from-website, site-url, url, import-site, product-site, live-site, recreate-site-docs, copy-link, повтори-документацию-по-ссылке, from-link]
 ---
 
 # docs-from-site — Build docs from a product website
