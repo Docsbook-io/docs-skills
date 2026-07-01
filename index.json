@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-22T11:51:56.877Z",
+  "generated_at": "2026-07-01T05:03:21.837Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -273,7 +273,7 @@
         "new"
       ],
       "requires_docsbook_mcp": false,
-      "version": "1.0.0",
+      "version": "1.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-create/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-create/SKILL.md"
     },
@@ -376,7 +376,7 @@
     },
     {
       "name": "docs-from-site",
-      "description": "Spin up Markdown docs from any product website URL. Crawls the site, extracts content, and produces a clean docs-output/<name>/ folder — then publishes to GitHub and configures the Docsbook workspace automatically. Use when the user provides a website URL, site URL, or says \"from website\", \"import site\", \"from URL\".",
+      "description": "Spin up Markdown docs from any product website URL or live site. Crawls the site, extracts content, and produces a clean docs-output/<name>/ folder — then publishes to GitHub and configures the Docsbook workspace automatically. Use when the user provides a website URL, site URL, or pastes a link and says \"from website\", \"import site\", \"from URL\", \"from a live site\", \"recreate this site's docs\", \"copy this link\", \"повтори документацию по ссылке\", or \"сделай доки по этому сайту\".",
       "category": "creation",
       "keywords": [
         "crawl",
@@ -390,10 +390,15 @@
         "site-url",
         "url",
         "import-site",
-        "product-site"
+        "product-site",
+        "live-site",
+        "recreate-site-docs",
+        "copy-link",
+        "повтори-документацию-по-ссылке",
+        "from-link"
       ],
       "requires_docsbook_mcp": false,
-      "version": "2.1.0",
+      "version": "2.1.1",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-from-site/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-from-site/SKILL.md"
     },
@@ -676,7 +681,7 @@
     },
     {
       "name": "docs-audience-enricher",
-      "description": "Reasons about who your buyers are, how they enter the product, and who you compete with — then enriches your private product source-of-truth (an about/ folder, a product-marketing context file, or any markdown knowledge base) so future growth work has richer ground to stand on. Runs three lenses — segment (JTBD, watering holes, buying triggers per ICP segment), funnel (every entry path, its friction, how complete it is), competitor (live changes, new entrants, fresh counter-arguments) — grounded in real analytics via the docs-insights pipeline where data exists, simulated only where it does not. Proposes and appends; never touches product code or client docs. Produces an insight JSON report consumable by downstream actor agents.",
+      "description": "Reasons about who your buyers are, how they enter the product, and who you compete with — then enriches your private product source-of-truth (a README/specs tree, a product-marketing context file, or any markdown knowledge base) so future growth work has richer ground to stand on. Runs three lenses — segment (JTBD, watering holes, buying triggers per ICP segment), funnel (every entry path, its friction, how complete it is), competitor (live changes, new entrants, fresh counter-arguments) — grounded in real analytics via the docs-insights pipeline where data exists, simulated only where it does not. Proposes and appends; never touches product code or client docs. Produces an insight JSON report consumable by downstream actor agents.",
       "category": "growth",
       "requires_plan": "pro",
       "keywords": [

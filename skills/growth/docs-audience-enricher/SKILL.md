@@ -1,6 +1,6 @@
 ---
 name: docs-audience-enricher
-description: Reasons about who your buyers are, how they enter the product, and who you compete with — then enriches your private product source-of-truth (an about/ folder, a product-marketing context file, or any markdown knowledge base) so future growth work has richer ground to stand on. Runs three lenses — segment (JTBD, watering holes, buying triggers per ICP segment), funnel (every entry path, its friction, how complete it is), competitor (live changes, new entrants, fresh counter-arguments) — grounded in real analytics via the docs-insights pipeline where data exists, simulated only where it does not. Proposes and appends; never touches product code or client docs. Produces an insight JSON report consumable by downstream actor agents.
+description: Reasons about who your buyers are, how they enter the product, and who you compete with — then enriches your private product source-of-truth (a README/specs tree, a product-marketing context file, or any markdown knowledge base) so future growth work has richer ground to stand on. Runs three lenses — segment (JTBD, watering holes, buying triggers per ICP segment), funnel (every entry path, its friction, how complete it is), competitor (live changes, new entrants, fresh counter-arguments) — grounded in real analytics via the docs-insights pipeline where data exists, simulated only where it does not. Proposes and appends; never touches product code or client docs. Produces an insight JSON report consumable by downstream actor agents.
 metadata:
   version: 1.0.0
   category: growth
@@ -45,7 +45,7 @@ This skill is **product-agnostic**. It needs to know two things, passed by the c
 
 | Input | What it is | Docsbook example | Generic example |
 |---|---|---|---|
-| `SOT_DIR` | The private product knowledge base to read and enrich | `about/` | `.agents/product-marketing.md` (single file), or `docs-internal/` |
+| `SOT_DIR` | The private product knowledge base to read and enrich | `README.md` + `specs/` | `.agents/product-marketing.md` (single file), or `docs-internal/` |
 | `WORKSPACE` | Docsbook workspace for real analytics (optional) | `42` or `Docsbook-io/docs` | omit → simulation-only mode |
 
 Optional:
@@ -90,7 +90,7 @@ A lens must never present a simulated claim as if it were measured. When in doub
 
 6. **Emit the report** — write the standard insight JSON + a human-readable `.md` sibling under `.docsbook/insights/`. The JSON's `suggested_actions` are the bridge to the next stage (an opportunity-mapper, an experiment-planner, a human).
 
-7. **Hand off for publishing** — the skill writes files on disk only. Persisting/publishing the enriched SOT is the caller's job (in Docsbook, the `repo-sync` subagent commits `about/`). Print which SOT files changed so the caller can sync them.
+7. **Hand off for publishing** — the skill writes files on disk only. Persisting/publishing the enriched SOT is the caller's job (in Docsbook, the enriched `README.md`/`specs/` are committed in the parent repo). Print which SOT files changed so the caller can sync them.
 
 ## Writing into the source-of-truth (the most important guardrail)
 

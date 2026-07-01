@@ -319,7 +319,7 @@ Use when you want your docs to *grow the product*, not just document it — and 
 npx skills add Docsbook-io/docs-skills --skill docs-audience-enricher
 // Prompts:
 // Figure out who actually buys my product and how they enter
-// Enrich my about/ folder with buyer segments and competitors
+// Enrich my product knowledge base with buyer segments and competitors
 // What's changed in my competitive landscape since I last wrote?
 // Fill the blind spots in my product source-of-truth before a growth pass
 ```
