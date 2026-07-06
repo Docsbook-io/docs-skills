@@ -30,8 +30,10 @@ The actual work is done by the **`docs-workspace-configurator`** subagent (Sonne
 2. Check whether the workspace already exists before calling `create_workspace` — Docsbook auto-indexes repos within seconds of a push.
 3. Read branding values from `_branding.json` if present. Fall back to sensible defaults when the file is missing.
 4. Apply settings in priority order: navigation (Free-tier, always) → branding → UI → AI/SEO/languages (plan-gated).
-5. Catch each plan-gated failure individually; record it in the result but do not abort the rest of the run.
-6. Report which sections were applied, which were plan-gated, and any warnings.
+5. When applying SEO (plan-gated): enable the SEO/GEO/AEO flags themselves, not just titles/descriptions — the audit-and-write tool for this workspace's platform typically takes an "enabled" toggle alongside content fields. If the underlying tool only writes content and has no enable toggle, tell the user those need enabling manually in workspace settings. Never assume the flag is already on.
+6. When applying AI chat (plan-gated): derive 3 custom/suggested questions from the actual pages just created (e.g. from H1s or the quick-start/pricing/setup pages) — never invent generic ones like "What is this product?" — and pass them alongside the rest of the AI chat config. Skip silently if the underlying tool has no field for this.
+7. Catch each plan-gated failure individually; record it in the result but do not abort the rest of the run.
+8. Report which sections were applied, which were plan-gated, and any warnings.
 
 ## Guardrails
 
@@ -51,9 +53,9 @@ The actual work is done by the **`docs-workspace-configurator`** subagent (Sonne
 | `update_branding` | Apply accent color, background, favicon, theme |
 | `update_ui_settings` | Apply standard UI toggles (breadcrumbs, feedback, search, etc.) |
 | `update_navigation` | Add back-link to source website |
-| `update_seo` | Configure SEO settings (PRO+) |
+| `update_seo` | Configure SEO settings AND enable the SEO/GEO/AEO flags (PRO+) |
 | `update_languages` | Enable multilingual support (PRO+) |
-| `update_ai_settings` | Configure AI chat (PRO+) |
+| `update_ai_settings` | Configure AI chat, including 3 derived custom/suggested questions (PRO+) |
 | `update_domain` | Set custom domain (PRO+) |
 
 ## Acceptance Criteria
@@ -63,5 +65,7 @@ The actual work is done by the **`docs-workspace-configurator`** subagent (Sonne
 - [ ] Branding applied (from file or sensible defaults)
 - [ ] UI settings applied with standard preset
 - [ ] Navigation section applied on every run regardless of plan
+- [ ] SEO/GEO/AEO flags enabled (not just content fields), if the tool supports it
+- [ ] AI chat custom questions derived from actual created pages, not invented
 - [ ] Plan-gated failures recorded but do not block the result
 - [ ] Result lists applied sections, plan-gated sections, and warnings

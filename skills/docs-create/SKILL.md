@@ -2,13 +2,23 @@
 name: docs-create
 description: Turn a URL or repo into a live docs site in one command. Full end-to-end pipeline — detects the source (website, code, or Mintlify/GitBook/Docusaurus), generates structured Markdown, publishes to GitHub, and configures the Docsbook workspace. Minimal questions, maximum output.
 metadata:
-  version: 1.1.0
+  version: 1.2.0
   category: creation
   requires_docsbook_mcp: false
   keywords: [create, pipeline, generate, docs, new]
 ---
 
 # docs-create — End-to-end docs pipeline
+
+## Docsbook chat agent (in-app)
+
+When this skill is read by the Docsbook /chat agent — the environment where agent-engine tools (`crawl_website`, `create_workspace`, `generate_doc_site`, `commit_docs`, `update_branding`, `set_option`) are available — map the workflow onto those tools instead of the CLI steps below, and follow the auto-mode contract:
+
+- **Pipeline:** `crawl_website(url)` → `create_workspace` (custom_name from the crawl's `suggested_name`) → ONE `generate_doc_site` call passing `site_context` (digest of crawled pages) and `source_branding` (the crawl's brand tokens) → it generates all pages in parallel, applies branding, and publishes.
+- **Every visible step is a TOOL CALL, never narrated text.** The engine emits one chip per crawled page (`crawl_page`), per generated file (`write_doc_page`), and for the publish step (`publish_docs`). Do not stream progress as prose like "Wrote README.md (1.1k chars)" — the user must see real tool calls.
+- **Branding is part of creation, not a follow-up.** Source brand tokens (accent color, font, logo, favicon, site name) are applied verbatim during generation. If the crawl found no tokens, derive branding immediately — never leave the site generic and never invent a default accent.
+- **Auto-mode ON (the default):** zero questions. Decide everything yourself for maximum wow: crawl, generate, publish to Docsbook hosting, apply source branding, and immediately enable the recommended free features — SEO, GEO, AEO, AI chat — via `set_option`. Do not ask for confirmation at any step; the payoff is a fully branded, fully configured live site in one turn.
+- **Auto-mode OFF:** the user kept control — pause at checkpoints with `ask_user` (one per turn): (1) proposed page structure, (2) branding palette derived from detected signals, (3) which features to enable after publish. Mirror `/docs-create-interactive`.
 
 ## Workflow
 

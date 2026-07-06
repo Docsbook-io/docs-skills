@@ -2,13 +2,15 @@
 name: docs-create-interactive
 description: Same as /docs-create, but with you in the loop. Pauses at six checkpoints — source detection, structure review, content enrichment, branding, languages, domain — so you can adjust before publishing. Use when you want full control over what ships.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   category: creation
   requires_docsbook_mcp: false
   keywords: [create, interactive, pipeline, checkpoints, customize]
 ---
 
 # docs-create-interactive — Guided docs pipeline with checkpoints
+
+> **Docsbook chat agent (in-app):** this is the flow the /chat agent follows when auto-mode is OFF — surface each checkpoint as an `ask_user` question (one per turn): source confirmation, page structure, branding palette (from detected source signals), features to enable (SEO, GEO, AEO, AI chat). With auto-mode ON use `/docs-create` instead: no questions, everything applied automatically.
 
 ## Workflow
 

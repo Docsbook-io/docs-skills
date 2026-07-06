@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-01T06:06:36.789Z",
+  "generated_at": "2026-07-05T17:28:41.147Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -273,7 +273,7 @@
         "new"
       ],
       "requires_docsbook_mcp": false,
-      "version": "1.1.0",
+      "version": "1.2.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-create/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-create/SKILL.md"
     },
@@ -289,7 +289,7 @@
         "customize"
       ],
       "requires_docsbook_mcp": false,
-      "version": "1.0.0",
+      "version": "1.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-create-interactive/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-create-interactive/SKILL.md"
     },
