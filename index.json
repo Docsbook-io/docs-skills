@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-06T02:21:31.267Z",
+  "generated_at": "2026-07-13T07:05:50.534Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -586,7 +586,7 @@
         "markdown-lsp",
         "docsbook-mcp"
       ],
-      "version": "1.0.0",
+      "version": "1.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-seo/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-seo/SKILL.md"
     },
