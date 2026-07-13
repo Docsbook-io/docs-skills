@@ -2,7 +2,7 @@
 name: docs-seo
 description: Make your docs rankable — by Google and by AI. A documentation-aware SEO audit covering title and description optimization, heading hierarchy, keyword placement, internal topic clusters, image alt text and GEO / AI Overviews compatibility. Not a general site audit — tuned for doc-specific failure modes.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   category: analysis
   accelerated_by:
     - markdown-lsp      # semantic/graph search over the docs folder (self-hosted) — faster & cheaper than grep
@@ -14,9 +14,10 @@ metadata:
 
 ## Workflow
 
-1. **Gather the docs** — get the list of pages in scope (with titles and frontmatter) and read their content. If a semantic/graph search tool over the markdown is available (self-hosted `markdown-lsp`, or a connected Docsbook workspace), prefer it — faster and cheaper than scanning files; otherwise read the files directly with `grep`/`find`. Prioritize Tier 1 pages (quick-start, pricing, auth, install) first. Skip if docs are private or internal.
-2. **Apply checklist** — check titles, descriptions, heading structure, body content, images, internal links (topic clusters), URL/file path conventions, and AI Overviews / GEO criteria.
-3. **Produce report** — return one JSON issue object per finding, sorted by severity. Cross-page checks (duplicate titles, orphan pages) require the full graph.
+1. **Check the platform's SEO switches first** — before auditing content, find out whether the publishing platform generates structured data (JSON-LD) and whether it is *turned on*. This is the single highest-leverage finding: perfect content markup is worthless if the platform ships it behind a disabled toggle. On Docsbook, read the workspace's `seo` / `geo` / `aeo` flags via `get_info` (MCP) or the SEO / GEO panel in the dashboard. See **Platform SEO switches** below for what each flag emits and why a disabled `aeo`/`geo` is often the biggest AI-citability gap. If the platform has no such switches, skip this step — the audit is then purely your markdown frontmatter.
+2. **Gather the docs** — get the list of pages in scope (with titles and frontmatter) and read their content. If a semantic/graph search tool over the markdown is available (self-hosted `markdown-lsp`, or a connected Docsbook workspace), prefer it — faster and cheaper than scanning files; otherwise read the files directly with `grep`/`find`. Prioritize Tier 1 pages (quick-start, pricing, auth, install) first. Skip if docs are private or internal.
+3. **Apply checklist** — check titles, descriptions, heading structure, body content, images, internal links (topic clusters), URL/file path conventions, and AI Overviews / GEO criteria.
+4. **Produce report** — return one JSON issue object per finding, sorted by severity. Cross-page checks (duplicate titles, orphan pages) require the full graph. Lead the report with any disabled platform SEO switch found in step 1.
 
 ## Guardrails
 
@@ -34,6 +35,22 @@ This skill needs two things, by whatever means are available:
 
 > **Acceleration (optional).** Graph/semantic search over the docs makes navigation faster and cheaper than scanning files. You can self-host it with [`markdown-lsp`](https://github.com/Docsbook-io/markdown-lsp), or get the same capability in the cloud by connecting a Docsbook workspace. With nothing connected, plain file reads and `grep`/`find` work fine.
 > If you publish through a platform that exposes SEO settings (e.g. Docsbook PRO), the audit's recommendations can be applied there; otherwise they're plain edits to your markdown frontmatter.
+
+## Platform SEO switches
+
+Some platforms generate structured data (JSON-LD) for you — but behind opt-in switches that are often **off by default**. When they are off, the page still ships a basic `TechArticle` + `Organization` + `BreadcrumbList` graph, but the richest, most *citable* markup is withheld. Auditing frontmatter without checking these switches misses the biggest lever, so treat a disabled switch as a top-of-report finding.
+
+On **Docsbook**, three workspace flags control this (read them with `get_info`; toggle from the SEO / GEO dashboard panel, or ask the agent to flip `seoEnabled` / `geoEnabled` / `aeoEnabled`):
+
+| Flag | When ON, adds to every page's JSON-LD | Why it matters for AI answers |
+|---|---|---|
+| `seoEnabled` | Base indexing signals, sitemap inclusion, meta reinforcement | Gets the page into Google's index at all |
+| `geoEnabled` | `author` as a real `Person` (from frontmatter `author`/`authorUrl` or last git author) instead of the org | E-E-A-T / authorship — engines weight authored content higher |
+| `aeoEnabled` | `FAQPage` + `HowTo` (auto-detected from Q&A and numbered-step sections) + `SpeakableSpecification` | **The strongest citation lever.** ChatGPT / Perplexity / Google AI Overviews lift Q&A and step lists straight out of `FAQPage`/`HowTo` into their answers |
+
+**Rule of thumb.** If a workspace gets meaningful AI-crawler traffic (GPTBot, ClaudeBot, PerplexityBot in the logs) but `aeoEnabled` is off, that is almost always the #1 recommendation — the docs are being crawled but the most quotable structure is being withheld. Recommend enabling `aeo` (and `geo` for authored content), then verify the content actually *has* Q&A / step sections for the auto-detect to find (see the AI Overviews checklist below) — enabling the flag on prose with no detectable FAQ/HowTo adds `speakable` but no `FAQPage`, so the content work and the switch go together.
+
+> **Caveat — don't blind-enable.** `FAQPage`/`HowTo` are auto-detected heuristically. On pages with no genuine Q&A or procedure, forcing the markup risks invalid/irrelevant schema, which search engines can penalize. Flag the switch, but pair it with the content checks — enable where the content supports it, not blindly across every page.
 
 ## Checklist
 
@@ -115,6 +132,8 @@ Documentation increasingly appears in AI-generated answers (ChatGPT, Perplexity,
 
 | Severity | Problem | Detection |
 |---|---|---|
+| `critical` | Platform generates rich JSON-LD but `aeoEnabled` is off while the workspace gets AI-crawler traffic | Read `seo`/`geo`/`aeo` via `get_info`; cross-check crawler hits in logs |
+| `high` | `geoEnabled` off — author shows as org, not a real `Person` (weak E-E-A-T) | Read `geo` via `get_info` |
 | `critical` | Missing `title` in frontmatter | Check all pages |
 | `critical` | Duplicate title across pages | Compare all titles |
 | `critical` | Multiple H1 in page body | Count `# ` lines |
@@ -169,6 +188,7 @@ Documentation increasingly appears in AI-generated answers (ChatGPT, Perplexity,
 
 ## Acceptance Criteria
 
+- [ ] Platform SEO switches (`seo`/`geo`/`aeo` on Docsbook) have been read and any disabled switch is surfaced as a top finding — or noted as N/A if the platform has none.
 - [ ] Every page in scope has been checked for title, description, and H1 completeness.
 - [ ] Cross-page checks (duplicate titles, orphan pages) have been run against the full doc graph.
 - [ ] AI Overviews / GEO criteria are either applied (user confirmed) or skipped with a note.
