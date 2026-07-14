@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-13T07:05:50.534Z",
+  "generated_at": "2026-07-14T13:44:03.130Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -376,7 +376,7 @@
     },
     {
       "name": "docs-from-site",
-      "description": "Spin up Markdown docs from any product website URL or live site. Crawls the site, extracts content, and produces a clean docs-output/<name>/ folder — then publishes to GitHub and configures the Docsbook workspace automatically. Use when the user provides a website URL, site URL, or pastes a link and says \"from website\", \"import site\", \"from URL\", \"from a live site\", \"recreate this site's docs\", \"copy this link\", \"повтори документацию по ссылке\", or \"сделай доки по этому сайту\".",
+      "description": "Spin up a rich, conversion-grade Markdown docs site from any product website URL — even one with no existing docs. Reads the live site (rendering JS first), extracts real content, and produces a multi-section, foldered site (overview, getting-started, concepts, features, guides, use-cases, FAQ, reference) — then publishes and configures the Docsbook workspace so the first thing a new visitor sees sells the product. Use when the user provides a website URL, site URL, or pastes a link and says \"from website\", \"import site\", \"from URL\", \"from a live site\", \"recreate this site's docs\", \"copy this link\", \"повтори документацию по ссылке\", or \"сделай доки по этому сайту\".",
       "category": "creation",
       "keywords": [
         "crawl",
@@ -398,7 +398,10 @@
         "from-link"
       ],
       "requires_docsbook_mcp": false,
-      "version": "2.1.1",
+      "accelerated_by": [
+        "docsbook-mcp"
+      ],
+      "version": "3.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-from-site/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-from-site/SKILL.md"
     },
@@ -611,6 +614,8 @@
         "update_ui_settings",
         "update_navigation",
         "update_seo",
+        "update_geo",
+        "update_aeo",
         "update_languages",
         "update_ai_settings",
         "update_domain"
