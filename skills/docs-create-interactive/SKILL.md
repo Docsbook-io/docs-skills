@@ -15,7 +15,7 @@ metadata:
 ## Workflow
 
 1. Run `/docs-detect-source` logic. Show the detected type and wait for user confirmation before continuing. Re-run if the user points to a different source.
-2. Plan the full file structure. Display the proposed tree and wait for approval or modification requests. Apply changes before generating any files.
+2. Plan the full file structure — foldered and multi-section (see `/docs-first-run-enrichment`): hero, getting-started, concepts, `features/`, `guides/`, `use-cases`, `faq.md`, reference where applicable. Target 10–18 real pages when the source supports it; scale down only for genuinely thin sources. Display the proposed tree and wait for approval or modification requests. Apply changes before generating any files.
 3. **Content enrichment checkpoint.** Ask the user which marketing-driven categories to add on top of the core docs:
    - `competitor-vs` — `blog/<you>-vs-<competitor>.md` for "X vs Y" / "X alternative" searches. Highest-intent SEO traffic.
    - `educational` — `learn/` topic cluster teaching the domain (not the product). Top-of-funnel content with a soft CTA at the end. Strong AI-citation candidate.

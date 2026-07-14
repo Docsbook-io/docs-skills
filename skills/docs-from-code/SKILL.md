@@ -10,14 +10,14 @@ metadata:
 
 # docs-from-code — Build docs from a code repository
 
-The actual work is done by the **`docs-code-crawler`** subagent (Haiku, pinned model) available via the [docs-subagents](https://github.com/Docsbook-io/docs-subagents) package. This skill is the knowledge base — the subagent is the executor.
+The intelligence lives in **this skill** — read the repo, decide the structure, and write the pages yourself; delegate only publishing and configuration to the connected docs platform. Aim for a foldered, benefit-first site (a developer evaluating the repo should see *why* to use it, not just an API dump), not a flat README split.
 
 ## Workflow
 
 1. **Resolve the repo.** Accept `github.com/<owner>/<repo>` or a local path. For GitHub URLs, use `gh repo clone --depth 1` into a temp directory; for local paths, work in place.
    - Take the **project name from the repo name** (the `<repo>` part after `owner/`), not from a guess. Use it for the `docs-output/<name>/` folder and the workspace display name. If you're working from an unnamed local path with no clear name, ask the user rather than inventing one.
 2. **Detect the project type.** Inspect root files: `package.json` (Node/TS), `pyproject.toml` / `setup.py` (Python), `go.mod` (Go), `Cargo.toml` (Rust), `*.csproj` (.NET). Pick the strongest signal; on conflict, prefer the one with a `lib` / `src` / `pkg` directory.
-3. **Extract the README spine.** Convert the root `README.md` into `docs-output/<name>/README.md`. Split long top-level sections (`## Installation`, `## Usage`, `## API`) into dedicated pages under `getting-started/`, `guides/`, `api/`.
+3. **Extract the README spine into a benefit-first hero.** Convert the root `README.md` into `docs-output/<name>/README.md` — but lead with a value-prop sentence (what the project does + who it's for + the outcome), not "Installation". Split long top-level sections (`## Installation`, `## Usage`, `## API`) into dedicated pages under `getting-started/`, `guides/`, `api/`. Add a `concepts.md` when the project has a non-trivial mental model, and a `faq.md` (6–10 Q&A synthesized from the README/issues: how it compares, limits, requirements) — these are what make the docs read as a product, and the FAQ feeds the AEO layer.
 4. **Enumerate the public API surface.** For Node/TS: read `package.json#exports` and the entry files; for Python: read `__all__` from the top package; for Go: list exported identifiers from each top-level package. Generate one Markdown file per module / package under `api/`.
 5. **Pull in examples.** If `examples/`, `samples/`, or `demo/` exists, copy each subfolder's README (or generate one from the file tree) into `guides/<example>.md`.
 6. **Read configuration docs.** Look for `.env.example`, `config/*.example.*`, `docker-compose.yml` — generate a `guides/configuration.md` listing variables with descriptions pulled from adjacent comments.

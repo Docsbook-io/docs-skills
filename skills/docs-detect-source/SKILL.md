@@ -20,7 +20,7 @@ metadata:
 
 ## Guardrails
 
-- Fetch the page with WebFetch first; only escalate to a browser if the HTML is empty.
+- For *detection* (platform signals in meta tags / CDN links), a plain HTTP fetch of the raw HTML is enough — those signals live in the shell. But note: a non-empty HTML shell does **not** mean the content is there. Most product sites are JS SPAs whose `<main>` is empty until rendered, so the downstream builder (`/docs-from-site`) must render with a browser to read real content — do not let a 200 with populated `<head>` fool the content pass into skipping the render.
 - A single ambiguous signal is not enough — require at least one platform-specific config file or meta tag before assigning a platform type.
 - If detection is inconclusive, default to `website` / `/docs-from-site` rather than blocking.
 - Never mutate the source; detection is read-only.
