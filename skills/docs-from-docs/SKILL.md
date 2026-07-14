@@ -10,7 +10,7 @@ metadata:
 
 # docs-from-docs — Import from another docs platform
 
-The actual work is done by the **`docs-platform-importer`** subagent (Haiku, pinned model) available via the [docs-subagents](https://github.com/Docsbook-io/docs-subagents) package. This skill is the knowledge base — the subagent is the executor.
+This skill is the executor — read the source platform, mirror its structure, normalise the syntax, and publish. Because you are migrating an existing docs site, the folder structure is already there: reproduce it faithfully (its nav → the sub-header). The one enrichment worth adding is a `faq.md` / `use-cases` page if the source lacks one — it kills evaluation objections and feeds the AEO layer.
 
 ## Workflow
 
@@ -41,6 +41,12 @@ The actual work is done by the **`docs-platform-importer`** subagent (Haiku, pin
 
 6. **Write `_branding.json`.** Pull `colors.primary` / `theme.accent` from the platform config. If absent, leave `accentColor` out so the workspace configurator skips `update_branding`.
 
+7. **Preview + confirm.** Print the folder tree and excerpts from up to 3 representative pages. Ask before publishing: "Does this look right? Type **yes** to publish, or describe what to change." (Auto-mode may skip the ask.)
+
+8. **Publish — one atomic commit.** Apply `/docs-publish` logic: if a Docsbook workspace is connected, create it for the source `owner/repo` and commit all pages together; if your git host is authenticated and the user confirmed, push there. If neither is available, stop cleanly with `status: crawl_only`, print the local path and the follow-up publish command. Do not error.
+
+9. **Configure the workspace.** Apply `/docs-setup-workspace` unconditionally after a successful publish — branding (from `_branding.json`), UI affordances, the nav sub-header from the mirrored folders, and plan-gated SEO/AEO/GEO/AI where allowed. This is a competitor-migration pitch ("moved your docs off Mintlify — here's the difference"), so the AI chat and affordances are the visible upgrade. If MCP is unreachable, print the connection command and exit cleanly.
+
 ## Guardrails
 
 - Never lose content. If a custom component cannot be normalised, paste its inner text verbatim and add `> **TODO:** original used <ComponentName>, may need styling tweak.`
@@ -58,4 +64,8 @@ The actual work is done by the **`docs-platform-importer`** subagent (Haiku, pin
 - [ ] Internal links rewritten to relative paths between output files
 - [ ] Referenced images copied into `_assets/`
 - [ ] `_branding.json` carries the platform's accent color when present, otherwise omits it
+- [ ] A `faq.md` / use-cases page added if the source had none
+- [ ] Preview (tree + excerpts) printed before any publish prompt
+- [ ] All pages published in one atomic commit (or `crawl_only` with local path + follow-up command)
+- [ ] `/docs-setup-workspace` applied after publish — branding, UI affordances, nav sub-header, plan-gated SEO/AEO/GEO/AI where allowed
 

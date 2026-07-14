@@ -80,19 +80,26 @@ Before generating any pages, derive the structure from what the crawl returned:
 
 | Signal | Sections to include |
 |---|---|
-| GitHub repo with README + source code | Getting Started, Core Concepts, Guides (at least 2 topics), API Reference stub |
-| Website with marketing copy | Hero / Overview page, Getting Started, Core Concepts, one or two How-To guides |
-| Plain description / idea only | Hero / Overview, Getting Started, Core Concepts |
-| Existing docs site (Mintlify, GitBook, etc.) | Mirror the source structure; add any missing Diátaxis types |
+| GitHub repo with README + source code | Hero, Getting Started, Core Concepts, `guides/` (2–5), `features/` (3–6), `use-cases`, `faq`, API Reference |
+| Website with marketing copy | Hero, Getting Started, Core Concepts, `features/` (3–6), `guides/` (2–5), `use-cases` (1–4), `faq` |
+| Plain description / idea only | Hero, Getting Started, Core Concepts, `features/` (3–5), `use-cases` (1–3), `faq` |
+| Existing docs site (Mintlify, GitBook, etc.) | Mirror the source structure (its folders → sub-header); add missing Diátaxis types + `faq`/`use-cases` if absent |
 
-**Minimum output for a "sellable" first generation:**
-- **index.md / README.md** — hero / overview page with a value proposition sentence, quick-start CTA, and 3-column feature highlights
-- **getting-started.md** — tutorial: prerequisites, install/setup steps, first "hello world" moment
-- **concepts.md** (or `concepts/` folder) — explanation: what the product is, key mental models, how the pieces fit
-- At least **one guide** (`guides/<topic>.md`) — how-to: concrete task, outcome-oriented
-- (Optional, if API/CLI is detected) **reference.md** — reference: command / endpoint list, parameters
+**Target for a "sellable" first generation — a foldered, multi-section site, not a flat handful of pages.** Aim for **10–18 substantive leaf pages grouped into folders** when the source supports it; scale down only when the source genuinely has little content (a well-scoped 8-page site beats 15 stubs, and 3 solid pages beat 5 thin ones). Include:
 
-Do NOT generate these sections if the crawl found no relevant content for them. A well-scoped 3-page site is better than 5 thin stubs.
+- **index.md / README.md** — hero / overview: value-prop sentence, quick-start CTA, 3-column feature highlights *(always)*
+- **getting-started.md** — tutorial: prerequisites, install/setup steps, first "hello world" moment *(always)*
+- **concepts.md** or `concepts/` — explanation: what the product is, key mental models, how the pieces fit *(always)*
+- `features/<feature>.md` (3–6) — benefit-first feature pages, one per real marketed capability
+- `guides/<topic>.md` (2–5) — how-to: concrete, outcome-oriented tasks
+- **use-cases.md** or `use-cases/` (1–4) — job stories: "X uses this to do Y, getting Z"
+- **faq.md** — 6–10 real Q&A that kill an unsold visitor's objections *(effectively always — it is also the AEO lever, see 2.5)*
+- `<domain>/` folders (e.g. `integrations/`, `security/`, `api/`) — cluster pages where the product has these areas
+- **reference.md** / `api-reference.md` — reference tables *(if an API/CLI/config surface exists)*
+
+**Folders are the point.** Group leaf pages under a handful of meaningful top-level folders — those folder names are what the workspace expands into a navigation **sub-header**, which is what makes the site read as real documentation instead of a file dump. A flat list of 5 files does not sell.
+
+Do NOT generate a section if the crawl found no relevant content for it, and never pad with empty placeholder pages "for later" — only sections backed by real content.
 
 ### 2.2 Generate each section with Diátaxis discipline
 
@@ -125,6 +132,19 @@ For every page, follow the content-type rule for that section:
 - Tabular: command / endpoint / parameter → description → example.
 - Present tense, no narrative prose.
 
+**Feature page (benefit-first, one per real capability)**
+- Headline = the outcome the reader gets, not the feature name ("Never lose context between tools", not "Sync engine").
+- Body = how it works + one piece of proof/example pulled from the source.
+- Ends with a CTA to getting-started or the related guide.
+
+**Use-case page (job story)**
+- Framed as a concrete scenario: who, the job to be done, the outcome ("A solo founder uses X to Y, so that Z").
+- Grounded in a real audience the source addresses — never a fabricated persona.
+
+**FAQ (`faq.md`)**
+- 6–10 genuine questions an evaluating visitor actually asks (pricing model, limits, privacy, supported tools, how it differs from alternative) — each a short H2 question + a direct answer.
+- Answers eliminate objections; keep them concrete, no hedging.
+
 ### 2.3 Style and tone pass (inline, not a separate step)
 
 Apply while writing each page:
@@ -140,7 +160,11 @@ Every page must:
 - Have a "Next steps" or "Related" section at the bottom.
 - Use descriptive anchor text ("Read the concepts guide" not "click here").
 
-The index / hero page links to every section. Every leaf page links back to the hero and to at least one sibling.
+The index / hero page links to every section. Every leaf page links back to the hero and to at least one sibling. Top-level folders map to the navigation sub-header — so the folder split *is* part of the navigation design, not just file layout.
+
+### 2.5 Why FAQ + use-cases matter twice (AEO)
+
+The FAQ and use-case pages are not filler — they carry the most citable structure on the site. When the platform's AEO layer is on, it turns Q&A into `FAQPage` and numbered procedures into `HowTo` structured data, which is exactly what ChatGPT / Perplexity / Google AI Overviews lift into their answers. Enabling the AEO flag on prose with no Q&A/step sections produces nothing — so the FAQ content and the switch go together (the workspace configurator flips the flag; this pass writes the content it needs). That is why `faq.md` is effectively mandatory even when the source has no explicit FAQ — synthesize it from what the product clearly answers.
 
 ---
 
@@ -150,7 +174,7 @@ The index / hero page links to every section. Every leaf page links back to the 
 - **Never overwrite human-set branding** already on the workspace. Read the current workspace branding first (if a workspace is connected); if `accent_color` is already set (non-null, non-default `#000000`), skip the color update and say so.
 - **Never generate placeholder content** ("Lorem ipsum", "Company Name", "Add description here"). Every sentence must come from or be derivable from the crawled content. If the crawl was too thin to write a page, skip that page and note it.
 - **First-run only.** This skill applies to brand-new workspaces or first-time generation. Do not re-apply Pass 1 (branding) on a subsequent run unless the user explicitly asks for a re-brand.
-- **No `ask_user` in Pass 1 or Pass 2** on the auto-mode path. The whole point is silent enrichment that shows results without asking. If auto-mode is OFF, surface a single summary ask_user at the end: "I've applied these branding values and generated a 5-page site — approve to commit or adjust first?"
+- **No `ask_user` in Pass 1 or Pass 2** on the auto-mode path. The whole point is silent enrichment that shows results without asking. If auto-mode is OFF, surface a single summary ask_user at the end: "I've applied these branding values and generated a foldered N-page site (features, guides, use-cases, FAQ) — approve to commit or adjust first?"
 - **Do not fail the pipeline** if a signal is missing. A missing logo URL means no `icon_url` update, not an error. Missing anchor color means color update is skipped, not an error.
 
 ---
@@ -176,12 +200,16 @@ Auto-brand applied:
   • icon_url: <url> (from <source>) [or: skipped — no favicon found]
   • logo_url: <url> [or: skipped]
 
-Generated structure:
+Generated structure (foldered — folders become the nav sub-header):
   • index.md — hero/overview
   • getting-started.md — tutorial (N steps)
   • concepts.md — explanation
-  • guides/<topic>.md — how-to
-  [list each page with type + line count]
+  • features/<feature>.md ×K — benefit-first
+  • guides/<topic>.md ×K — how-to
+  • use-cases.md — job stories
+  • faq.md — N Q&A (feeds FAQPage/AEO)
+  • reference.md — reference [if API/CLI]
+  [list every page with type + line count; total N pages across M folders]
 
 Ready to commit. [If auto-mode OFF: approve or adjust before committing.]
 ```
