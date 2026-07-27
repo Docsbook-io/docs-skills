@@ -2,14 +2,17 @@
 name: docs-visitor-cohort
 description: Drills into the top-N most active anonymous visitors and clusters them by behavior pattern — "buyer-blocker" (visits pricing, leaves negative feedback), "tire-kicker" (browses but never reaches CTA), "deep-reader" (long engagement, positive signals). Surfaces cohort-level findings that page-level analytics miss. Produces an insight JSON report consumable by downstream actor agents. Requires PRO+ plan.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   category: observability
+  measures:
+    - visit_evidence
+    - dead_end_rate
+    - time_to_first_value
+  metric_dictionary: ../../../metrics/metric-dictionary.json
   requires_plan: pro_plus
-  requires_docsbook_mcp: true
-  uses_mcp_tools:
-    - get_top_visitors
-    - get_visitor_activity
-    - get_workspace
+  accelerated_by:
+    - docsbook-mcp
+    - markdown-lsp
   produces_files:
     - .docsbook/insights/<timestamp>__docs-visitor-cohort.json
     - .docsbook/insights/<timestamp>__docs-visitor-cohort.md

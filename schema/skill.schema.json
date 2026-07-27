@@ -4,7 +4,11 @@
   "title": "Docsbook Skill Frontmatter",
   "description": "JSON Schema for the YAML frontmatter of a SKILL.md file in the docs-skills catalog.",
   "type": "object",
-  "required": ["name", "description", "metadata"],
+  "required": [
+    "name",
+    "description",
+    "metadata"
+  ],
   "additionalProperties": false,
   "properties": {
     "name": {
@@ -22,7 +26,10 @@
     },
     "metadata": {
       "type": "object",
-      "required": ["version", "category"],
+      "required": [
+        "version",
+        "category"
+      ],
       "additionalProperties": false,
       "properties": {
         "version": {
@@ -50,13 +57,19 @@
         "accelerated_by": {
           "type": "array",
           "description": "Optional, NON-gating list of tools that make the skill faster/cheaper when connected (e.g. markdown-lsp, docsbook-mcp). The skill still works without them via plain file reads / grep / find. Entries are bare tool names; inline YAML comments are allowed.",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "uniqueItems": true
         },
         "requires_plan": {
           "type": "string",
           "description": "Minimum Docsbook plan required to use this skill.",
-          "enum": ["free", "pro", "pro_plus"]
+          "enum": [
+            "free",
+            "pro",
+            "pro_plus"
+          ]
         },
         "uses_mcp_tools": {
           "type": "array",
@@ -70,7 +83,9 @@
         "produces_files": {
           "type": "array",
           "description": "Files the skill writes or modifies in the user's repo.",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "uniqueItems": true
         },
         "output_schema": {
@@ -81,15 +96,32 @@
         "pipeline_subagents": {
           "type": "array",
           "description": "Names of pinned subagents this skill orchestrates, in pipeline order.",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "uniqueItems": true
         },
         "keywords": {
           "type": "array",
           "description": "Discovery keywords used by find_skill matching.",
-          "items": { "type": "string", "minLength": 2 },
+          "items": {
+            "type": "string",
+            "minLength": 2
+          },
           "minItems": 1,
           "uniqueItems": true
+        },
+        "measures": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "description": "Metric ids from metrics/metric-dictionary.json that this skill interprets. Reference the dictionary instead of restating what a metric means in prose — the meaning, its confounders and the metrics it must be read alongside are defined once there."
+        },
+        "metric_dictionary": {
+          "type": "string",
+          "description": "Relative path to the metric dictionary this skill reads (usually ../../../metrics/metric-dictionary.json)."
         }
       }
     }

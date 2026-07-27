@@ -2,15 +2,19 @@
 name: docs-engagement-analyzer
 description: Splits high-dwell-time pages into "engagement signal" (deep interest) vs "engagement problem" (stuck users) by cross-referencing dwell time with negative feedback. Identifies which long-read pages are loved vs which are confusing. Produces an insight JSON report consumable by downstream actor agents. Requires PRO+ plan.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   category: observability
+  measures:
+    - dead_end_rate
+    - exit_rate
+    - time_to_first_value
+    - bounce_rate
+    - content_health_score
+  metric_dictionary: ../../../metrics/metric-dictionary.json
   requires_plan: pro_plus
-  requires_docsbook_mcp: true
-  uses_mcp_tools:
-    - get_analytics
-    - query_events
-    - get_negative_feedback
-    - get_workspace
+  accelerated_by:
+    - docsbook-mcp
+    - markdown-lsp
   produces_files:
     - .docsbook/insights/<timestamp>__docs-engagement-analyzer.json
     - .docsbook/insights/<timestamp>__docs-engagement-analyzer.md
