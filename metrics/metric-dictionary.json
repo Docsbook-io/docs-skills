@@ -1,6 +1,6 @@
 {
   "$schema": "../schema/metric.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "updated": "2026-07-27",
   "about": "What each Docsbook metric MEANS for the business — not what it counts. An agent reading a number should be able to say what to do about it, what would make it lie, and which other metric has to be read alongside it before drawing a conclusion. `pairs_with` is the important part: most single metrics are ambiguous, and the ambiguity is what makes an agent give confidently wrong advice.",
   "metrics": [
@@ -458,6 +458,248 @@
       ],
       "mcp_patterns": [
         "content_health"
+      ]
+    },
+    {
+      "id": "route_frequency",
+      "label": "Route frequency",
+      "category": "engagement",
+      "formula": "visits walking a given 2-4 page sequence / total visits",
+      "unit": "count",
+      "direction": "context_dependent",
+      "accuracy": "estimate",
+      "plan": "pro",
+      "business_meaning": "How many readers walk a particular sequence of pages, treating the ROUTE rather than the page as the unit.",
+      "why_it_matters": "Three pages can each look popular while nobody walks them in order — top-pages reports cannot tell an intended journey from three unrelated landings. A frequent route that ends badly is a navigation defect: the page readers need next is not the one you link to. A frequent route that ends well is the path to promote.",
+      "benchmarks": null,
+      "confounders": [
+        "Counted once per visit. Without that dedupe a reader bouncing A→B→A→B inflates the route A→B and frustration loops masquerade as popular journeys.",
+        "Immediate repeats are collapsed, so A→A→B is the route A→B; the reload itself shows up under rage signals instead.",
+        "Routes walked only once are dropped — a single visit is an anecdote, not a pattern.",
+        "Visitors are identified by a hashed IP, so a shared office network can stitch two people's browsing into one apparent route."
+      ],
+      "typical_causes": [
+        "Navigation that leads readers somewhere other than the next thing they need",
+        "A prerequisite documented after the step that requires it",
+        "Cross-links that promise more than the destination delivers"
+      ],
+      "recommended_actions": [
+        {
+          "when": "route_ends_badly",
+          "action": "Follow the route yourself and fix the transition where readers stop — usually a missing link or an unmet promise on the preceding page."
+        },
+        {
+          "when": "route_ends_well",
+          "action": "Promote this sequence in the navigation so more readers find it without hunting."
+        }
+      ],
+      "related_metrics": [
+        "dead_end_rate",
+        "funnel_completion_rate",
+        "rage_signal_rate"
+      ],
+      "pairs_with": [
+        {
+          "metric": "dead_end_rate",
+          "interpretation": "A frequent route with a high dead-end share is a navigation problem, not a page problem — each individual page may be fine while the ORDER is wrong. Rewriting the pages will not fix it."
+        }
+      ],
+      "mcp_patterns": [
+        "route_patterns",
+        "reverse_funnel"
+      ]
+    },
+    {
+      "id": "funnel_completion_rate",
+      "label": "Funnel completion rate",
+      "category": "activation",
+      "formula": "visits reaching the final declared step / visits reaching the first step",
+      "unit": "percent",
+      "direction": "higher_is_better",
+      "accuracy": "estimate",
+      "plan": "pro",
+      "business_meaning": "Of the readers who start the route you designed, the share who finish it — the onboarding completion rate of your documentation.",
+      "why_it_matters": "This is the only metric that measures the docs against the owner's OWN intent. Everything else reports what readers did; this reports whether what they did matches what you designed, and localizes the failure to a single transition you can go and look at.",
+      "benchmarks": null,
+      "confounders": [
+        "Steps must be matched IN ORDER. Counting each step independently is the classic funnel bug — it reports steps as reached by people who never walked the path.",
+        "Extra pages between declared steps are tolerated, so a reader who detours and returns still counts as continuing.",
+        "Only meaningful against a route the owner actually declared. With no configured route Docsbook reports that fact rather than inventing a funnel.",
+        "A short window can cut a visit in half, so a reader who finished the route the next day appears to have abandoned it."
+      ],
+      "typical_causes": [
+        "A step that does not link onward to the next one",
+        "A prerequisite that is harder than the page admits",
+        "A declared route that does not match how readers actually approach the product"
+      ],
+      "recommended_actions": [
+        {
+          "when": "below_warning",
+          "action": "Open the step with the worst continuation and check that the previous page links to it and promises what it delivers."
+        },
+        {
+          "when": "no_route_configured",
+          "action": "Declare the pages a new reader should pass through, or read the reverse funnel instead — it needs no hypothesis."
+        }
+      ],
+      "related_metrics": [
+        "route_frequency",
+        "dead_end_rate",
+        "time_to_first_value"
+      ],
+      "pairs_with": [
+        {
+          "metric": "route_frequency",
+          "interpretation": "If completion is low while some OTHER route is frequent and succeeds, readers have found a better path than the one you designed. Adopt theirs rather than pushing yours."
+        }
+      ],
+      "mcp_patterns": [
+        "forward_funnel"
+      ]
+    },
+    {
+      "id": "repeat_visit_retention",
+      "label": "Repeat-visit retention (W1/W4)",
+      "category": "retention",
+      "formula": "visitors active in a later week / visitors first seen in the cohort week",
+      "unit": "percent",
+      "direction": "context_dependent",
+      "accuracy": "estimate",
+      "plan": "business",
+      "business_meaning": "The share of readers who come back a week or a month after their first visit.",
+      "why_it_matters": "It is the only cohort view in the system — every other metric is a snapshot of a window. It answers whether the docs earn a place in someone's working habits, which is different from whether any single visit went well.",
+      "benchmarks": null,
+      "confounders": [
+        "THE SHAKIEST METRIC IN THE SYSTEM. visitor_id is a hashed IP: mobile networks split one reader across many ids and a corporate NAT merges many readers into one. Report it as a trend and say so; never quote it as a headcount.",
+        "A dynamic IP alone can make a loyal reader look like a new one every week, which biases retention DOWNWARD.",
+        "W4 needs a 30-day window to exist at all. On a 24h or 7d period it is structurally zero and means nothing.",
+        "Direction depends entirely on the section — see pairs_with before drawing any conclusion."
+      ],
+      "typical_causes": [
+        "Reference material readers keep at hand (high return is healthy)",
+        "Onboarding that could not be finished in one sitting (high return is a failure)",
+        "A product people use only occasionally"
+      ],
+      "recommended_actions": [
+        {
+          "when": "high_on_onboarding_section",
+          "action": "Treat repeat visits to onboarding as a warning: readers are coming back because they could not finish the first time."
+        },
+        {
+          "when": "low_on_reference_section",
+          "action": "Reference pages readers never return to are usually not findable — check search and navigation before rewriting them."
+        }
+      ],
+      "related_metrics": [
+        "dead_end_rate",
+        "time_to_first_value",
+        "self_serve_resolution_rate"
+      ],
+      "pairs_with": [
+        {
+          "metric": "time_to_first_value",
+          "interpretation": "Fast time-to-value with LOW return is success — the reader got what they needed and left. Fast with low return and no value event is failure: they gave up quickly. The two look identical until read together."
+        }
+      ],
+      "mcp_patterns": [
+        "retention"
+      ]
+    },
+    {
+      "id": "zero_click_rate",
+      "label": "Zero-click search rate",
+      "category": "findability",
+      "formula": "visits that opened search, saw results and clicked nothing / visits that searched",
+      "unit": "percent",
+      "direction": "lower_is_better",
+      "accuracy": "estimate",
+      "plan": "pro",
+      "business_meaning": "How often readers search, get a list of results, and reject every one of them.",
+      "why_it_matters": "Zero-result search reports miss this entirely: search formally worked. The reader looked at your titles and decided none of them was the answer — which points at titles and summaries, not page bodies, and is an order of magnitude cheaper to fix.",
+      "benchmarks": {
+        "good": 0.2,
+        "warning": 0.4,
+        "critical": 0.6
+      },
+      "confounders": [
+        "Searches that returned nothing are excluded from the denominator — an empty result list cannot be clicked, and counting it would blame titles for missing content.",
+        "A reader who gets the answer from the result snippet counts as a non-click, so some of this is quiet success.",
+        "Measured per visit rather than per event, because an event-level ratio mixes crawlers and partial sessions into a number owners read as human behaviour.",
+        "Very noisy at low search volume; Docsbook withholds the rate below the sample floor."
+      ],
+      "typical_causes": [
+        "Titles written in the product's vocabulary rather than the reader's",
+        "Several near-identical results with nothing to choose between them",
+        "The right page ranking below three weaker ones"
+      ],
+      "recommended_actions": [
+        {
+          "when": "above_warning",
+          "action": "Rewrite the titles and opening lines of the most-searched pages to use the words readers type — do not rewrite the bodies first."
+        }
+      ],
+      "related_metrics": [
+        "search_ctr",
+        "zero_result_rate",
+        "dead_end_rate"
+      ],
+      "pairs_with": [
+        {
+          "metric": "zero_result_rate",
+          "interpretation": "Zero results = the content is missing. Zero clicks WITH results = the content exists but does not look like the answer. Opposite fixes; conflating them wastes the author's time."
+        }
+      ],
+      "mcp_patterns": [
+        "search_zero_click"
+      ]
+    },
+    {
+      "id": "rage_signal_rate",
+      "label": "Frustration signals",
+      "category": "content_quality",
+      "formula": "count of same-page re-entries (3+), A→B→A loops and repeated searches within one visit",
+      "unit": "count",
+      "direction": "lower_is_better",
+      "accuracy": "estimate",
+      "plan": "pro",
+      "business_meaning": "Where readers circle: pages they keep coming back to within one visit, and searches they type twice because the first answer was not one.",
+      "why_it_matters": "Dead-end rate says a visit failed; this says WHERE the reader was when it went wrong. Re-entering a page means the answer should be there and is not — or is there but buried. That distinction changes the fix from writing new content to restructuring existing content.",
+      "benchmarks": null,
+      "confounders": [
+        "Session.pages is de-duplicated, so re-entries are invisible unless counted from the raw event stream. A report built on distinct pages will always show zero.",
+        "A reader who legitimately uses one page as a reference while working through another produces A→B→A without any frustration at all.",
+        "A browser reload registers as a re-entry.",
+        "Visits are reconstructed from a hashed IP, so two colleagues on one network can look like one very confused reader."
+      ],
+      "typical_causes": [
+        "An answer that exists on the page but is buried below the fold",
+        "A page that covers the topic but not the specific case readers arrive with",
+        "Two pages that each defer to the other"
+      ],
+      "recommended_actions": [
+        {
+          "when": "concentrated_on_one_page",
+          "action": "Open the page readers keep returning to and move the answer they are hunting for to the top — restructure before rewriting."
+        },
+        {
+          "when": "repeated_searches",
+          "action": "Read the repeated queries verbatim: the second phrasing is the reader telling you what the page should have been called."
+        }
+      ],
+      "related_metrics": [
+        "dead_end_rate",
+        "zero_click_rate",
+        "content_health_score"
+      ],
+      "pairs_with": [
+        {
+          "metric": "dead_end_rate",
+          "interpretation": "Frustration signals on a page whose visits still end well means readers struggle but get there — annoying, not urgent. The same signals with a high dead-end share mark the page as actively costing you readers."
+        }
+      ],
+      "mcp_patterns": [
+        "rage_signals",
+        "route_patterns"
       ]
     },
     {
