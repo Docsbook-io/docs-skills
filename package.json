@@ -37,6 +37,8 @@
   },
   "files": [
     "skills/",
+    "schema/",
+    "metrics/",
     "scripts/",
     "bin/",
     "install.js",
