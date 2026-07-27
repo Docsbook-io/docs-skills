@@ -2,14 +2,16 @@
 name: docs-link-click-analyzer
 description: Measures click-through rate on every internal link and CTA button across the docs. Flags conversion-critical buttons (Upgrade, Sign up, Book demo) whose CTR sits below the site median given comparable impressions. Also surfaces "orphan traffic" — pages with pageviews but zero outgoing clicks. Produces an insight JSON report consumable by downstream actor agents. Requires PRO+ plan.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   category: observability
+  measures:
+    - exit_rate
+    - traffic
+  metric_dictionary: ../../../metrics/metric-dictionary.json
   requires_plan: pro_plus
-  requires_docsbook_mcp: true
-  uses_mcp_tools:
-    - query_events
-    - get_analytics
-    - get_workspace
+  accelerated_by:
+    - docsbook-mcp
+    - markdown-lsp
   produces_files:
     - .docsbook/insights/<timestamp>__docs-link-click-analyzer.json
     - .docsbook/insights/<timestamp>__docs-link-click-analyzer.md

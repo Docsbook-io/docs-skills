@@ -2,17 +2,18 @@
 name: docs-question-clusterer
 description: Clusters every user question asked to the AI chat into themed topic groups, then cross-references against the doc graph to label each cluster as content_gap (no doc covers it) or ai_chat_failure (doc exists but chat couldn't surface it). Goes deeper than docs-gap-finder by including answered-but-not-helpful questions. Requires PRO plan.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   category: observability
+  measures:
+    - ai_answer_rate
+    - zero_result_rate
+    - ai_satisfaction
+    - search_ctr
+  metric_dictionary: ../../../metrics/metric-dictionary.json
   requires_plan: pro
-  requires_docsbook_mcp: true
-  uses_mcp_tools:
-    - get_ai_questions
-    - get_ai_unanswered
-    - get_negative_feedback
-    - get_failed_searches
-    - get_popular_searches
-    - get_workspace
+  accelerated_by:
+    - docsbook-mcp
+    - markdown-lsp
   produces_files:
     - .docsbook/insights/<timestamp>__docs-question-clusterer.json
     - .docsbook/insights/<timestamp>__docs-question-clusterer.md

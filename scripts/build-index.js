@@ -244,6 +244,16 @@ function buildIndex() {
     const accelerated_by = accelerated_by_raw
       ? accelerated_by_raw.map((t) => String(t).split('#')[0].trim()).filter(Boolean)
       : null;
+    // measures: metric ids from metrics/metric-dictionary.json that this skill
+    // interprets. Surfacing them in the index is what lets an agent pick a skill
+    // by the QUESTION it answers ("why are readers leaving?") rather than by the
+    // tools it happens to call — and then look up what each number means for the
+    // business, its confounders, and which metric it must be read alongside.
+    const measures_raw = (Array.isArray(parsed.measures) && parsed.measures) ||
+      (Array.isArray(md.measures) && md.measures) || null;
+    const measures = measures_raw
+      ? measures_raw.map((t) => String(t).split('#')[0].trim()).filter(Boolean)
+      : null;
 
     if (category) entry.category = category;
     if (requires_plan) entry.requires_plan = requires_plan;
@@ -251,6 +261,7 @@ function buildIndex() {
     if (uses_mcp_tools && uses_mcp_tools.length) entry.uses_mcp_tools = uses_mcp_tools;
     if (requires_docsbook_mcp !== undefined) entry.requires_docsbook_mcp = requires_docsbook_mcp === true || requires_docsbook_mcp === 'true';
     if (accelerated_by && accelerated_by.length) entry.accelerated_by = accelerated_by;
+    if (measures && measures.length) entry.measures = measures;
 
     if (md.version) entry.version = md.version;
 

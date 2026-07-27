@@ -2,14 +2,17 @@
 name: docs-utm-analyzer
 description: Maps UTM-tagged traffic against landing pages to find mismatches between marketing promise and documentation reality. Surfaces UTM campaigns where users land but bounce — the doc page doesn't answer what the ad/post promised. Produces an insight JSON report consumable by downstream actor agents. Requires PRO+ plan.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   category: observability
+  measures:
+    - traffic
+    - bounce_rate
+    - dead_end_rate
+  metric_dictionary: ../../../metrics/metric-dictionary.json
   requires_plan: pro_plus
-  requires_docsbook_mcp: true
-  uses_mcp_tools:
-    - get_analytics
-    - query_events
-    - get_workspace
+  accelerated_by:
+    - docsbook-mcp
+    - markdown-lsp
   produces_files:
     - .docsbook/insights/<timestamp>__docs-utm-analyzer.json
     - .docsbook/insights/<timestamp>__docs-utm-analyzer.md

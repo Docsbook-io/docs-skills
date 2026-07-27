@@ -2,14 +2,18 @@
 name: docs-funnel-mapper
 description: Maps the most common 3-step navigation journeys through your docs and identifies high-volume paths with low completion rates (users dropping before reaching a conversion page). Surfaces "broken journeys" — transitions implied by the doc graph that users do not actually take. Produces an insight JSON report consumable by downstream actor agents. Requires PRO+ plan.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   category: observability
+  measures:
+    - dead_end_rate
+    - exit_rate
+    - visit_evidence
+    - self_serve_resolution_rate
+  metric_dictionary: ../../../metrics/metric-dictionary.json
   requires_plan: pro_plus
-  requires_docsbook_mcp: true
-  uses_mcp_tools:
-    - get_page_journeys
-    - get_analytics
-    - get_workspace
+  accelerated_by:
+    - docsbook-mcp
+    - markdown-lsp
   produces_files:
     - .docsbook/insights/<timestamp>__docs-funnel-mapper.json
     - .docsbook/insights/<timestamp>__docs-funnel-mapper.md

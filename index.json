@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-14T13:44:03.130Z",
+  "generated_at": "2026-07-27T10:34:03.543Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -715,6 +715,38 @@
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/growth/docs-audience-enricher/SKILL.md"
     },
     {
+      "name": "docs-dead-end-hunter",
+      "description": "Finds the evidence that readers are leaving your documentation with nothing — the visits where someone searched, asked the AI or opened several pages and still gave up. Produces a ranked list of the pages they gave up on, each with the actual reader journeys behind it, so the fix queue is decided by evidence rather than opinion. Use when asked \"why are readers leaving\", \"which pages are losing people\", \"what should I rewrite first\", \"prove the docs are failing\", or for a weekly retention review. Requires PRO plan.",
+      "category": "observability",
+      "requires_plan": "pro",
+      "keywords": [
+        "dead end",
+        "retention",
+        "churn",
+        "giving up",
+        "losing readers",
+        "what to fix",
+        "rewrite",
+        "exit",
+        "evidence",
+        "failing docs"
+      ],
+      "accelerated_by": [
+        "docsbook-mcp",
+        "markdown-lsp"
+      ],
+      "measures": [
+        "dead_end_rate",
+        "self_serve_resolution_rate",
+        "exit_rate",
+        "content_health_score",
+        "visit_evidence"
+      ],
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/observability/docs-dead-end-hunter/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-dead-end-hunter/SKILL.md"
+    },
+    {
       "name": "docs-engagement-analyzer",
       "description": "Splits high-dwell-time pages into \"engagement signal\" (deep interest) vs \"engagement problem\" (stuck users) by cross-referencing dwell time with negative feedback. Identifies which long-read pages are loved vs which are confusing. Produces an insight JSON report consumable by downstream actor agents. Requires PRO+ plan.",
       "category": "observability",
@@ -728,14 +760,18 @@
         "retention",
         "content-quality"
       ],
-      "uses_mcp_tools": [
-        "get_analytics",
-        "query_events",
-        "get_negative_feedback",
-        "get_workspace"
+      "accelerated_by": [
+        "docsbook-mcp",
+        "markdown-lsp"
       ],
-      "requires_docsbook_mcp": true,
-      "version": "1.0.0",
+      "measures": [
+        "dead_end_rate",
+        "exit_rate",
+        "time_to_first_value",
+        "bounce_rate",
+        "content_health_score"
+      ],
+      "version": "1.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/observability/docs-engagement-analyzer/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-engagement-analyzer/SKILL.md"
     },
@@ -753,13 +789,17 @@
         "paths",
         "sessions"
       ],
-      "uses_mcp_tools": [
-        "get_page_journeys",
-        "get_analytics",
-        "get_workspace"
+      "accelerated_by": [
+        "docsbook-mcp",
+        "markdown-lsp"
       ],
-      "requires_docsbook_mcp": true,
-      "version": "1.0.0",
+      "measures": [
+        "dead_end_rate",
+        "exit_rate",
+        "visit_evidence",
+        "self_serve_resolution_rate"
+      ],
+      "version": "1.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/observability/docs-funnel-mapper/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-funnel-mapper/SKILL.md"
     },
@@ -778,13 +818,15 @@
         "upgrade",
         "sign-up"
       ],
-      "uses_mcp_tools": [
-        "query_events",
-        "get_analytics",
-        "get_workspace"
+      "accelerated_by": [
+        "docsbook-mcp",
+        "markdown-lsp"
       ],
-      "requires_docsbook_mcp": true,
-      "version": "1.0.0",
+      "measures": [
+        "exit_rate",
+        "traffic"
+      ],
+      "version": "1.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/observability/docs-link-click-analyzer/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-link-click-analyzer/SKILL.md"
     },
@@ -802,16 +844,17 @@
         "coverage",
         "rag"
       ],
-      "uses_mcp_tools": [
-        "get_ai_questions",
-        "get_ai_unanswered",
-        "get_negative_feedback",
-        "get_failed_searches",
-        "get_popular_searches",
-        "get_workspace"
+      "accelerated_by": [
+        "docsbook-mcp",
+        "markdown-lsp"
       ],
-      "requires_docsbook_mcp": true,
-      "version": "1.0.0",
+      "measures": [
+        "ai_answer_rate",
+        "zero_result_rate",
+        "ai_satisfaction",
+        "search_ctr"
+      ],
+      "version": "1.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/observability/docs-question-clusterer/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-question-clusterer/SKILL.md"
     },
@@ -829,13 +872,16 @@
         "campaigns",
         "traffic-source"
       ],
-      "uses_mcp_tools": [
-        "get_analytics",
-        "query_events",
-        "get_workspace"
+      "accelerated_by": [
+        "docsbook-mcp",
+        "markdown-lsp"
       ],
-      "requires_docsbook_mcp": true,
-      "version": "1.0.0",
+      "measures": [
+        "traffic",
+        "bounce_rate",
+        "dead_end_rate"
+      ],
+      "version": "1.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/observability/docs-utm-analyzer/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-utm-analyzer/SKILL.md"
     },
@@ -854,13 +900,16 @@
         "blocker",
         "retention"
       ],
-      "uses_mcp_tools": [
-        "get_top_visitors",
-        "get_visitor_activity",
-        "get_workspace"
+      "accelerated_by": [
+        "docsbook-mcp",
+        "markdown-lsp"
       ],
-      "requires_docsbook_mcp": true,
-      "version": "1.0.0",
+      "measures": [
+        "visit_evidence",
+        "dead_end_rate",
+        "time_to_first_value"
+      ],
+      "version": "1.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/observability/docs-visitor-cohort/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-visitor-cohort/SKILL.md"
     }
