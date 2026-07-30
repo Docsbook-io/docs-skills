@@ -2,7 +2,7 @@
 name: docs-branding
 description: Set a Docsbook workspace's brand — accent/muted colors (light + dark), Google Font, theme, logo, icon, name — by deriving values from real signals instead of inventing them. Pulls the source site's theme-color and og:image, the dominant color of the logo or icon, branding already on the workspace, and brand mentions in the README, then proposes contrast-checked palettes and asks the user to choose. Never writes a value the user did not confirm. Pair with /docs-create, /docs-setup-workspace, /docs-style-tone, or /docs-analyze.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   category: creation
   requires_docsbook_mcp: true
   uses_mcp_tools:
@@ -57,6 +57,20 @@ This skill exists because agents reach for `#3b82f6` and `Arial` the moment bran
 | `mcp__docsbook__update_branding` | Write only the user-confirmed color / font / theme / logo fields |
 
 The `update_branding` fields you can set: `accent_color`, `accent_color_dark`, `muted_color`, `muted_color_dark`, `base_foreground`, `base_foreground_dark`, `base_background`, `base_background_dark`, `font_family` (Google Font name), `default_theme` (`light`/`dark`/`system`), `theme_toggle`, `background_glow`, `logo_url`, `icon_url`, `custom_name`. All available on the Free plan.
+
+## Logo and icon are different slots — do not cross-fill them
+
+They look interchangeable and are not. Getting this wrong quietly breaks the header.
+
+- **Logo** — the horizontal wordmark in the header (usually mark + product name as text). Only ever put a real horizontal logo here.
+- **Icon** — the square favicon for the browser tab and the small header glyph.
+
+**Never put a square favicon into the logo slot.** The square image takes the logo's place and the product name disappears from the header, so the site reads as less branded than if you had set no logo at all. When the source has only a square mark: leave the logo empty, set the icon, and set the display name — the header then renders the name as text beside the small icon, which is the correct look.
+
+Two more checks before you write an image URL:
+
+- **Verify the URL is publicly fetchable and actually an image** (200, `content-type: image/*`). An image behind a framework's on-the-fly optimizer or a path that returns an HTML shell will silently render as nothing.
+- **Match the theme to the source.** A light product site whose docs open dark reads as someone else's site. Pin the detected scheme rather than leaving it to `system`, and only offer a theme toggle if the source has one. If the stored theme is correct but the page still renders the other scheme, that is a render-layer bug — report it, do not keep rewriting the field.
 
 ## Deriving a palette from a logo or site
 

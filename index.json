@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-27T14:00:49.607Z",
+  "generated_at": "2026-07-30T11:22:56.894Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -237,7 +237,7 @@
         "update_branding"
       ],
       "requires_docsbook_mcp": true,
-      "version": "1.0.0",
+      "version": "1.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-branding/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-branding/SKILL.md"
     },
@@ -621,7 +621,7 @@
         "update_domain"
       ],
       "requires_docsbook_mcp": true,
-      "version": "2.0.0",
+      "version": "2.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-setup-workspace/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-setup-workspace/SKILL.md"
     },

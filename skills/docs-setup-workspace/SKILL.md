@@ -2,7 +2,7 @@
 name: docs-setup-workspace
 description: Configure a fresh Docsbook workspace from one command. Wires branding, UI toggles, AI chat, SEO, languages and custom domain via Docsbook MCP — the natural follow-up to /docs-publish. Falls back to printed setup instructions if MCP isn't connected.
 metadata:
-  version: 2.0.0
+  version: 2.1.0
   category: publishing
   requires_docsbook_mcp: true
   requires_plan: free
@@ -35,7 +35,8 @@ Configuration is not a checklist of flags to flip — it is what turns a publish
 5. **SEO/GEO/AEO (plan-gated) — content *and* the switch together.** Enable the flags themselves, not just titles/descriptions: the flag is what makes the platform emit rich JSON-LD (and `FAQPage`/`HowTo` for AEO). Enabling AEO on prose with no Q&A/step sections adds nothing — so this pairs with the FAQ/use-case content the generator wrote. If the underlying tool only writes content with no enable toggle, tell the user those need enabling manually. Never assume a flag is already on.
 6. **AI chat (plan-gated) — the highest-leverage affordance.** A live "Ask AI" over the docs lets an unsold visitor get an answer instead of hunting through pages — it is the single strongest wow-factor of a great docs site. Configure it, and derive 3 suggested questions from the *actual pages just created* (from H1s / the quick-start / setup pages) — never generic ones like "What is this product?". Skip a field silently only if the tool has no slot for it.
 7. Catch each plan-gated failure individually; record it in the result but do not abort the rest of the run.
-8. Report which sections were applied, which were plan-gated (and what enabling them would add), and any warnings.
+8. **Verify on the rendered page, not in the config response.** A successful write tells you the store accepted the value — it does not tell you a visitor sees it. If any browsing capability is available in the session, open the public URL (cache-busting query param if the platform offers one) and confirm what you are about to claim: brand colors and logo present, navigation tabs present, and — if you enabled AI chat — **ask it one real question and read the answer**. A settings call that returns 200 while the page renders defaults or the chat refuses to answer is the normal failure mode here, and it is invisible from the config side. With no browsing available, re-read the workspace, compare it against what you sent, and report the site as *unverified* — never imply visual confirmation you did not do. See *Verifying the result* for what each mismatch means.
+9. Report which sections were applied, which were plan-gated (and what enabling them would add), which were **verified on the live page**, and any warnings. When you tell a user a feature is on, that claim must come from the rendered page — not from the write that enabled it.
 
 ## Guardrails
 
@@ -65,6 +66,21 @@ Plan column: **Free** applies on any connected workspace; **PRO+** is plan-gated
 | `update_ai_settings` | PRO+ | **Live "Ask AI"** over the docs — removes the "go find it yourself" barrier; suggested questions derived from the real pages, never generic |
 | `update_languages` | PRO+ | Multilingual reach (enables 4 languages by default — confirm outside auto-mode) |
 | `update_domain` | PRO+ | Custom domain — the docs live under the product's own brand |
+
+## Verifying the result
+
+Configuration writes and rendered pages fail independently. Check the page itself, and read each mismatch as a specific diagnosis rather than a reason to retry the same call.
+
+| Symptom on the live page | What it actually means | What to do |
+|---|---|---|
+| **Every** branded field is default (not one — all of them) | The page is not resolving to the workspace you configured. Usually an identifier-normalization mismatch: the public URL resolves a lowercased owner/repo while the record was stored with the source's original casing | Compare the casing in the URL against the stored record before suspecting cache. Retrying the write cannot fix this |
+| One field is stale, the rest applied | CDN cache on a public page | Wait briefly, hard-reload once. Do not re-send the write with different values |
+| A field is correct in the stored config but wrong on the page | Render-layer bug, not a config problem | Stop. Report it plainly and move on — blind retries with other values will not help, and shipping a silent mismatch is worse |
+| AI chat is enabled but answers "out of budget" / refuses | Enabling the chat and **funding** it are separate concerns. A plan grant can set the plan flag while leaving the usage balance the chat meters against at zero | Check the balance/quota field, not just the enabled flag. Verify with a real question before claiming the chat works |
+| A plan-gated call is refused while reporting your plan as sufficient | Contradictory gate (e.g. refuses with `current_plan` already at or above `required_plan`) | Do not retry — it is a platform bug, not a grant failure. Skip the optional field, note it, and continue |
+| Chat answers, but the content is generic for the domain | The index is fresh or thin, so the model leans on priors | Do not claim answer accuracy you have not checked. Say the chat is live; do not oversell what it knows |
+
+**Landing tab.** When the source is a whole repository, the default entry point may list root-level files (`TODO`, agent instructions, internal notes) alongside real docs. That reads as careless to the person you are showing it to. Point the entry at the actual documentation folder if the navigation tool supports opening a folder's first page, and say which tab is the clean one.
 
 ## Acceptance Criteria
 
