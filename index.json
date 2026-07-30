@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-30T11:22:56.894Z",
+  "generated_at": "2026-07-30T13:43:32.905Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -260,6 +260,30 @@
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-content-types/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-content-types/SKILL.md"
+    },
+    {
+      "name": "docs-content-widgets",
+      "description": "Turn flat markdown sections into rich rendered blocks — card grids for hub pages, accordions for troubleshooting and FAQ lists — using invisible HTML-comment markers that keep the source readable as ordinary markdown on GitHub and everywhere else. Use when a page reads as a wall of links or a long stack of headed sections.",
+      "category": "creation",
+      "keywords": [
+        "widgets",
+        "cards",
+        "accordion",
+        "layout",
+        "hub-page",
+        "faq",
+        "troubleshooting",
+        "presentation"
+      ],
+      "uses_mcp_tools": [
+        "list_content_widgets"
+      ],
+      "accelerated_by": [
+        "docsbook-mcp"
+      ],
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-content-widgets/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-content-widgets/SKILL.md"
     },
     {
       "name": "docs-create",
