@@ -1,6 +1,6 @@
 {
   "name": "docs-skills",
-  "version": "1.8.4",
+  "version": "1.8.5",
   "description": "AI agent skills for documentation analysis, creation, and observability — 35 specialized skills for Claude Code, Cursor, Codex, and other AI coding tools. New in 1.6: docs-create gains a content-enrichment checkpoint that adds competitor comparisons, educational topic clusters, glossary, use-cases, and migration guides on top of crawled docs.",
   "keywords": [
     "documentation",
