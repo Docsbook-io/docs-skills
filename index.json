@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-30T14:00:41.144Z",
+  "generated_at": "2026-07-31T02:43:29.921Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -595,6 +595,32 @@
       "version": "2.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-publish/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-publish/SKILL.md"
+    },
+    {
+      "name": "docs-sales-conversion",
+      "description": "Make generated documentation sell instead of merely inform. Classifies the product's monetization model from real signals (crawled pricing page, repo, description), then applies the matching conversion pattern — a pricing page and plan-comparison table when the product charges, a persistent \"start free\" CTA ladder when the funnel opens with free access, a self-host-vs-cloud split for open-source products. Every page gets a next action; no page dead-ends. Use during first generation and whenever docs read informative but never ask for the sale.",
+      "category": "creation",
+      "keywords": [
+        "sales",
+        "conversion",
+        "cta",
+        "pricing",
+        "funnel",
+        "monetization",
+        "plans",
+        "free-tier",
+        "upgrade",
+        "trial"
+      ],
+      "uses_mcp_tools": [
+        "list_content_widgets"
+      ],
+      "accelerated_by": [
+        "docsbook-mcp"
+      ],
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-sales-conversion/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-sales-conversion/SKILL.md"
     },
     {
       "name": "docs-seo",

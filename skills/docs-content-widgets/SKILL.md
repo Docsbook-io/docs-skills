@@ -22,8 +22,8 @@ A content widget marks a region of **ordinary markdown** to be rendered as a UI 
 
 ## Start Here
 
-- [Overview](./overview.md) — What this product is and why it matters
-- [Getting Started](./quick-start.md) — How to begin in 3 minutes
+- [Overview](./overview.md) — What this product is and why it matters {compass}
+- [Getting Started](./quick-start.md) — How to begin in 3 minutes {rocket}
 
 <!-- /widget -->
 ```
@@ -68,16 +68,18 @@ Renders link lists as a responsive grid of cards.
 - Each heading becomes a small uppercase group label above its grid. Headings are optional — omit them for one ungrouped grid.
 - Each list item becomes one card.
 - `- [Title](/href) — Description.` → linked card: link text is the title, the text after the dash is the description.
+- End an item with `{icon-name}` to give the card a Lucide icon: `- [Quickstart](/qs) — Get going fast. {rocket}`. Kebab-case Lucide names. An unknown name is dropped silently — the card renders without an icon and the braces never reach the page.
 - An item without a link renders as a non-clickable card; without a dash, a title-only card.
 - Paragraphs between a heading and its list pass through as intro prose.
 
 ### `accordion`
 
-Renders headed sections as collapsible rows. The first row is open by default; native `<details>`, so it works without JavaScript.
+Renders headed sections as collapsible rows, all collapsed initially. Native `<details>`, so it works without JavaScript.
 
 - Each heading becomes one row; everything under it until the next heading of the same level becomes the body.
 - Any markdown works inside a row — lists, tables, code blocks with syntax highlighting.
 - Content before the first heading renders above the accordion as an intro.
+- Rows start closed, so headings must carry enough meaning for a reader to choose without opening them. `DNS not updating` works; `Problem 1` does not.
 
 ## Guardrails
 
