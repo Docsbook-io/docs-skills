@@ -119,6 +119,20 @@ The markdown between the markers must read correctly on its own — the widget i
 
 ---
 
+## Step 6 — Three traps that look solved but aren't
+
+These come from a real run against a product whose prices are public, where every rule above was already in place and the docs still shipped wrong numbers.
+
+**The pricing page is not where the crawler goes.** It is routinely absent from a sitemap index (which lists `blog/`, `docs/`, `legal/` and not `/pricing`), and a breadth-first crawl with a page budget fills up with blog posts before reaching it. Request `/pricing` and `/plans` explicitly instead of hoping to discover them, and read them before anything else.
+
+**Reading the pricing page is not the same as reading its prices.** The per-plan table is usually the *last* thing in the document, behind a volume slider and a feature-comparison matrix; the first currency amount on the page is typically an add-on, thousands of characters earlier. If you excerpt or summarize the page, anchor on the last amount, not the first, and confirm you can see every plan's number before writing a table. A page you fetched but whose prices you never saw looks exactly like a page with no prices — and produces a confident "Contact sales" for a product that publishes a price.
+
+**"No facts observed" is when invention is most likely, not least.** With nothing to copy, a page brief that asks about pricing and limits reads as permission to answer from general knowledge, and the number that comes out is plausible and wrong (a free tier stated as 1,000/month when it is 3,000/month). When no figures were observed, the rule must be absolute: no price, no quota, no seat count, no trial length — describe the shape of the offer and link to the product's pricing page.
+
+**A copied CTA link is usually a broken one.** `[Get started](/signup)` is correct on the product's own site and a 404 in docs served from another domain. Rewrite root-relative product paths onto the source's origin, and leave internal doc links and anchors alone.
+
+---
+
 ## Guardrails
 
 - **This skill never edits product code, pricing config, or billing.** It writes documentation content only.
