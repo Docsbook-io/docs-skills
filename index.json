@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-31T03:09:19.857Z",
+  "generated_at": "2026-07-31T07:04:22.713Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -177,6 +177,31 @@
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-accessibility/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-accessibility/SKILL.md"
+    },
+    {
+      "name": "docs-ai-retrieval",
+      "description": "Write documentation that AI assistants actually retrieve and cite. Generative engines never read a page — they split it into passages, embed them, and rank each passage on its own against a decomposed sub-query, so the unit of optimization is the self-contained chunk, not the page. This skill covers the two distinct stages (getting retrieved at all, then getting quoted once in context), the passage patterns that survived controlled studies, and the popular tactics that measurably backfire. Use when writing or rewriting docs so that ChatGPT, Claude, Perplexity and AI Overviews can answer from them — not for a meta-tag/structured-data audit, which is docs-seo.",
+      "category": "creation",
+      "keywords": [
+        "aeo",
+        "geo",
+        "llm",
+        "ai-search",
+        "citations",
+        "retrieval",
+        "chunking",
+        "chatgpt",
+        "perplexity",
+        "ai-overviews",
+        "answer-engine"
+      ],
+      "accelerated_by": [
+        "markdown-lsp",
+        "docsbook-mcp"
+      ],
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-ai-retrieval/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-ai-retrieval/SKILL.md"
     },
     {
       "name": "docs-analyze",
