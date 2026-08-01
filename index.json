@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-01T02:05:08.745Z",
+  "generated_at": "2026-08-01T02:23:41.412Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -777,9 +777,12 @@
         "markdown-lsp"
       ],
       "measures": [
+        "search_position",
+        "search_impressions",
+        "organic_ctr",
         "traffic"
       ],
-      "version": "1.0.0",
+      "version": "1.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-rank-recovery/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-rank-recovery/SKILL.md"
     },
@@ -839,10 +842,13 @@
         "docsbook-mcp"
       ],
       "measures": [
+        "search_position",
+        "search_impressions",
+        "organic_ctr",
         "traffic",
         "search_ctr"
       ],
-      "version": "1.2.0",
+      "version": "1.3.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-seo/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-seo/SKILL.md"
     },

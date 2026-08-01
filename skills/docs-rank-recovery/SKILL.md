@@ -2,10 +2,13 @@
 name: docs-rank-recovery
 description: Turns the pages that already rank on Google page one-to-two — visible, getting impressions, not getting the click — into a ranked queue of rewrites. For each page it establishes which query Google actually ranks it for, decides whether that query matches what the page is really about, and separates "wrong intent, no rewrite will save it" from "right intent, weak pitch" — the second is a title and opening-paragraph fix and is the cheapest traffic a docs site can buy. Use when asked "where is the easy traffic", "which pages are close to ranking", "we get impressions but no clicks", "what should I rewrite for SEO first", or for a monthly search-position review. Rewrites existing pages; it does not create new ones.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   category: growth
   mode: refactor
   measures:
+    - search_position
+    - search_impressions
+    - organic_ctr
     - traffic
   metric_dictionary: ../../metrics/metric-dictionary.json
   requires_plan: free

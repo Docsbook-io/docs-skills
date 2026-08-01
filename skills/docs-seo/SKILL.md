@@ -2,11 +2,14 @@
 name: docs-seo
 description: Make your docs rankable — by Google and by AI. A documentation-aware SEO audit that starts from your pages' real search positions, impressions, clicks and the queries they already rank for, then judges titles, descriptions, headings, topic clusters, alt text and GEO / AI Overviews compatibility against those actual queries instead of guessing. Falls back to a text-only audit — clearly labelled as hypotheses — when no live search data is connected. Not a general site audit; tuned for doc-specific failure modes.
 metadata:
-  version: 1.2.0
+  version: 1.3.0
   category: analysis
   mode: audit
   requires_plan: free
   measures:
+    - search_position
+    - search_impressions
+    - organic_ctr
     - traffic
     - search_ctr
   metric_dictionary: ../../metrics/metric-dictionary.json

@@ -13,7 +13,8 @@
  *      (audit / refactor / authoring / platform). A caller must know whether a skill
  *      writes before handing it a docs tree.
  *
- *   3. MEASURES    — every metric id resolves in metrics/metric-dictionary.json, and
+ *   3. MEASURES    — every metric id resolves in metrics/metric-dictionary.json, every
+ *      metric reads from a source listed in metrics/sources.json, and
  *      every metric_dictionary path resolves on disk. An invented id means the skill
  *      reasons about a number nobody defined.
  *
@@ -34,8 +35,10 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 const SKILLS_DIR = path.join(REPO_ROOT, 'skills');
 const SCHEMA = require(path.join(REPO_ROOT, 'schema', 'skill.schema.json'));
 const DICTIONARY = require(path.join(REPO_ROOT, 'metrics', 'metric-dictionary.json'));
+const SOURCES = require(path.join(REPO_ROOT, 'metrics', 'sources.json'));
 
 const METRIC_IDS = new Set((DICTIONARY.metrics || []).map((m) => m.id));
+const SOURCE_IDS = new Set((SOURCES.sources || []).map((s) => s.id));
 
 /**
  * Tool names allowed in a skill body, per exception 1 of the "states the need"
@@ -228,7 +231,31 @@ for (const file of files) {
   }
 }
 
-// 5. README counters match the catalog. These drifted silently once already —
+// 5. The dictionary itself holds together. Checks 3 verifies that a SKILL names a
+// metric that exists; these verify that the metric it found is not itself broken —
+// a metric pointing at a source nobody can read, or at a sibling metric that was
+// renamed, reasons about numbers no agent can actually fetch.
+for (const metric of DICTIONARY.metrics || []) {
+  for (const source of metric.mcp_patterns || []) {
+    if (!SOURCE_IDS.has(source)) {
+      violations.push(
+        `metrics/metric-dictionary.json: \`${metric.id}\` reads from \`${source}\`, which is not in metrics/sources.json`
+      );
+    }
+  }
+  for (const related of metric.related_metrics || []) {
+    if (!METRIC_IDS.has(related)) {
+      violations.push(`metrics/metric-dictionary.json: \`${metric.id}.related_metrics\` names \`${related}\`, which is not a metric`);
+    }
+  }
+  for (const pair of metric.pairs_with || []) {
+    if (!METRIC_IDS.has(pair.metric)) {
+      violations.push(`metrics/metric-dictionary.json: \`${metric.id}.pairs_with\` names \`${pair.metric}\`, which is not a metric`);
+    }
+  }
+}
+
+// 6. README counters match the catalog. These drifted silently once already —
 // a header claiming "3 skills" over two rows is the kind of thing a reader
 // notices before a maintainer does.
 const readmePath = path.join(REPO_ROOT, 'README.md');
@@ -272,5 +299,6 @@ console.log(`✓ catalog check passed — ${files.length} skills`);
 console.log('  · no data-fetching tool names in skill bodies');
 console.log('  · every skill declares a mode');
 console.log('  · every metric id and dictionary path resolves');
+console.log('  · every metric reads from a source that exists, and cross-references resolve');
 console.log('  · frontmatter matches the schema');
 console.log('  · README counters match the catalog');
