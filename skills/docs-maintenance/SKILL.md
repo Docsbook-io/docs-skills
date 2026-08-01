@@ -2,7 +2,7 @@
 name: docs-maintenance
 description: Surface the docs that are quietly lying to your users. A quarterly-style audit that flags stale content, deprecated pages without migration paths, TODO/FIXME left in published docs, expired promises, old version references and ownership gaps. Not a single-page review — designed for the whole tree.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   category: analysis
   mode: audit
   accelerated_by:
@@ -202,6 +202,13 @@ When local repo access is unavailable, read page content through whatever doc so
 
 ## Related Skills
 
+- `docs-trust-audit` — this skill judges a page by its age and its internal
+  signals; that one checks whether claims about the outside world (partner APIs,
+  third-party limits, external links) are still true. Staleness here is a
+  hypothesis about decay, and a verdict there.
+- `docs-pricing-consistency` — the pricing check below compares against a source
+  of truth inside the repository; that skill compares against the live public
+  pricing page, which can disagree with both.
 - `docs-navigation-linking` — broken links are a maintenance issue
 - `docs-media` — stale screenshots are a maintenance issue
 - `docs-i18n` — stale translations are a maintenance issue

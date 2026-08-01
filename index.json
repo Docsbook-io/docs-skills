@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-01T02:57:44.960Z",
+  "generated_at": "2026-08-01T03:04:17.750Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -722,7 +722,7 @@
         "markdown-lsp",
         "docsbook-mcp"
       ],
-      "version": "1.0.0",
+      "version": "1.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-maintenance/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-maintenance/SKILL.md"
     },
@@ -767,6 +767,42 @@
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-navigation-linking/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-navigation-linking/SKILL.md"
+    },
+    {
+      "name": "docs-pricing-consistency",
+      "description": "Checks every price, plan name, quota and limit quoted in your documentation against what your live pricing page actually says right now, and reports each disagreement with both sources quoted side by side. Catches the docs that still sell a plan you renamed, a free tier you shrank, or a price you raised six months ago. Use when asked \"do our docs still match our pricing\", \"did we update the docs after the price change\", \"why is a customer quoting an old price at us\", after any pricing or packaging change, or before a launch. Reports disagreements; it does not edit pages.",
+      "category": "analysis",
+      "mode": "audit",
+      "requires_plan": "free",
+      "keywords": [
+        "pricing",
+        "price",
+        "plans",
+        "tiers",
+        "quota",
+        "limits",
+        "free tier",
+        "consistency",
+        "drift",
+        "outdated price",
+        "packaging",
+        "billing docs"
+      ],
+      "uses_mcp_tools": [
+        "fetch_url",
+        "search_docs",
+        "get_doc_outline"
+      ],
+      "accelerated_by": [
+        "docsbook-mcp",
+        "markdown-lsp"
+      ],
+      "measures": [
+        "traffic"
+      ],
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-pricing-consistency/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-pricing-consistency/SKILL.md"
     },
     {
       "name": "docs-publish",
@@ -1023,6 +1059,42 @@
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-title-rewriter/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-title-rewriter/SKILL.md"
+    },
+    {
+      "name": "docs-trust-audit",
+      "description": "Finds the claims your documentation makes about the world outside your product — third-party integrations, other companies' features and limits, links to external docs, standards and version support — and checks each one against the source it is talking about. Catches the integration guide describing a partner's API that changed last year, the comparison that quotes a competitor's old limit, and the \"see their docs\" link that now 404s. Use when asked \"is anything in our docs out of date\", \"do our integration guides still work\", \"we mention a lot of other tools, are those right\", after a partner's breaking change, or before a trust-sensitive launch. Reports what no longer holds; it does not rewrite pages.",
+      "category": "analysis",
+      "mode": "audit",
+      "requires_plan": "free",
+      "keywords": [
+        "trust",
+        "accuracy",
+        "external claims",
+        "integrations",
+        "third-party",
+        "partner api",
+        "broken links",
+        "outdated claims",
+        "verification",
+        "stale references",
+        "standards",
+        "compatibility"
+      ],
+      "uses_mcp_tools": [
+        "fetch_url",
+        "search_docs",
+        "get_doc_outline"
+      ],
+      "accelerated_by": [
+        "docsbook-mcp",
+        "markdown-lsp"
+      ],
+      "measures": [
+        "traffic"
+      ],
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-trust-audit/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-trust-audit/SKILL.md"
     },
     {
       "name": "docs-audience-enricher",
