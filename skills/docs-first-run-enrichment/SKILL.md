@@ -77,7 +77,9 @@ If neither is available, skip — do not fabricate URLs.
 
 ### 2.1 Decide the section outline
 
-Before generating any pages, derive the structure from what the crawl returned:
+Before generating any pages, check whether the project already declares a **Call To Action URL** — the one page these docs are meant to drive readers to (`cta_url` on Docsbook's `get_workspace_info` / `get_workspace`, set from the Branding tab or during onboarding). If it is set, it is the destination for the site's conversion actions, it overrides any CTA you would otherwise infer from the crawl, and it belongs in the header as a filled button (`update_navigation` `header_links` with `color`). `docs-sales-conversion` Step 0 is the full rule; the point here is to read it **before** the first page is written, not after, since every hero and every "Next steps" section below depends on it.
+
+Then derive the structure from what the crawl returned:
 
 | Signal | Sections to include |
 |---|---|
@@ -109,7 +111,7 @@ For every page, follow the content-type rule for that section:
 **Hero / index page (not a pure Diátaxis type — landing)**
 - Opening sentence: product name + one-line value prop derived from the crawl (not invented).
 - 3-column feature highlights: each feature is a real detected capability, not a generic placeholder.
-- "Get started in 5 minutes" CTA linking to getting-started.md.
+- "Get started in 5 minutes" CTA linking to getting-started.md — and, when the project has a Call To Action URL, one conversion action pointing there too (the reader who is evaluating rather than installing needs somewhere to go).
 - No marketing adjectives ("powerful", "robust", "seamlessly") — describe specifics.
 
 **Getting Started (tutorial)**

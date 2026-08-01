@@ -56,7 +56,9 @@ This skill exists because agents reach for `#3b82f6` and `Arial` the moment bran
 | *(resolve the workspace and read its configuration)* | Find the target workspace; read current branding + logo/icon URLs as derive signals |
 | `mcp__docsbook__update_branding` | Write only the user-confirmed color / font / theme / logo fields |
 
-The `update_branding` fields you can set: `accent_color`, `accent_color_dark`, `muted_color`, `muted_color_dark`, `base_foreground`, `base_foreground_dark`, `base_background`, `base_background_dark`, `font_family` (Google Font name), `default_theme` (`light`/`dark`/`system`), `theme_toggle`, `background_glow`, `logo_url`, `icon_url`, `custom_name`. All available on the Free plan.
+The `update_branding` fields you can set: `accent_color`, `accent_color_dark`, `muted_color`, `muted_color_dark`, `base_foreground`, `base_foreground_dark`, `base_background`, `base_background_dark`, `font_family` (Google Font name), `default_theme` (`light`/`dark`/`system`), `theme_toggle`, `background_glow`, `logo_url`, `icon_url`, `custom_name`, `cta_url`. All available on the Free plan.
+
+`cta_url` is not a visual setting and does not follow the palette rules below: it is the **Call To Action URL**, the one page the docs should drive readers to (pricing, demo booking, signup). Read it before writing content or touching the header — when it is set, it is the destination for the site's CTA, and it belongs in the header as a link with `color` set (via `update_navigation`) so it renders as a filled button rather than one more nav item. Only ever write it from a URL the user named or one the source makes unambiguous; the same "ask before writing" rule below applies.
 
 ## Logo and icon are different slots — do not cross-fill them
 

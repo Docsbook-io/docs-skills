@@ -58,9 +58,10 @@ Plan column: **Free** applies on any connected workspace; **PRO+** is plan-gated
 |------|------|---------|
 | *(resolve the workspace and read its current settings)* | Free | Verify the connection; know the current values so you never overwrite human-set ones |
 | `create_workspace` | Free | Create the workspace for `owner/repo` if it does not exist |
-| `update_branding` | Free | **Docs read as a continuation of the product**, not a sandbox — accent, logo (≠ favicon), icon, theme from the source |
+| `update_branding` | Free | **Docs read as a continuation of the product**, not a sandbox — accent, logo (≠ favicon), icon, theme from the source. Also carries `cta_url` (see below) |
+| `update_branding(cta_url:)` | Free | **The docs have a goal** — the one page readers should end up on (pricing, demo, signup). Read it first; if the owner already set one it is the destination for every CTA you write, and it belongs in the header as a filled button via `update_navigation`. Save one only when the source makes it unambiguous |
 | `update_ui_settings` | Free | **Production affordances** — copy-page, feedback widget, breadcrumbs, on-page TOC, search. This is what makes a site feel GitBook/Mintlify-class, not a raw README |
-| `update_navigation` | Free | **No dead ends** — sub-header from the top-level folders, social links in the header, back-link to the source site |
+| `update_navigation` | Free | **No dead ends** — sub-header from the top-level folders, social links in the header, back-link to the source site, and the CTA as a header link with `color` set so it renders as a filled button (exactly one such link) |
 | `update_seo` | PRO+ | **Indexability** — real titles/descriptions AND the SEO flag on, so pages actually rank |
 | `update_geo` | PRO+ | **AI Overviews** — direct-answer-first content signals so Google's AI surface can lift the page |
 | `update_aeo` | PRO+ | **Citability in LLM answers** — emits `FAQPage`/`HowTo` from the FAQ/use-case content; the strongest lever for ChatGPT/Perplexity citations |
