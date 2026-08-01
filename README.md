@@ -2,7 +2,7 @@
 
 # docs-skills
 
-**51 skills that teach your AI agent to run your documentation like a growth channel.**
+**52 skills that teach your AI agent to run your documentation like a growth channel.**
 
 Install once. Then just ask, in plain language.
 
@@ -179,7 +179,7 @@ Then ask in plain language. No flags, no config — the skill fires from your re
 
 ## Full catalog
 
-**51 skills**, 7 categories. Browse live: [docsbook.io/skills](https://docsbook.io/skills).
+**52 skills**, 7 categories. Browse live: [docsbook.io/skills](https://docsbook.io/skills).
 
 <details>
 <summary><b>Analysis</b> — 15 skills · audit what already exists</summary>
@@ -223,7 +223,7 @@ Then ask in plain language. No flags, no config — the skill fires from your re
 </details>
 
 <details>
-<summary><b>Observability</b> — 9 skills · act on real user signal</summary>
+<summary><b>Observability</b> — 10 skills · act on real user signal</summary>
 
 | Skill | Plan | Ask it |
 |---|---|---|

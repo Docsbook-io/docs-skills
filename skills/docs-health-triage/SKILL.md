@@ -257,6 +257,10 @@ is always an `invoke_skill:` handoff or an explicit "no catalogued skill fits".
   is available at all.
 - **`docs-maintenance`** — freshness and stale content. Not part of this queue unless
   a stale page shows up behaviourally.
+- **`docs-change-impact`** — the other end of this skill's loop. This one decides
+  what gets the week; that one checks, after the work shipped, whether it moved
+  anything against the pages nobody touched. Run it before letting last month's
+  fix set this month's priorities.
 
 The boundary in one line: `docs-dead-end-hunter` and `docs-gap-finder` and
 `docs-analyze` each find a class of defect; **this skill finds none, and decides

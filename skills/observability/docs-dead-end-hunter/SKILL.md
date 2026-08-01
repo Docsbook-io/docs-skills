@@ -106,3 +106,10 @@ A ranked list of concrete fixes with `title` in the imperative — "Rewrite
 /billing: 14 readers searched and left" — not a dashboard of numbers. Each entry
 carries its evidence so the author can verify the claim without rerunning the
 analysis.
+
+## Related skills
+
+- **`docs-change-impact`** — run it after one of these fixes ships. This skill
+  says which pages readers gave up on; that one says whether the fix moved
+  anything the untouched pages did not, which is the only way a recommendation
+  here stops being repeated on faith.

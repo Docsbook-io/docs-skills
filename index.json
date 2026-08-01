@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-01T03:04:17.750Z",
+  "generated_at": "2026-08-01T03:27:10.072Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -1126,6 +1126,45 @@
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/growth/docs-audience-enricher/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/growth/docs-audience-enricher/SKILL.md"
+    },
+    {
+      "name": "docs-change-impact",
+      "description": "Checks whether a documentation change that already shipped actually helped — comparing how visits went on the edited pages against the pages nobody touched, before and after the commit. Answers \"did that rewrite work\", \"was the restructure worth it\", \"should we do more of this\", and closes the loop that every other docs audit leaves open by recommending edits and never looking back. Use before repeating a kind of change you have made before, after acting on an audit's recommendation, and in a retro on a docs push. Reports what the evidence supports; it edits nothing.",
+      "category": "observability",
+      "mode": "audit",
+      "requires_plan": "pro",
+      "keywords": [
+        "change impact",
+        "did it work",
+        "before and after",
+        "retro",
+        "measure edit",
+        "causality",
+        "control group",
+        "regression",
+        "docs experiment",
+        "evidence",
+        "post-mortem",
+        "rollback"
+      ],
+      "uses_mcp_tools": [
+        "get_page_diff_impact",
+        "get_change_history",
+        "get_metric_timeseries",
+        "get_doc_outline"
+      ],
+      "accelerated_by": [
+        "docsbook-mcp"
+      ],
+      "measures": [
+        "dead_end_rate",
+        "self_serve_resolution_rate",
+        "time_to_first_value",
+        "traffic"
+      ],
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/observability/docs-change-impact/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/observability/docs-change-impact/SKILL.md"
     },
     {
       "name": "docs-dead-end-hunter",
