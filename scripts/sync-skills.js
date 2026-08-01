@@ -32,7 +32,6 @@ const SKILLS_DIR = path.join(REPO_ROOT, 'skills');
 const INDEX_JSON = path.join(REPO_ROOT, 'index.json');
 const DOCS_SKILLS_README = path.join(REPO_ROOT, 'README.md');
 const DOCSBOOK_README = path.join(DOCSBOOK_ROOT, 'README.md');
-const PKG_JSON = path.join(REPO_ROOT, 'package.json');
 
 const SKILLS_MARK_START = '<!-- skills:start -->';
 const SKILLS_MARK_END = '<!-- skills:end -->';
@@ -160,14 +159,15 @@ function buildCategoriesTable(index) {
   return { total: index.skills.length, categories: sortedCats.length, table: rows.join('\n'), counts };
 }
 
-function updatePackageDescription(index) {
-  const pkg = JSON.parse(fs.readFileSync(PKG_JSON, 'utf8'));
-  const newDesc = pkg.description.replace(/\d+ specialized skills/, `${index.skills.length} specialized skills`);
-  if (newDesc === pkg.description) return;
-  pkg.description = newDesc;
-  if (APPLY) fs.writeFileSync(PKG_JSON, JSON.stringify(pkg, null, 2) + '\n');
-  else log(`  [dry] would update package.json description → ${index.skills.length} skills`);
-}
+/**
+ * package.json больше не несёт счётчик скиллов, и этот скрипт его не трогает.
+ *
+ * Счётчик там был единственным полем, которое правил этот прогон, — в том самом
+ * файле, где CI правит версию. Каждое добавление скилла давало гарантированный
+ * конфликт при rebase (их версия против нашего счётчика), который приходилось
+ * разруливать руками. Число живёт в README, где его сверяет check-catalog.js;
+ * в описании npm-пакета оно устаревало и не проверялось ничем.
+ */
 
 function updateDocsSkillsReadme(index) {
   log('▸ update docs-skills/README.md');
@@ -330,7 +330,6 @@ function main() {
   log(`▸ bump determined: ${bump}`);
 
   const index = readIndex();
-  updatePackageDescription(index);
   updateDocsSkillsReadme(index);
   const docsbookUpdated = updateDocsbookReadme(index);
 
@@ -338,7 +337,7 @@ function main() {
   log('\n▸ commit & push docs-skills');
   commitAndPush(
     REPO_ROOT,
-    ['skills/', 'scripts/', 'README.md', 'index.json', 'package.json'],
+    ['skills/', 'scripts/', 'README.md', 'index.json'],
     `chore: sync skills catalog (${bump})`
   );
 
