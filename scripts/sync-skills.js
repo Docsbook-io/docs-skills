@@ -199,41 +199,49 @@ function buildDocsbookSection(index) {
       return `- **${c}** (${stats.counts[c]}): ${examples}${stats.counts[c] > 4 ? ' …' : ''}`;
     }).join('\n');
 
+  // The parent README is written in English throughout — generate in English so
+  // regenerating this section never switches the language of one chapter.
+  const modeCounts = {};
+  for (const s of index.skills) if (s.mode) modeCounts[s.mode] = (modeCounts[s.mode] || 0) + 1;
+  const modeLine = Object.keys(modeCounts).length
+    ? `Every skill declares a \`mode\` — what it may do to the docs: ${Object.entries(modeCounts)
+        .sort((a, b) => b[1] - a[1])
+        .map(([m, n]) => `\`${m}\` (${n})`)
+        .join(', ')}. Enforced by \`scripts/check-catalog.js\` in CI.`
+    : null;
+
   return [
     SKILLS_MARK_START,
-    '## Skills catalog',
+    '## 7. Skills catalog',
     '',
-    '`docs-skills` — открытый каталог [SKILL.md](https://github.com/Docsbook-io/docs-skills) для AI-агентов, расширяющий Docsbook MCP. Это **часть Docsbook как продукта**, а не отдельный проект: каталог, маркетинг-страница `/skills`, MCP-tool `find_skill` и сам Docsbook MCP-сервер развиваются как единое целое.',
+    '**`docs-skills`** — open catalog of reusable [SKILL.md](https://github.com/Docsbook-io/docs-skills) files for AI agents, extending Docsbook MCP. This is **part of Docsbook as a product** (catalog, `/skills` landing, `find_skill` MCP tool, and the MCP server evolve as one).',
     '',
-    '> **📖 Полный референс каталога:** [raw.githubusercontent.com/Docsbook-io/docs-skills/main/README.md](https://raw.githubusercontent.com/Docsbook-io/docs-skills/refs/heads/main/README.md) — описание всех skills, frontmatter-схема, CLI, режимы потребления. Это canonical-источник; при разработке любых фич, касающихся skills, начинай отсюда.',
+    '> **📖 Canonical reference:** [raw.githubusercontent.com/Docsbook-io/docs-skills/main/README.md](https://raw.githubusercontent.com/Docsbook-io/docs-skills/refs/heads/main/README.md) — all skills, frontmatter schema, CLI, consumption modes. Start here for any skills-related work.',
     '',
-    `${stats.total} skills в ${stats.categories} категориях: ${Object.keys(stats.counts).map((c) => `\`${c}\``).join(', ')}.`,
+    `${stats.total} skills in ${stats.categories} categories: ${Object.keys(stats.counts).map((c) => `\`${c}\``).join(', ')}.`,
+    ...(modeLine ? ['', modeLine] : []),
     '',
-    '### Поверхности discovery',
-    '',
-    '| Поверхность | URL / API | Источник |',
+    '### Discovery surfaces',
+    '| Surface | URL / API | Source |',
     '|---|---|---|',
-    '| Маркетинг-каталог | `docsbook.io/skills` (SSG, 1h ISR) | `raw.githubusercontent.com/Docsbook-io/docs-skills/main/index.json` |',
-    '| Детальная страница | `docsbook.io/skills/[name]` (SSG) | `raw_url` каждого SKILL.md, рендер через основной markdown-pipeline |',
-    '| MCP-tool | `find_skill(query, filters)` | тот же `index.json`, Redis 5 мин + etag |',
-    '| llms.txt | Ссылка в `docsbook.io/llms.txt` | — |',
+    '| Marketing catalog | `docsbook.io/skills` (SSG, 1h ISR) | `raw.githubusercontent.com/Docsbook-io/docs-skills/main/index.json` |',
+    '| Skill detail | `docsbook.io/skills/[name]` (SSG) | each SKILL.md rendered |',
+    '| MCP tool | `find_skill(query, filters)` | same index.json, Redis 5min + etag |',
+    '| llms.txt | link in `docsbook.io/llms.txt` | — |',
     '',
-    '### Два режима потребления юзером',
+    '### Consumption modes',
+    '1. **Local install** — `npx docs-skills install` copies SKILL.md to `.claude/skills/` / `.cursor/rules/` / `AGENTS.md`. Works offline.',
+    '2. **Runtime discovery** — agent calls `find_skill("audit my docs")` → reads SKILL.md by `raw_url`. No local install.',
     '',
-    '1. **Local install** — `npx docs-skills install` копирует SKILL.md в `.claude/skills/` / `.cursor/rules/` / `AGENTS.md`. Работает офлайн.',
-    '2. **Runtime discovery** — агент уже подключён к Docsbook MCP → вызывает `find_skill("audit my docs")` → читает SKILL.md по `raw_url`. Без локальной установки.',
-    '',
-    '### Категории skills',
+    '### Categories',
     '',
     catLines,
     '',
-    '### Файлы реализации',
-    '',
-    '- `src/lib/skills-index.ts` — загрузка `index.json` для маркетинг-страниц (ISR 1h)',
-    '- `src/lib/skills/find.ts` — `find_skill` MCP-tool (Redis 300s + etag revalidation, keyword match с весами name×3 / description×2 / keywords×2)',
-    '- `src/app/skills/page.tsx` — каталог с фильтрами (category / plan / keyword search)',
-    '- `src/app/skills/[name]/page.tsx` — детальная страница со SKILL.md, install + MCP snippets',
-    '- `src/proxy.ts` — `skills` зарезервирован как subdomain, `/skills/*` исключены из user-rewrite',
+    '### Implementation',
+    '- `src/lib/skills-index.ts` — load index.json (ISR 1h)',
+    '- `src/lib/skills/find.ts` — `find_skill` tool (Redis 300s + etag, weighted keyword match)',
+    '- `src/app/skills/page.tsx` — catalog with filters · `src/app/skills/[name]/page.tsx` — detail page',
+    '- `src/proxy.ts` — `/skills/*` reserved, excluded from user-rewrite',
     '',
     SKILLS_MARK_END,
   ].join('\n');
