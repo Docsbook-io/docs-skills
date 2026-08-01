@@ -6,12 +6,12 @@
  *   3. обновить секцию ## Skills catalog в Docsbook/README.md
  *   4. определить bump (patch/minor/major) по git diff
  *   5. commit + push в оба репо
- *   6. npm version <bump> + git push --tags + npm publish (только docs-skills)
+ *   6. релиз (npm version + publish) НЕ делается здесь — его делает CI на push в main
  *
  * Запуск:
  *   node scripts/sync-skills.js                # dry-run, печатает план
  *   node scripts/sync-skills.js --apply        # реально делает всё
- *   node scripts/sync-skills.js --apply --no-publish   # commit+push без npm publish
+ *   node scripts/sync-skills.js --apply --no-publish   # принимается, но больше ни на что не влияет
  *
  * Bump-правила:
  *   - удалён скилл (папка в skills/ исчезла из git)   → major
@@ -303,31 +303,17 @@ function commitAndPush(cwd, files, message) {
   return true;
 }
 
-function bumpAndPublish(bump) {
-  log(`▸ npm version ${bump}`);
-  if (APPLY) {
-    // npm version требует чистого working tree. Проверим заранее, чтобы дать понятную ошибку.
-    // Только tracked-изменения блокируют npm version (untracked ??, игнорируем).
-    const dirty = gitStatusPorcelain(REPO_ROOT).filter((l) => !l.startsWith('??'));
-    if (dirty.length) {
-      die(
-        `npm version требует чистого working tree, но есть незакоммиченные изменения:\n  ${dirty.join('\n  ')}\n` +
-        `Закоммить или stash их и повтори. (sync-skills уже сделал commit/push скиллов — версия не бампилась.)`
-      );
-    }
-    execSync(`npm version ${bump} -m "chore: release v%s"`, { cwd: REPO_ROOT, stdio: 'inherit' });
-    execSync('git push --follow-tags', { cwd: REPO_ROOT, stdio: 'inherit' });
-  } else {
-    log(`  [dry] npm version ${bump} && git push --follow-tags`);
-  }
-
-  if (NO_PUBLISH) {
-    log('▸ --no-publish — пропускаю npm publish');
-    return;
-  }
-  log('▸ npm publish');
-  if (APPLY) execSync('npm publish', { cwd: REPO_ROOT, stdio: 'inherit' });
-  else log('  [dry] npm publish');
+/**
+ * Версию бампает и публикует CI (.github/workflows/publish.yml) на каждый push
+ * в main. Этот скрипт делал то же самое, когда CI ещё не было, и с тех пор
+ * только мешал: `npm version` требует чистого working tree, а `package.json`
+ * правится этим же прогоном — то есть шаг падал ПОСЛЕ того, как скиллы уже
+ * запушены, оставляя каталог опубликованным, а версию нет. Свой bump поверх
+ * CI-шного к тому же даёт `version_exists` при следующей публикации.
+ */
+function reportRelease(bump) {
+  log(`▸ release: ${bump} — версию бампит и публикует CI на push в main`);
+  if (NO_PUBLISH) log('  (--no-publish больше ни на что не влияет и оставлен только для совместимости вызовов)');
 }
 
 // ─── main ──────────────────────────────────────────────────────────────────
@@ -352,12 +338,12 @@ function main() {
   log('\n▸ commit & push docs-skills');
   commitAndPush(
     REPO_ROOT,
-    ['skills/', 'scripts/', 'README.md', 'index.json'],
+    ['skills/', 'scripts/', 'README.md', 'index.json', 'package.json'],
     `chore: sync skills catalog (${bump})`
   );
 
-  // 2. npm version + publish
-  bumpAndPublish(bump);
+  // 2. Релиз — дело CI, не этого скрипта.
+  reportRelease(bump);
 
   // 3. Docsbook repo: commit README
   if (docsbookUpdated) {
