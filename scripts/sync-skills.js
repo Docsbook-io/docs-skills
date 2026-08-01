@@ -174,15 +174,26 @@ function updateDocsSkillsReadme(index) {
   const stats = buildCategoriesTable(index);
   let content = fs.readFileSync(DOCS_SKILLS_README, 'utf8');
 
-  // Обновляем строку "**N skills across M categories.**"
+  // Счётчики в README — их ДВА и они в разных формулировках: заголовочный
+  // "**N skills that teach…**" и "**N skills**, M categories." над каталогом.
+  // Ловим оба через общий "**N skills", иначе один тихо расходится с другим —
+  // ровно то, что check-catalog.js потом валит в CI.
+  content = content.replace(/\*\*\d+ skills\b/g, `**${stats.total} skills`);
   content = content.replace(
-    /\*\*\d+\s+skills?\s+across\s+\d+\s+categor(?:y|ies)\.\*\*/i,
-    `**${stats.total} skills across ${stats.categories} categories.**`
+    /(\*\*\d+ skills\*\*,\s*)\d+(\s*categories)/,
+    `$1${stats.categories}$2`
   );
 
-  // Обновляем таблицу категорий — она между "## Categories" и следующим "---".
-  const catBlockRe = /(## Categories\s*\n\s*\n\| Category \| Skills \| What it does \|\s*\n\|[^\n]+\|\s*\n)([\s\S]*?)(\n\s*\n---)/;
-  content = content.replace(catBlockRe, `$1${stats.table}$3`);
+  // Заголовок каждого <details>: "<b>Analysis</b> — 12 skills · …". Эти
+  // счётчики страж сверяет по категориям, поэтому регенерируем их из индекса,
+  // а не из того, что было написано руками.
+  content = content.replace(
+    /<b>(\w+)<\/b>\s*—\s*\d+ skills/g,
+    (whole, label) => {
+      const n = stats.counts[label.toLowerCase()];
+      return n === undefined ? whole : `<b>${label}</b> — ${n} skills`;
+    }
+  );
 
   if (APPLY) fs.writeFileSync(DOCS_SKILLS_README, content);
   else log('  [dry] would update categories table and skill count');
