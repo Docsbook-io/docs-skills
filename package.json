@@ -1,6 +1,6 @@
 {
   "name": "docs-skills",
-  "version": "1.8.24",
+  "version": "1.8.25",
   "description": "AI agent skills for documentation analysis, creation, publishing, observability and automation — for Claude Code, Cursor, Codex and other AI coding tools.",
   "keywords": [
     "documentation",
