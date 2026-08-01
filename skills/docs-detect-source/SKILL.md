@@ -4,6 +4,7 @@ description: Identify what kind of docs source you have in one call. Detects web
 metadata:
   version: 1.0.0
   category: creation
+  mode: audit
   requires_docsbook_mcp: false
   keywords: [detect, source, mintlify, gitbook, docusaurus, platform]
 ---

@@ -230,6 +230,12 @@ function buildIndex() {
     const md = (parsed.metadata && typeof parsed.metadata === 'object') ? parsed.metadata : {};
 
     const category = parsed.category || md.category;
+    // mode: what the skill may do to the docs — audit (reports only) / refactor
+    // (rewrites existing pages) / authoring (rules loaded before new writing) /
+    // platform (configures the workspace, not the content). Category says what a
+    // skill is about; mode says what it is allowed to touch, which is the part a
+    // caller must know before handing it a docs tree.
+    const mode = parsed.mode || md.mode;
     const requires_plan = parsed.requires_plan || md.requires_plan;
     const keywords = (Array.isArray(parsed.keywords) && parsed.keywords) ||
       (Array.isArray(md.keywords) && md.keywords) || null;
@@ -256,6 +262,7 @@ function buildIndex() {
       : null;
 
     if (category) entry.category = category;
+    if (mode) entry.mode = mode;
     if (requires_plan) entry.requires_plan = requires_plan;
     if (keywords && keywords.length) entry.keywords = keywords;
     if (uses_mcp_tools && uses_mcp_tools.length) entry.uses_mcp_tools = uses_mcp_tools;

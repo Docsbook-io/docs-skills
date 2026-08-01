@@ -4,6 +4,7 @@ description: Make a freshly-generated docs site rich and on-brand instead of a b
 metadata:
   version: 1.0.0
   category: creation
+  mode: refactor
   accelerated_by:
     - docsbook-mcp      # read workspace branding & apply derived branding, if a Docsbook workspace is connected
   keywords: [first-run, branding, enrichment, multi-section, hero, auto-brand, generation, sellable]

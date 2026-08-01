@@ -111,6 +111,13 @@ function detectBump() {
   for (const line of diff) {
     const status = line.slice(0, 2);
     const file = line.slice(3);
+    // git collapses a wholly-untracked skill to its directory ("?? skills/foo/"),
+    // so a new skill never appears as ".../SKILL.md" and would be scored a patch.
+    // Treat an untracked directory that contains a SKILL.md as an added skill.
+    if (status.includes('?') && file.endsWith('/')) {
+      if (fs.existsSync(path.join(REPO_ROOT, file, 'SKILL.md'))) added = true;
+      continue;
+    }
     if (!file.includes('/SKILL.md')) continue;
     if (status.includes('?') || status.includes('A')) added = true;
     else if (status.includes('D')) removed = true;

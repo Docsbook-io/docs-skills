@@ -1,7 +1,7 @@
 {
   "name": "docs-skills",
   "version": "1.8.9",
-  "description": "AI agent skills for documentation analysis, creation, publishing, observability and automation — 43 specialized skills for Claude Code, Cursor, Codex and other AI coding tools.",
+  "description": "AI agent skills for documentation analysis, creation, publishing, observability and automation — 48 specialized skills for Claude Code, Cursor, Codex and other AI coding tools.",
   "keywords": [
     "documentation",
     "docs",
@@ -50,7 +50,9 @@
   "scripts": {
     "build-index": "node scripts/build-index.js",
     "sync": "node scripts/sync-skills.js",
-    "sync:apply": "node scripts/sync-skills.js --apply"
+    "sync:apply": "node scripts/sync-skills.js --apply",
+    "check": "node scripts/check-catalog.js",
+    "test": "node scripts/check-catalog.js"
   },
   "dependencies": {
     "node-html-parser": "^6.1.13"

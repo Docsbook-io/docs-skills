@@ -4,6 +4,7 @@ description: Maps the most common 3-step navigation journeys through your docs a
 metadata:
   version: 1.1.0
   category: observability
+  mode: audit
   measures:
     - dead_end_rate
     - exit_rate
@@ -31,7 +32,7 @@ metadata:
 
 The classic funnel question, applied to docs: "60% land on `/quick-start`, 40% reach `/billing`, but only 5% click `Upgrade`. Where did the other 35% go and why?"
 
-This skill runs over real session data (`get_page_journeys`), clusters the recurring multi-step paths, and flags the high-volume / low-completion ones as `conversion_problem` findings.
+This skill runs over real session data — the ordered page-to-page paths readers actually walked — clusters the recurring multi-step paths, and flags the high-volume / low-completion ones as `conversion_problem` findings.
 
 ## When to run
 
@@ -43,7 +44,7 @@ This skill runs over real session data (`get_page_journeys`), clusters the recur
 
 Standard four-stage docs-insights pipeline. Slice = `funnel`. See [`docs-utm-analyzer`](../docs-utm-analyzer/SKILL.md) for the canonical step-by-step.
 
-- **Collector:** pulls `get_page_journeys` (top recurring 3-step paths) + `get_analytics` to attach pageview totals.
+- **Collector:** the top recurring 3-step reader paths through the docs, plus per-page traffic totals to attach volume to each step. Any session-level signal that shows what a reader did next belongs here.
 - **Clusterer:** groups by `journey_pattern`, computes `completion_rate` = % of sessions reaching at least one conversion page (defined as pages containing CTA `Upgrade`, `Sign up`, `Book demo`, or pages matching the workspace's billing/pricing slug).
 - **Reporter:** `conversion_problem` for completion_rate < 0.2; `broken_journey` when a doc-graph-implied transition is missing from real journeys.
 

@@ -4,6 +4,7 @@ description: Finds the evidence that readers are leaving your documentation with
 metadata:
   version: 1.0.0
   category: observability
+  mode: audit
   measures:
     - dead_end_rate
     - self_serve_resolution_rate

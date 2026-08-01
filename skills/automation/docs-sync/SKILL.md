@@ -4,6 +4,7 @@ description: Detect and fix code↔docs drift before every push. Orchestrates a 
 metadata:
   version: 1.0.0
   category: automation
+  mode: refactor
   requires_docsbook_mcp: false
   produces_files:
     - docs/**/*.md

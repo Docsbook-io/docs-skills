@@ -4,6 +4,7 @@ description: Splits high-dwell-time pages into "engagement signal" (deep interes
 metadata:
   version: 1.1.0
   category: observability
+  mode: audit
   measures:
     - dead_end_rate
     - exit_rate
@@ -41,13 +42,13 @@ The only reliable disambiguator is **negative feedback** on the same page. This 
 
 - Monthly — engagement patterns are slow-moving.
 - After major content rewrites — verify the rewrite improved things.
-- When `get_negative_feedback` shows a spike.
+- When negative feedback on pages spikes.
 
 ## Workflow
 
 Standard four-stage docs-insights pipeline. Slice = `engagement`. See [`docs-utm-analyzer`](../docs-utm-analyzer/SKILL.md) for the canonical step-by-step. Differences for this skill:
 
-1. **Collector slice:** `engagement` (pulls `get_analytics`, `query_events` for dwell p50/p90 per page, `get_negative_feedback`).
+1. **Collector slice:** `engagement` — per-page traffic totals, the raw reading events needed to compute dwell p50/p90 per page, and the feedback readers left on each page. Any other per-page attention signal available (scroll depth, repeat reads) belongs in the same slice.
 2. **Clusterer:** groups by page path, computes dwell z-score against site median, joins with feedback counts.
 3. **Reporter input:** `SKILL: docs-engagement-analyzer`, `SKILL_VERSION: 1.0.0`.
 

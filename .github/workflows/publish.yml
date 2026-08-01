@@ -25,6 +25,12 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org
 
+      # The catalog's own guardrails. A skill states the need, not the tool —
+      # without a gate that rule decays silently (it was 22 of 43 skills once).
+      # Nothing publishes if the catalog contradicts what the README promises.
+      - name: Check catalog
+        run: node scripts/check-catalog.js
+
       - name: Bump patch version
         run: npm version patch --no-git-tag-version
 

@@ -4,6 +4,7 @@ description: Set a Docsbook workspace's brand — accent/muted colors (light + d
 metadata:
   version: 1.1.0
   category: creation
+  mode: platform
   requires_docsbook_mcp: true
   uses_mcp_tools:
     - list_workspaces
@@ -18,7 +19,7 @@ This skill exists because agents reach for `#3b82f6` and `Arial` the moment bran
 
 ## Workflow
 
-1. **Connect and read current state** — run `list_workspaces`, resolve the target workspace, then `get_workspace` to read its existing branding (accent/muted colors for light + dark, `base_foreground`/`base_background`, `font_family`, `default_theme`, `logo_url`, `icon_url`, `custom_name`). Whatever is already set is a brand signal, not a blank slate — treat it as the starting point and the thing you must respect, not overwrite blindly.
+1. **Connect and read current state** — resolve which workspace you are operating on and read its existing branding (accent/muted colors for light + dark, `base_foreground`/`base_background`, `font_family`, `default_theme`, `logo_url`, `icon_url`, `custom_name`). Whatever is already set is a brand signal, not a blank slate — treat it as the starting point and the thing you must respect, not overwrite blindly.
 
 2. **DERIVE — collect brand signals from what already exists. Never invent.** Gather evidence from every source available before forming an opinion:
    - **Source site** (if the docs came from a website or one is known): fetch its HTML and read `<meta name="theme-color">`, `<meta property="og:image">`, favicon, and any inline CSS custom properties / `--accent` style tokens. The site's `theme-color` is the single strongest signal of the intended accent.
@@ -52,8 +53,7 @@ This skill exists because agents reach for `#3b82f6` and `Arial` the moment bran
 
 | Tool | Purpose |
 |------|---------|
-| `mcp__docsbook__list_workspaces` | Find the target workspace |
-| `mcp__docsbook__get_workspace` | Read current branding + logo/icon URLs as derive signals |
+| *(resolve the workspace and read its configuration)* | Find the target workspace; read current branding + logo/icon URLs as derive signals |
 | `mcp__docsbook__update_branding` | Write only the user-confirmed color / font / theme / logo fields |
 
 The `update_branding` fields you can set: `accent_color`, `accent_color_dark`, `muted_color`, `muted_color_dark`, `base_foreground`, `base_foreground_dark`, `base_background`, `base_background_dark`, `font_family` (Google Font name), `default_theme` (`light`/`dark`/`system`), `theme_toggle`, `background_glow`, `logo_url`, `icon_url`, `custom_name`. All available on the Free plan.

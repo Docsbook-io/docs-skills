@@ -4,6 +4,7 @@ description: Bypass Docsbook's built-in AI translator and delegate translation w
 metadata:
   version: 1.0.0
   category: automation
+  mode: platform
   requires_docsbook_mcp: true
   requires_plan: pro_plus
   uses_mcp_tools:
@@ -20,8 +21,8 @@ metadata:
 
 ## Workflow
 
-1. **Verify MCP transport** — call `list_workspaces` as a connectivity probe. If it fails, print the MCP connection command and exit gracefully.
-2. **Validate plan and inputs** — read the workspace plan via `get_workspace`. If the plan is below PRO+, stop and print an upgrade prompt. Validate that the webhook URL is `https://` (reject `http://` and non-URLs). Confirm the runtime flavor (`vercel` or `express`; default `vercel`).
+1. **Verify the connection** — probe that the platform is reachable. If it fails, print the MCP connection command and exit gracefully.
+2. **Validate plan and inputs** — resolve which workspace you are operating on and read its current configuration, including its plan. If the plan is below PRO+, stop and print an upgrade prompt. Validate that the webhook URL is `https://` (reject `http://` and non-URLs). Confirm the runtime flavor (`vercel` or `express`; default `vercel`).
 3. **Switch translation mode** — call `set_translation_mode` with `mode: external`. This stops Docsbook's built-in translator and causes it to emit `translation.requested` events instead.
 4. **Register the webhook** — generate a fresh HMAC secret and call `register_webhook_translation_requested` with the provided URL. Capture the `callback_url` from the response for use in the handler. Surface the HMAC secret to the user once.
 5. **Scaffold the handler** — produce a handler file for the selected runtime that verifies the HMAC signature, invokes the user's translation logic (as a TODO placeholder), and POSTs results back to the callback URL.
@@ -40,14 +41,13 @@ metadata:
 
 | Tool | Purpose |
 |------|---------|
-| `list_workspaces` | Probe MCP transport liveness |
-| `get_workspace` | Read workspace plan and settings |
+| *(resolve the workspace and read its configuration)* | Verify the connection; read the plan and settings |
 | `set_translation_mode` | Switch mode to `external` |
 | `register_webhook_translation_requested` | Register the outbound webhook and obtain callback URL |
 
 ## Acceptance Criteria
 
-- [ ] MCP transport verified before any mutation
+- [ ] Platform connection verified before any mutation
 - [ ] PRO+ plan confirmed; execution halted cleanly if below PRO+
 - [ ] Webhook URL validated as `https://` before registration
 - [ ] Translation mode switched to `external`

@@ -4,6 +4,7 @@ description: Import existing documentation from Mintlify, GitBook, Docusaurus, N
 metadata:
   version: 1.0.0
   category: creation
+  mode: authoring
   requires_docsbook_mcp: false
   keywords: [import, migrate, mintlify, gitbook, docusaurus, nextra, vitepress, platform]
 ---
@@ -39,7 +40,7 @@ This skill is the executor — read the source platform, mirror its structure, n
 
 5. **Carry over assets.** Copy any `static/`, `public/`, or `images/` directories referenced by the imported pages into `docs-output/<name>/_assets/` and update image src accordingly.
 
-6. **Write `_branding.json`.** Pull `colors.primary` / `theme.accent` from the platform config. If absent, leave `accentColor` out so the workspace configurator skips `update_branding`.
+6. **Write `_branding.json`.** Pull `colors.primary` / `theme.accent` from the platform config. If absent, leave `accentColor` out so the workspace configurator skips the branding step.
 
 7. **Preview + confirm.** Print the folder tree and excerpts from up to 3 representative pages. Ask before publishing: "Does this look right? Type **yes** to publish, or describe what to change." (Auto-mode may skip the ask.)
 

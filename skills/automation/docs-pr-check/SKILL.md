@@ -4,6 +4,7 @@ description: Add a CI gate to every pull request that checks whether code change
 metadata:
   version: 1.0.0
   category: automation
+  mode: platform
   requires_docsbook_mcp: false
   requires_plan: free
   produces_files:

@@ -4,6 +4,7 @@ description: Clusters every user question asked to the AI chat into themed topic
 metadata:
   version: 1.1.0
   category: observability
+  mode: audit
   measures:
     - ai_answer_rate
     - zero_result_rate
@@ -29,9 +30,9 @@ metadata:
 
 # docs-question-clusterer — Group every user question and label what's missing
 
-`docs-gap-finder` already exists and finds **what to write next** by combining `get_failed_searches + get_ai_unanswered + get_popular_searches`. This skill is **deeper**:
+`docs-gap-finder` already exists and finds **what to write next** from the demand signals that came back empty — searches that returned nothing, questions the assistant could not answer — set against what readers ask for most. This skill is **deeper**:
 
-- It also includes **answered** AI questions (not only `get_ai_unanswered`).
+- It also includes the questions the assistant **did** answer, not only the ones it failed on.
 - For each cluster, it computes a `coverage_score` against the doc graph — *did an existing page directly answer this?* If yes, the cluster becomes `ai_chat_failure` (doc exists, chat can't surface it = retrieval/prompt problem), not `content_gap` (write a new doc).
 
 This distinction matters because the two failures need different actions:
@@ -51,7 +52,7 @@ This distinction matters because the two failures need different actions:
 
 Standard four-stage docs-insights pipeline. Slice = `questions`. See [`docs-utm-analyzer`](../docs-utm-analyzer/SKILL.md) for canonical step-by-step.
 
-- **Collector:** `get_ai_questions` + `get_ai_unanswered` + `get_negative_feedback` + `get_failed_searches` + `get_popular_searches`.
+- **Collector:** every question readers put to the assistant — the ones it answered and the ones it could not — plus the answers readers rated badly, the searches that returned nothing, and the queries readers run most. Anything else that captures a reader asking for something in their own words belongs here too.
 - **Clusterer:** LLM-clusters all questions/queries into 3–8 themes by topic. For each cluster, computes `coverage_score` = fraction of cluster questions for which the existing doc graph contains a page whose title/H1 matches.
 - **Reporter:** maps coverage_score → finding type as above.
 
@@ -65,11 +66,11 @@ Standard four-stage docs-insights pipeline. Slice = `questions`. See [`docs-utm-
 
 ## Guardrails
 
-- PRO plan minimum (PRO+ not required for this skill — `get_ai_questions` and `get_ai_unanswered` are PRO).
+- PRO plan minimum — question-level AI chat data is available from PRO up; PRO+ is not required for this skill.
 - Cluster size minimum = 5 questions. Below that, exit a cluster as too small.
 - Be careful not to overlap with existing skills:
-  - `docs-gap-finder` — narrower (uses failed_search + ai_unanswered + popular_search only). This skill *augments* it with answered-but-failed signal.
-  - `docs-tune-ai-chat` — only acts on `negative_feedback + ai_unanswered`. This skill produces structured findings, then *delegates* to it via `suggested_actions`.
+  - `docs-gap-finder` — narrower (only the demand that came back empty, plus top queries). This skill *augments* it with answered-but-failed signal.
+  - `docs-tune-ai-chat` — only acts on badly-rated answers and questions the assistant could not answer. This skill produces structured findings, then *delegates* to it via `suggested_actions`.
 
 ## Output for downstream consumption
 

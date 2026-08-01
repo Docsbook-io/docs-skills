@@ -4,6 +4,7 @@ description: Wire up release announcements for a Docsbook workspace. Registers a
 metadata:
   version: 1.0.0
   category: automation
+  mode: platform
   requires_docsbook_mcp: true
   requires_plan: pro
   uses_mcp_tools:
@@ -18,7 +19,7 @@ metadata:
 
 ## Workflow
 
-1. **Verify MCP transport** — call `list_workspaces` as a connectivity probe. If it fails, print the MCP connection command and exit gracefully.
+1. **Verify the connection** — probe that the platform is reachable and resolve which workspace you are operating on. If it fails, print the MCP connection command and exit gracefully.
 2. **Validate inputs** — confirm that at least one notification channel is selected. Validate that a Slack URL starts with `https://hooks.slack.com/` when Slack is selected; validate that an email address is well-formed when email is selected.
 3. **Register the release webhook** — generate a fresh HMAC secret and register a webhook that fires when a new release is published on the workspace repository. Surface the secret to the user once.
 4. **Generate the handler workflow** — produce a GitHub Actions workflow file configured for the selected channels. The workflow triggers on the `release: published` event and dispatches notifications using secrets stored in the repository.
@@ -36,12 +37,12 @@ metadata:
 
 | Tool | Purpose |
 |------|---------|
-| `list_workspaces` | Probe MCP transport liveness |
+| *(resolve the workspace and read its configuration)* | Verify the connection before any registration |
 | `register_webhook_content_indexed` | Register a release event webhook on the workspace |
 
 ## Acceptance Criteria
 
-- [ ] MCP transport verified before any registration
+- [ ] Platform connection verified before any registration
 - [ ] At least one channel validated before any file is written
 - [ ] Webhook registered with a freshly generated HMAC secret
 - [ ] HMAC secret surfaced to the user exactly once

@@ -4,6 +4,7 @@ description: Configure a fresh Docsbook workspace from one command. Wires brandi
 metadata:
   version: 2.1.0
   category: publishing
+  mode: platform
   requires_docsbook_mcp: true
   requires_plan: free
   uses_mcp_tools:
@@ -28,8 +29,8 @@ Configuration is not a checklist of flags to flip — it is what turns a publish
 
 ## Workflow
 
-1. Confirm the MCP transport is up (e.g. by listing workspaces). If it fails for non-auth reasons, print the MCP connection command and exit gracefully.
-2. Check whether the workspace already exists before creating one — Docsbook auto-indexes repos within seconds of a push.
+1. Confirm the platform connection is up. If it fails for non-auth reasons, print the MCP connection command and exit gracefully.
+2. Resolve which workspace you are operating on and read its current configuration. Check whether the workspace already exists before creating one — Docsbook auto-indexes repos within seconds of a push.
 3. Read branding values from `_branding.json` (or the signals collected during generation) if present. Never fall back to an invented accent color — if no signal exists, skip the color rather than shipping a generic default.
 4. Apply settings in priority order, each toward its purpose: **navigation** (Free, always) → **branding** (Free) → **UI affordances** (Free) → **SEO/GEO/AEO/AI/languages** (plan-gated). The Free three alone already lift the site well above a raw README — never stop after just branding.
 5. **SEO/GEO/AEO (plan-gated) — content *and* the switch together.** Enable the flags themselves, not just titles/descriptions: the flag is what makes the platform emit rich JSON-LD (and `FAQPage`/`HowTo` for AEO). Enabling AEO on prose with no Q&A/step sections adds nothing — so this pairs with the FAQ/use-case content the generator wrote. If the underlying tool only writes content with no enable toggle, tell the user those need enabling manually. Never assume a flag is already on.
@@ -55,7 +56,7 @@ Plan column: **Free** applies on any connected workspace; **PRO+** is plan-gated
 
 | Tool | Plan | Purpose (what it does for the reader) |
 |------|------|---------|
-| `list_workspaces` / `get_workspace` | Free | Verify transport; read current settings so you never overwrite human-set values |
+| *(resolve the workspace and read its current settings)* | Free | Verify the connection; know the current values so you never overwrite human-set ones |
 | `create_workspace` | Free | Create the workspace for `owner/repo` if it does not exist |
 | `update_branding` | Free | **Docs read as a continuation of the product**, not a sandbox — accent, logo (≠ favicon), icon, theme from the source |
 | `update_ui_settings` | Free | **Production affordances** — copy-page, feedback widget, breadcrumbs, on-page TOC, search. This is what makes a site feel GitBook/Mintlify-class, not a raw README |
@@ -84,7 +85,7 @@ Configuration writes and rendered pages fail independently. Check the page itsel
 
 ## Acceptance Criteria
 
-- [ ] MCP transport verified before any workspace mutation
+- [ ] Platform connection verified before any workspace mutation
 - [ ] Existing workspace detected rather than double-created
 - [ ] Branding applied (from file or sensible defaults)
 - [ ] UI settings applied with standard preset

@@ -4,6 +4,7 @@ description: Turn a URL or repo into a live docs site in one command. Full end-t
 metadata:
   version: 1.2.0
   category: creation
+  mode: authoring
   requires_docsbook_mcp: false
   keywords: [create, pipeline, generate, docs, new]
 ---

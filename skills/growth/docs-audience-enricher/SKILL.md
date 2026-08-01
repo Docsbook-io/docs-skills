@@ -4,6 +4,7 @@ description: Reasons about who your buyers are, how they enter the product, and 
 metadata:
   version: 1.0.0
   category: growth
+  mode: audit
   requires_plan: pro
   requires_docsbook_mcp: true
   uses_mcp_tools:
@@ -114,7 +115,7 @@ This memory is hand-curated and valuable. The skill is **additive and reversible
 | Lens | Example enrichment it would append |
 |---|---|
 | **Segment** | "**No-code creators (Make/Zapier/n8n)** — JTBD: *ship a credible-looking template with instructions so buyers trust it*. Watering holes: Make community forum, r/nocode, Zapier subreddit. Buying trigger: a refund/complaint about unclear setup. Entry path they actually use: free plan → custom domain (not GitHub login). `evidence: simulated`." |
-| **Funnel** | "**MCP / llms.txt entry path** — coverage **35%**. Path: agent calls `find_skill` → reads a SKILL.md → hits MCP server → OAuth. Friction: the word *MCP* never appears on the landing page; a non-developer agent operator has no on-ramp. Measure with: `query_events` on `mcp.tool_called` grouped by first-touch. `evidence: mixed`." |
+| **Funnel** | "**MCP / llms.txt entry path** — coverage **35%**. Path: an agent discovers a skill → reads its SKILL.md → hits the MCP server → OAuth. Friction: the word *MCP* never appears on the landing page; a non-developer agent operator has no on-ramp. Measure with: agent tool-call events grouped by first-touch. `evidence: mixed`." |
 | **Competitor** | "**GitBook** dropped its starter tier to $X/mo on <date> (source: …) — weakens the 'saves ~$200/mo' line for solo users; strengthens it for teams. New entrant **<name>** launched <date>, AI-docs angle, no MCP. `evidence: measured`." |
 
 ## Guardrails

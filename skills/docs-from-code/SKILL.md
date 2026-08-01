@@ -4,6 +4,7 @@ description: Build Markdown docs from a GitHub URL or code repository — README
 metadata:
   version: 1.1.0
   category: creation
+  mode: authoring
   requires_docsbook_mcp: false
   keywords: [code, repo, github, source, generate, api, readme, github-url, from-github, github-link, repository-url, repo-url, import-repo]
 ---
@@ -21,7 +22,7 @@ The intelligence lives in **this skill** — read the repo, decide the structure
 4. **Enumerate the public API surface.** For Node/TS: read `package.json#exports` and the entry files; for Python: read `__all__` from the top package; for Go: list exported identifiers from each top-level package. Generate one Markdown file per module / package under `api/`.
 5. **Pull in examples.** If `examples/`, `samples/`, or `demo/` exists, copy each subfolder's README (or generate one from the file tree) into `guides/<example>.md`.
 6. **Read configuration docs.** Look for `.env.example`, `config/*.example.*`, `docker-compose.yml` — generate a `guides/configuration.md` listing variables with descriptions pulled from adjacent comments.
-7. **Write `_branding.json`.** Source: `package.json#author`, GitHub repo description, repo avatar from `https://github.com/<owner>.png`. No accent color is detected here — leave `accentColor` absent so the workspace configurator skips `update_branding` rather than picking a default.
+7. **Write `_branding.json`.** Source: `package.json#author`, GitHub repo description, repo avatar from `https://github.com/<owner>.png`. No accent color is detected here — leave `accentColor` absent so the workspace configurator skips the branding step rather than picking a default.
 8. **Preview.** Print the folder tree and excerpts from up to 3 representative pages. Ask the user to confirm before publishing: "Does this look right? Type **yes** to publish, or describe what to change."
 9. **Publish.** Apply `/docs-publish` logic — if `gh` is authenticated and the user confirmed, push to GitHub. If `gh` is NOT authenticated, stop cleanly with `status: crawl_only`, print the local path and the command `/docs-publish <path>` to run after `gh auth login`. Do not error.
 10. **Configure the workspace.** Apply `/docs-setup-workspace` unconditionally after a successful publish — wire branding, UI, navigation, and plan-gated settings via Docsbook MCP. If the MCP transport is unreachable, print the connection command and exit cleanly; the local folder and GitHub URL are already delivered.

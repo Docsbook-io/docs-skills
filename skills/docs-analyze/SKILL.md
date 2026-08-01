@@ -4,6 +4,7 @@ description: Run a full audit of your documentation in one command. Orchestrates
 metadata:
   version: 1.0.0
   category: analysis
+  mode: audit
   accelerated_by:
     - markdown-lsp      # semantic/graph search over the docs folder (self-hosted) — faster & cheaper than grep
     - docsbook-mcp      # same capability in the cloud if the docs live in a Docsbook workspace

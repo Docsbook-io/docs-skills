@@ -4,6 +4,7 @@ description: Same as /docs-create, but with you in the loop. Pauses at six check
 metadata:
   version: 1.1.0
   category: creation
+  mode: authoring
   requires_docsbook_mcp: false
   keywords: [create, interactive, pipeline, checkpoints, customize]
 ---

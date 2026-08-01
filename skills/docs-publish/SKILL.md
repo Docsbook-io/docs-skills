@@ -4,6 +4,7 @@ description: Push a local docs folder to GitHub in one step. Handles git init, c
 metadata:
   version: 2.0.0
   category: publishing
+  mode: platform
   requires_docsbook_mcp: false
   keywords: [publish, github, git, commit, push, repo]
 ---

@@ -4,6 +4,7 @@ description: Register a Docsbook content.outdated webhook and generate a GitHub 
 metadata:
   version: 1.0.0
   category: automation
+  mode: platform
   requires_docsbook_mcp: true
   requires_plan: pro_plus
   uses_mcp_tools:
@@ -18,7 +19,7 @@ metadata:
 
 ## Workflow
 
-1. **Verify MCP transport** — call `list_workspaces` as a connectivity probe. If it fails, print the MCP connection command and exit gracefully.
+1. **Verify the connection** — probe that the platform is reachable and resolve which workspace you are operating on. If it fails, print the MCP connection command and exit gracefully.
 2. **Resolve staleness threshold** — accept a configurable number of days (default 180). Pages untouched for longer than this threshold will trigger an event.
 3. **Generate the handler workflow** — produce a GitHub Actions workflow that fires on `repository_dispatch` with `event_type: docsbook.content.outdated`. For each page path in the payload, the workflow opens a GitHub Issue linking to the source file and explaining the staleness criterion.
 4. **Write the workflow file** — place it at `.github/workflows/docsbook-stale-handler.yml`, creating the directory if needed. Overwrite if the file already exists.
@@ -36,12 +37,12 @@ metadata:
 
 | Tool | Purpose |
 |------|---------|
-| `list_workspaces` | Probe MCP transport liveness |
+| *(resolve the workspace and read its configuration)* | Verify the connection before any mutation |
 | `register_webhook_content_outdated` | Register the content.outdated webhook on the workspace |
 
 ## Acceptance Criteria
 
-- [ ] MCP transport verified before any mutation
+- [ ] Platform connection verified before any mutation
 - [ ] Staleness threshold applied (default 180 days or user-supplied value)
 - [ ] Workflow file written to `.github/workflows/docsbook-stale-handler.yml`
 - [ ] Workflow triggers on `repository_dispatch` with the correct `event_type`

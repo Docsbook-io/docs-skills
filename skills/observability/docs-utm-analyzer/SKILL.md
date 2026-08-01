@@ -4,6 +4,7 @@ description: Maps UTM-tagged traffic against landing pages to find mismatches be
 metadata:
   version: 1.1.0
   category: observability
+  mode: audit
   measures:
     - traffic
     - bounce_rate
@@ -34,7 +35,7 @@ Marketing posts promise X. Users arrive with `?utm_campaign=launch-hn` expecting
 
 - Weekly during active campaigns.
 - After every major launch (HN, Product Hunt, blog post, ad burst).
-- When `get_analytics` shows a referrer surge without a corresponding signup bump.
+- When traffic data shows a referrer surge without a corresponding signup bump.
 
 ## Workflow (4-stage pipeline)
 
@@ -122,7 +123,7 @@ Next steps:
 
 ## Guardrails
 
-- **PRO+ only** — `query_events` is gated. Exit early if the workspace plan is below `pro_plus` with a clear upgrade message.
+- **PRO+ only** — raw event-level data, which this analysis needs, is gated above PRO. Exit early if the workspace plan is below `pro_plus` with a clear upgrade message.
 - **Do not modify any doc pages.** This is a read-only analyzer. Action is delegated to the actor agent that reads the JSON.
 - **Min volume** — clusters with `pageviews < 50` are dropped by the clusterer; do not surface low-confidence findings.
 - **PII** — never include raw `referrer` query strings in the report. The collector already strips them.

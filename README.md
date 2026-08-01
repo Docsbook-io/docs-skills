@@ -2,7 +2,7 @@
 
 # docs-skills
 
-**43 skills that teach your AI agent to run your documentation like a growth channel.**
+**48 skills that teach your AI agent to run your documentation like a growth channel.**
 
 Install once. Then just ask, in plain language.
 
@@ -34,7 +34,8 @@ Scan the left column. Find yours. Run the command.
 | Docs read like a brochure | **docs-style-tone** | Passive voice, filler, marketing adjectives — line by line |
 | Broken links, orphan pages | **docs-navigation-linking** | Full doc-graph walk: dead ends, orphans, "click here" anchors |
 | PRs land malformed pages | **docs-structure-templates** | Frontmatter, heading nesting, untagged code blocks |
-| Nobody finds us on Google | **docs-seo** | Titles, descriptions, heading hierarchy, keyword coverage |
+| Nobody finds us on Google | **docs-seo** | Audit judged against the queries you actually rank for — not guessed from the page text |
+| We get impressions, not clicks | **docs-rank-recovery** | Pages stuck at position 5–20, ranked into a rewrite queue — the cheapest traffic you can buy |
 | Screen readers can't use it | **docs-accessibility** | WCAG 2.1 AA violations that actually matter in markdown |
 | Translations rotted silently | **docs-i18n** | Content parity, ISO codes, hreflang, nav coverage |
 | Screenshots show the old UI | **docs-media** | Stale screenshots, bloated images, missing alt text |
@@ -79,7 +80,10 @@ Real user signal instead of opinion.
 
 | Your pain | Skill | What you get back |
 |---|---|---|
+| What do we fix this week? | **docs-health-triage** | Every health signal merged into one ranked queue, each item handed to the skill that fixes it |
 | Which page do I write next? | **docs-gap-finder** | Failed searches + unanswered AI questions → ranked page list |
+| Search found it, nobody clicked | **docs-title-rewriter** | Rewritten titles and first lines, verbatim and ready to paste — no page rewrites |
+| Do our docs sell or just support? | **docs-buying-blockers** | Chat conversations split by buying stage: who's evaluating, what blocks them, which competitors they name |
 | Readers leave with nothing | **docs-dead-end-hunter** | Ranked give-up pages, with the actual journeys behind them |
 | What are people even asking? | **docs-question-clusterer** | Chat questions clustered, labeled content-gap vs retrieval-miss |
 | Long dwell time — good or bad? | **docs-engagement-analyzer** | Deep interest vs stuck users, split by negative feedback |
@@ -134,6 +138,7 @@ npx skills add Docsbook-io/docs-skills --skill docs-sync
 |---|---|---|
 | I don't know where to start | **docs-strategy-plan** | Guided interview → what to write, for whom, in what order |
 | I don't know who actually buys | **docs-audience-enricher** | Buyer segments, entry paths, competitors — into your source-of-truth |
+| Every new page needs the same fixes | **docs-authoring-rules** | The rulebook loaded *before* you write — page type, structure, style, next step — so the audits find nothing |
 
 ---
 
@@ -174,10 +179,10 @@ Then ask in plain language. No flags, no config — the skill fires from your re
 
 ## Full catalog
 
-**43 skills**, 7 categories. Browse live: [docsbook.io/skills](https://docsbook.io/skills).
+**48 skills**, 7 categories. Browse live: [docsbook.io/skills](https://docsbook.io/skills).
 
 <details>
-<summary><b>Analysis</b> — 11 skills · audit what already exists</summary>
+<summary><b>Analysis</b> — 12 skills · audit what already exists</summary>
 
 | Skill | Plan | Ask it |
 |---|---|---|
@@ -188,6 +193,7 @@ Then ask in plain language. No flags, no config — the skill fires from your re
 | `docs-audience` | free | "Which pages talk over the reader's head?" |
 | `docs-navigation-linking` | free | "Which pages are orphans with nothing linking to them?" |
 | `docs-seo` | free | "Why isn't this docs section getting organic traffic?" |
+| `docs-title-rewriter` | PRO | "Our search returns results and nobody clicks them — fix the titles" |
 | `docs-accessibility` | free | "Run an a11y audit before we launch publicly" |
 | `docs-i18n` | free | "Are my translations lagging behind the English source?" |
 | `docs-media` | free | "Which screenshots are out of date after the UI redesign?" |
@@ -196,10 +202,11 @@ Then ask in plain language. No flags, no config — the skill fires from your re
 </details>
 
 <details>
-<summary><b>Creation</b> — 12 skills · produce docs from anything</summary>
+<summary><b>Creation</b> — 13 skills · produce docs from anything</summary>
 
 | Skill | Plan | Ask it |
 |---|---|---|
+| `docs-authoring-rules` | free | "Load the rules before I write this page" |
 | `docs-create` | free | "Turn this GitHub repo into a live docs site" |
 | `docs-create-interactive` | free | "Build a docs site — pause before publishing so I can review" |
 | `docs-detect-source` | free | "Is this a website, a repo, or an existing docs platform?" |
@@ -216,7 +223,7 @@ Then ask in plain language. No flags, no config — the skill fires from your re
 </details>
 
 <details>
-<summary><b>Observability</b> — 8 skills · act on real user signal</summary>
+<summary><b>Observability</b> — 9 skills · act on real user signal</summary>
 
 | Skill | Plan | Ask it |
 |---|---|---|
@@ -228,6 +235,7 @@ Then ask in plain language. No flags, no config — the skill fires from your re
 | `docs-link-click-analyzer` | PRO+ | "Is my Upgrade button buried where nobody clicks it?" |
 | `docs-utm-analyzer` | PRO+ | "Which campaigns send traffic that bounces?" |
 | `docs-visitor-cohort` | PRO+ | "Who are my most active visitors and what are they doing?" |
+| `docs-buying-blockers` | PRO+ | "Who is evaluating us and what stops them from buying?" |
 
 </details>
 
@@ -258,11 +266,21 @@ Then ask in plain language. No flags, no config — the skill fires from your re
 </details>
 
 <details>
-<summary><b>Planning &amp; Growth</b> — 2 skills · decide before you write</summary>
+<summary><b>Planning</b> — 2 skills · decide before you write</summary>
 
 | Skill | Plan | Ask it |
 |---|---|---|
 | `docs-strategy-plan` | free | "I have no docs and don't know where to start" |
+| `docs-health-triage` | PRO | "What should we work on this week?" |
+
+</details>
+
+<details>
+<summary><b>Growth</b> — 2 skills · aim the docs at traffic and buyers</summary>
+
+| Skill | Plan | Ask it |
+|---|---|---|
+| `docs-rank-recovery` | free | "Which pages are one rewrite away from real traffic?" |
 | `docs-audience-enricher` | PRO · MCP | "Figure out who actually buys my product and how they enter" |
 
 </details>
@@ -275,7 +293,7 @@ Then ask in plain language. No flags, no config — the skill fires from your re
 
 A skill is a **reusable regulation** — Workflow + Guardrails + Acceptance Criteria — not a one-off prompt.
 
-Each skill states a **need** ("get the list of pages in scope and read their content") and **how to reason about it** — never a hardcoded tool call. The agent satisfies the need with whatever it has connected:
+Each skill states a **need** ("get the list of pages in scope and read their content") and **how to reason about it**, rather than a hardcoded way to fetch it. The agent satisfies the need with whatever it has connected:
 
 ```
 AI Tool (Claude Code / Cursor / Codex / Copilot)
@@ -291,7 +309,22 @@ AI Tool (Claude Code / Cursor / Codex / Copilot)
   Audit report / generated files / configured workspace
 ```
 
-The skill never names the tool. The agent sees what's available and picks the cheapest path.
+The agent sees what's available and picks the cheapest path.
+
+**The catalog's contract on tool names.** A skill names the need and the acceptance criteria. A platform tool is named only where calling it *is* the goal of the step — set the branding, register a webhook, flip a workspace flag — and never where it's merely one way to fetch data. So "the questions readers asked that got no answer" stays a need: an agent with nothing connected greps the logs, and one with the MCP connected gets the same answer as a typed list. That's what makes a skill run on a bare agent and get sharper — not narrower — when a platform is attached.
+
+### Modes — what a skill is allowed to touch
+
+Every skill declares a `mode`, so you know before you hand it your docs whether it edits files:
+
+| Mode | Reads your docs | Writes files | What it's for |
+|---|---|---|---|
+| `audit` | yes | never | Reports findings you decide what to do with |
+| `refactor` | yes | edits pages that already exist | Fixes; never invents a new page |
+| `authoring` | — | writes new pages | Rules loaded *before* you draft, so the page ships correct |
+| `platform` | — | workspace settings, not content | Branding, languages, webhooks, domains |
+
+CI enforces it: a skill without a valid mode does not ship.
 
 | Concept | Analogy | Lives in |
 |---|---|---|

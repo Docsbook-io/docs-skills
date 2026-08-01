@@ -4,6 +4,7 @@ description: Turn flat markdown sections into rich rendered blocks — card grid
 metadata:
   version: 1.0.0
   category: creation
+  mode: platform
   accelerated_by:
     - docsbook-mcp      # list_content_widgets returns the live widget catalog + exact markdown contract
   uses_mcp_tools:

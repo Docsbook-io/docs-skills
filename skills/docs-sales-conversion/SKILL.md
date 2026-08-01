@@ -4,6 +4,7 @@ description: Make generated documentation sell instead of merely inform. Classif
 metadata:
   version: 1.0.0
   category: creation
+  mode: refactor
   accelerated_by:
     - docsbook-mcp      # list_content_widgets for the live widget contracts; get_workspace for existing branding/links
   uses_mcp_tools:

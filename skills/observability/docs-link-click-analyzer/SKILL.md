@@ -4,6 +4,7 @@ description: Measures click-through rate on every internal link and CTA button a
 metadata:
   version: 1.1.0
   category: observability
+  mode: audit
   measures:
     - exit_rate
     - traffic
@@ -42,7 +43,7 @@ Two failure modes this skill catches:
 
 Standard four-stage docs-insights pipeline. Slice = `link_clicks`. See [`docs-utm-analyzer`](../docs-utm-analyzer/SKILL.md) for canonical step-by-step.
 
-- **Collector:** `query_events` for `cta_click` and `outbound_click` events grouped by `(source_page, target_label)` + `get_analytics` for impressions.
+- **Collector:** every click a reader made on a CTA or an outgoing link, grouped by `(source_page, target_label)`, plus per-page traffic totals to serve as impressions. Any other click-level signal on the same pages belongs here.
 - **Clusterer:** computes `expected_ctr` = site-wide median CTR of the same CTA label. Flags clusters where CTR < 0.5× expected AND impressions ≥ 200.
 - **Reporter:** `cta_underperformance` (high severity for revenue CTAs like Upgrade/Sign up; medium otherwise); `orphan_traffic` for zero-click pages with ≥ 200 pv.
 

@@ -4,6 +4,7 @@ description: Give every AI agent in your repo the same context about your docs. 
 metadata:
   version: 1.0.0
   category: publishing
+  mode: platform
   requires_plan: free
   accelerated_by:
     - docsbook-mcp      # read workspace settings & doc graph directly, if a Docsbook workspace is connected

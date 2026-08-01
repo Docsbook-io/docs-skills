@@ -4,6 +4,7 @@ description: Guided interview that turns "I have no docs and don't know where to
 metadata:
   version: 1.0.0
   category: planning
+  mode: audit
   requires_docsbook_mcp: false
   keywords: [planning, strategy, interview, roadmap, information-architecture, funnel, roles, discovery]
 ---

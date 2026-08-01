@@ -4,6 +4,7 @@ description: "Generate a complete, conversion-optimised docs site from a product
 metadata:
   version: 1.0.0
   category: creation
+  mode: authoring
   accelerated_by:
     - docsbook-mcp      # create the workspace and apply branding/UI/navigation, if you publish through Docsbook
   keywords:
@@ -41,7 +42,7 @@ metadata:
    - `faq.md` — 6–10 frequently asked questions with answers that eliminate objections
    - `blog/` or `learn/` (optional, 1 page) — one educational or comparison piece if the product category benefits from it
 
-3. **Write `_branding.json`** alongside the docs folder. Source the product name and a domain-appropriate accent color suggestion from the product concept — do NOT default to `#6366f1`. If no confident color exists for the domain, leave `accentColor` absent so the workspace configurator skips `update_branding` rather than picking a default.
+3. **Write `_branding.json`** alongside the docs folder. Source the product name and a domain-appropriate accent color suggestion from the product concept — do NOT default to `#6366f1`. If no confident color exists for the domain, leave `accentColor` absent so the workspace configurator skips the branding step rather than picking a default.
 
 4. **Generate all Markdown files** into `docs-output/<product-slug>/`. Apply conversion copywriting throughout:
    - Benefit-first headings (outcome the user gets, not the feature name)

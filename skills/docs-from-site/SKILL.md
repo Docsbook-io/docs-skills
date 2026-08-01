@@ -4,6 +4,7 @@ description: Spin up a rich, conversion-grade Markdown docs site from any produc
 metadata:
   version: 3.0.0
   category: creation
+  mode: authoring
   requires_docsbook_mcp: false
   accelerated_by:
     - docsbook-mcp      # publish pages and apply branding/UI/nav/SEO/AI, if a Docsbook workspace is connected

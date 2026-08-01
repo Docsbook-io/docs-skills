@@ -4,6 +4,7 @@ description: Write documentation that AI assistants actually retrieve and cite. 
 metadata:
   version: 1.0.0
   category: creation
+  mode: authoring
   accelerated_by:
     - markdown-lsp      # heading/section-level search — lets you inspect real chunk boundaries cheaply
     - docsbook-mcp      # get_ai_unanswered / get_failed_searches: the real questions readers ask, verbatim
@@ -44,7 +45,7 @@ The retrieval query is a *question*, usually in the reader's words, not your fea
 
 Sources, best first:
 
-1. **Your own AI chat logs and failed searches** — the literal strings people typed. With a Docsbook workspace: `get_ai_unanswered` (questions the chat could not answer — these are content gaps *and* retrieval targets) and `get_failed_searches`. This beats any keyword tool because the phrasing is real.
+1. **Your own AI chat logs and failed searches** — the literal strings people typed. You want two things: the questions your chat could not answer (content gaps *and* retrieval targets) and the searches that returned nothing. This beats any keyword tool because the phrasing is real. On a connected analytics platform these come back as a verbatim list; otherwise grep the raw logs.
 2. **Support tickets and community threads** — same value, more noise.
 3. **Sub-query decomposition** — for each real question, write the 3–8 sub-questions an engine would fan out into. A prompt like "how do I deploy X to production?" fans into build config, environment variables, custom domain, rollback. Each needs a passage that answers it *alone*.
 
@@ -127,7 +128,7 @@ Rules that keep both stages healthy:
 
 - **Add, don't replace.** Introduce the definition, the number, the table *alongside* existing prose. Do not delete the paragraph that happens to contain the synonym someone will search with.
 - **Keep natural synonym variety.** Readers ask about "API key", "token", "credentials", "secret". A passage that mentions the realistic variants naturally matches more sub-queries. This is not stuffing — it is how a human would write it anyway.
-- **Never trade breadth for polish on a page that already gets AI traffic.** Check the logs first (`get_analytics`, crawler user agents) and treat a well-retrieved page as load-bearing.
+- **Never trade breadth for polish on a page that already gets AI traffic.** Check the page's traffic and crawler user agents first, and treat a well-retrieved page as load-bearing.
 
 ---
 

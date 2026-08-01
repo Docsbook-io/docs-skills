@@ -4,6 +4,7 @@ description: Drills into the top-N most active anonymous visitors and clusters t
 metadata:
   version: 1.1.0
   category: observability
+  mode: audit
   measures:
     - visit_evidence
     - dead_end_rate
@@ -30,7 +31,7 @@ metadata:
 
 Page-level analytics tell you *which page* is doing badly. Cohort analysis tells you *which kind of user* is failing — and that's often what marketing/product actually need to know.
 
-This skill takes the top ~20 most active anonymous visitors (`get_top_visitors`), pulls their full activity timeline (`get_visitor_activity`), and uses the LLM to cluster them into 3–6 named behavioral cohorts (e.g. `buyer-blocker`, `mcp-debugger`, `tire-kicker`). Each cohort becomes a finding with severity tied to how blocking the pattern is.
+This skill takes the top ~20 most active anonymous visitors, pulls each one's full activity timeline, and uses the LLM to cluster them into 3–6 named behavioral cohorts (e.g. `buyer-blocker`, `mcp-debugger`, `tire-kicker`). Each cohort becomes a finding with severity tied to how blocking the pattern is.
 
 ## When to run
 
@@ -40,7 +41,7 @@ This skill takes the top ~20 most active anonymous visitors (`get_top_visitors`)
 
 ## Workflow
 
-Standard four-stage docs-insights pipeline. Slice = `cohort`. The collector fans out: `get_top_visitors` then one `get_visitor_activity` per returned `visitor_id` (5 parallel).
+Standard four-stage docs-insights pipeline. Slice = `cohort`. The collector fans out: first the ranked list of the most active anonymous visitors, then one full timeline per returned `visitor_id` (5 parallel).
 
 - **Collector:** `COHORT_SIZE` defaults to `20`. Each visitor's timeline is captured (pageviews, cta_clicks, feedback).
 - **Clusterer:** LLM-clusters timelines by behavior pattern. Produces 3–6 cohorts.
@@ -57,7 +58,7 @@ Standard four-stage docs-insights pipeline. Slice = `cohort`. The collector fans
 
 ## Guardrails
 
-- PRO+ only (`get_top_visitors`, `get_visitor_activity`).
+- PRO+ only — per-visitor rankings and timelines are gated above PRO.
 - Privacy: `visitor_id` is a random anonymous ID; report MAY include up to 20 of them in `samples` for downstream debugging. NEVER include `user_agent`, IPs, or referrer query strings.
 - Minimum 10 visitors needed to attempt clustering; below that, exit with `no_data`.
 - Cohort labels must be descriptive — never numeric. Use lowercase-kebab-case.

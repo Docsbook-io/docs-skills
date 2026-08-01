@@ -4,6 +4,7 @@ description: Stop letting translations rot silently. Audits multilingual docs fo
 metadata:
   version: 1.0.0
   category: analysis
+  mode: audit
   accelerated_by:
     - markdown-lsp      # semantic/graph search over the docs folder (self-hosted) — faster & cheaper than grep
     - docsbook-mcp      # same capability in the cloud + language settings, if the docs live in a Docsbook workspace

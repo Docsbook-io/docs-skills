@@ -4,6 +4,7 @@ description: Know exactly which docs page to write next. Cross-references real u
 metadata:
   version: 1.0.0
   category: observability
+  mode: audit
   accelerated_by:
     - markdown-lsp      # graph search over the docs folder (self-hosted)
     - docsbook-mcp      # search-miss & unanswered-question analytics + doc graph, if a Docsbook workspace is connected (PRO+)
