@@ -20,6 +20,21 @@ This skill fixes that in one pass. It is a **content** skill: it decides which p
 
 ---
 
+## Step 0 — Read the CTA the owner already set (do this first)
+
+Before classifying anything, ask the platform whether this project already has a declared call to action. On Docsbook that is the **Call To Action URL** (Branding tab) — `cta_url` on `get_workspace_info` / `get_workspace`, saved by `update_branding(cta_url: …)`. Any other platform: whatever field records "the page this documentation should drive readers to".
+
+**When it is set, it wins over anything you infer.** The owner typed it; a `/pricing` page you found by crawling is a guess about their funnel, and their answer is not. Concretely:
+
+- Every page's primary CTA points **there**, unless a page has an obviously better-matching destination already observed on the source (a docs-internal next step, an install command for an OSS install page).
+- The classification in Step 1 still runs — the CTA tells you *where* to send the reader, not *how* the product makes money — but a CTA whose URL is a pricing/plans page is itself a strong `paid` or `free_first` signal, and one pointing at a demo/contact form is a strong `sales_led` signal.
+- It belongs in the **header as a button**, not only in the prose: on Docsbook, `update_navigation` with a `header_links` entry whose `color` is the workspace accent renders it as a filled button. One such entry, not several — a header with three buttons has no CTA.
+- Do not restate it on every page or in every paragraph. One deliberate placement per page, at the point where the reader has just gotten what they came for.
+
+**When it is not set**, derive the CTA from the source as Steps 1-3 describe, and — if the derivation is unambiguous (a single obvious pricing/signup/demo URL observed on the source) — **save it back** with `update_branding(cta_url: …)` so the chat, the header and later generations all use the same destination. If it is ambiguous, ask the owner rather than guessing; a wrong CTA saved as the project's goal is worse than an empty field.
+
+---
+
 ## Step 1 — Classify the monetization model
 
 Before writing a single page, decide which of four models the product runs on. Derive it from real signals only:
