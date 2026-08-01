@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-01T02:23:41.412Z",
+  "generated_at": "2026-08-01T02:56:34.826Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -337,6 +337,44 @@
       "version": "1.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-buying-blockers/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-buying-blockers/SKILL.md"
+    },
+    {
+      "name": "docs-competitor-gap",
+      "description": "Compares your documentation against a named competitor's public docs and returns the topics they cover that you do not — separated into the ones worth writing and the ones that would be a mistake to copy. Reads their pages directly rather than guessing from memory, quotes what they actually say, and refuses to recommend a page just because a competitor has one. Use when asked \"what are we missing that X documents\", \"compare our docs to X\", \"why do they rank for this and we don't\", \"what should we write next\", or before a competitive positioning push. Produces a ranked list of pages to write; it does not write them.",
+      "category": "analysis",
+      "mode": "audit",
+      "requires_plan": "free",
+      "keywords": [
+        "competitor",
+        "competitive analysis",
+        "content gap",
+        "gap analysis",
+        "coverage",
+        "what are we missing",
+        "versus",
+        "alternative",
+        "market research",
+        "topics they cover",
+        "competitor docs"
+      ],
+      "uses_mcp_tools": [
+        "fetch_url",
+        "get_doc_outline",
+        "search_docs",
+        "get_search_rankings"
+      ],
+      "accelerated_by": [
+        "docsbook-mcp",
+        "markdown-lsp"
+      ],
+      "measures": [
+        "search_position",
+        "search_impressions",
+        "traffic"
+      ],
+      "version": "1.0.0",
+      "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-competitor-gap/SKILL.md",
+      "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-competitor-gap/SKILL.md"
     },
     {
       "name": "docs-content-types",
