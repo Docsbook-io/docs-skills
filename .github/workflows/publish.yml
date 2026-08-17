@@ -25,6 +25,21 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org
 
+      # index.json is generated from the SKILL.md frontmatter, but nothing ever
+      # ran the generator in CI — README asks contributors to run it by hand
+      # before opening a PR. It happened to be in sync; nothing made it stay
+      # that way, and index.json is what find_skill, the marketplace plugin and
+      # docsbook.io all read. Regenerate and fail if the committed file differs,
+      # so a stale catalog cannot be published.
+      - name: Rebuild index and fail if it drifted
+        run: |
+          node scripts/build-index.js
+          if ! git diff --quiet -- index.json; then
+            echo "::error::index.json is stale — run 'npm run build-index' and commit the result."
+            git --no-pager diff -- index.json
+            exit 1
+          fi
+
       # The catalog's own guardrails. A skill states the need, not the tool —
       # without a gate that rule decays silently (it was 22 of 43 skills once).
       # Nothing publishes if the catalog contradicts what the README promises.

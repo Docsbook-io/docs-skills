@@ -287,6 +287,24 @@ function buildIndex() {
 
 function main() {
   const index = buildIndex();
+
+  // Keep generated_at from the committed file when nothing else changed.
+  //
+  // Stamping a fresh timestamp on every run made the output differ from the
+  // committed file EVERY time, even with no skill touched. Two costs: a diff
+  // that is noise trains reviewers to skim past it, and CI cannot ask "did the
+  // catalog actually change?" without the answer always being yes. Freezing the
+  // timestamp on a no-op rebuild makes a diff in index.json mean something.
+  try {
+    const previous = JSON.parse(fs.readFileSync(OUTPUT, 'utf8'));
+    const sameContent =
+      JSON.stringify({ ...previous, generated_at: null }) ===
+      JSON.stringify({ ...index, generated_at: null });
+    if (sameContent && previous.generated_at) index.generated_at = previous.generated_at;
+  } catch {
+    // No committed index yet, or it is unreadable — write a fresh one.
+  }
+
   fs.writeFileSync(OUTPUT, JSON.stringify(index, null, 2) + '\n', 'utf8');
   console.log(`wrote ${path.relative(REPO_ROOT, OUTPUT)} — ${index.skills.length} skills`);
 }

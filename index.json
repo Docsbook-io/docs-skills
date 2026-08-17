@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-01T08:49:01.099Z",
+  "generated_at": "2026-08-17T04:35:12.389Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -48,10 +48,10 @@
     },
     {
       "name": "docs-release-announce",
-      "description": "Wire up release announcements for a Docsbook workspace. Registers a Docsbook webhook on release events and generates a GitHub Actions workflow that dispatches notifications to Slack and/or email when a new release is published. Requires PRO plan.",
+      "description": "Wire up release announcements for a Docsbook workspace. Registers a Docsbook webhook on release events and generates a GitHub Actions workflow that dispatches notifications to Slack and/or email when a new release is published. Requires BUSINESS plan — registering any webhook does.",
       "category": "automation",
       "mode": "platform",
-      "requires_plan": "pro",
+      "requires_plan": "business",
       "keywords": [
         "release",
         "announce",
@@ -71,10 +71,10 @@
     },
     {
       "name": "docs-stale-watcher",
-      "description": "Register a Docsbook content.outdated webhook and generate a GitHub Actions workflow that converts each stale-content notification into a GitHub Issue in the documentation repository. Keeps docs maintenance visible in the team's normal issue triage flow. Requires PRO+ plan.",
+      "description": "Register a Docsbook content.outdated webhook and generate a GitHub Actions workflow that converts each stale-content notification into a GitHub Issue in the documentation repository. Keeps docs maintenance visible in the team's normal issue triage flow. Requires BUSINESS plan — registering any webhook does.",
       "category": "automation",
       "mode": "platform",
-      "requires_plan": "pro_plus",
+      "requires_plan": "business",
       "keywords": [
         "stale",
         "outdated",
@@ -114,10 +114,10 @@
     },
     {
       "name": "docs-translate-webhook",
-      "description": "Bypass Docsbook's built-in AI translator and delegate translation work to a custom external service over webhooks. Switches the workspace to external translation mode, registers a translation.requested webhook, and scaffolds a handler function the user deploys with their own translation logic. Requires PRO+ plan.",
+      "description": "Bypass Docsbook's built-in AI translator and delegate translation work to a custom external service over webhooks. Switches the workspace to external translation mode with the caller's callback URL, and scaffolds a handler function the user deploys with their own translation logic. Requires PRO plan.",
       "category": "automation",
       "mode": "platform",
-      "requires_plan": "pro_plus",
+      "requires_plan": "pro",
       "keywords": [
         "translate",
         "webhook",
@@ -130,8 +130,7 @@
       "uses_mcp_tools": [
         "list_workspaces",
         "get_workspace",
-        "set_translation_mode",
-        "register_webhook_translation_requested"
+        "set_translation_mode"
       ],
       "requires_docsbook_mcp": true,
       "version": "1.0.0",
