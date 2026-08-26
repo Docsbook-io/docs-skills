@@ -1,12 +1,15 @@
-# docs-skills — Documentation Analysis
+# docs-skills — four documentation skills
 
-This project includes 11 documentation analysis skills in .cursor/rules/docs-skills.mdc.
+This project defines four documentation skills. When the user mentions docs-create, docs-analyze,
+docs-manage or docs-automate — or describes the job one of them covers — apply that skill definition
+from `skills/<name>/SKILL.md`, then only the reference files its routing table points at.
 
-When the user mentions docs-analyze, docs-seo, docs-accessibility, docs-i18n, docs-style-tone,
-docs-audience, docs-navigation-linking, docs-content-types, docs-structure-templates,
-docs-media, or docs-maintenance — apply the corresponding skill definition.
+- docs-create   — documentation that does not exist yet (from a site, a repo, a migration, or an idea)
+- docs-analyze  — what is wrong, starting from real numbers, through to the applied fix
+- docs-manage   — the rulebook for what a page says and what the site around it does
+- docs-automate — drift guards, CI checks, event handlers, alerts and monitors
 
-These skills use the Docsbook MCP server (mcp__docsbook__*) to read documentation graphs
-from any public GitHub repository without cloning locally.
+Every skill works on a plain docs folder with nothing connected. A `markdown-lsp` server or a
+connected Docsbook workspace makes them faster and sharper, never different.
 
-MCP setup: mcp add --transport http https://docsbook.io/api/mcp/server
+Optional cloud transport: mcp add --transport http https://docsbook.io/api/mcp/server

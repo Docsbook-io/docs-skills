@@ -138,14 +138,12 @@ function buildCategoriesTable(index) {
     const c = s.category || 'uncategorized';
     counts[c] = (counts[c] || 0) + 1;
   }
-  const order = ['analysis', 'creation', 'publishing', 'automation', 'observability', 'planning'];
+  const order = ['creation', 'analysis', 'management', 'automation'];
   const descriptions = {
-    analysis: 'Audit and quality checks',
-    creation: 'Generate or import docs',
-    publishing: 'Publish and onboard a workspace',
-    automation: 'Wire up automations via Docsbook MCP',
-    observability: 'Analytics-driven gap-finding',
-    planning: 'Plan docs strategy before creation',
+    creation: 'Documentation that does not exist yet',
+    analysis: 'What is wrong, from real numbers through to the applied fix',
+    management: 'What a page says, and what the site around it does',
+    automation: 'Anything that should keep happening on its own',
   };
   const sortedCats = Object.keys(counts).sort((a, b) => {
     const ai = order.indexOf(a), bi = order.indexOf(b);

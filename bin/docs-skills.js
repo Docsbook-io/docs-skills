@@ -42,50 +42,10 @@ function discoverSkills(baseDir) {
 }
 
 const SKILL_DESCRIPTIONS = {
-  // Create
-  'docs-create':              'L1 pipeline — detect → build → publish → Docsbook (minimal questions)',
-  'docs-create-interactive':  'L2 pipeline — same as docs-create with interactive checkpoints',
-  'docs-from-site':           'Build docs from a website URL (crawl + extract + structure)',
-  'docs-from-code':           'Build docs from a GitHub code repo (README, JSDoc, examples)',
-  'docs-from-docs':           'Migrate from Mintlify / GitBook / Docusaurus / Nextra / VitePress',
-  'docs-publish':             'Publish docs folder to GitHub (git init + gh repo create + push)',
-  'docs-setup-workspace':     'Configure Docsbook workspace via MCP (branding, AI, SEO, languages)',
-  'docs-detect-source':       'Detect source type: website / code-repo / docs-platform',
-  'docs-branding':            'Apply branding guidelines to documentation',
-  'docs-imagine':             'Generate images and diagrams for documentation',
-  'docs-gap-finder':          'Find documentation gaps from failed searches and AI questions',
-  'docs-strategy-plan':       'Build a documentation strategy plan',
-  'docs-first-run-enrichment':'Enrich first-run documentation experience',
-  'docs-generate-agents-md':  'Generate AGENTS.md from Docsbook workspace settings',
-  // Analyse
-  'docs-analyze':             'Orchestrator — runs all sub-skills, produces a unified report',
-  'docs-content-types':       'Diátaxis classification (tutorial / how-to / reference / explanation)',
-  'docs-structure-templates': 'Frontmatter, heading hierarchy, code block conventions',
-  'docs-style-tone':          'Active voice, filler words, terminology consistency',
-  'docs-audience':            'Vocabulary mismatch, assumed knowledge gaps',
-  'docs-navigation-linking':  'Orphan pages, broken links, anchor text quality',
-  'docs-seo':                 'Title/description, topic clusters, AI Overviews compatibility',
-  'docs-accessibility':       'WCAG 2.1 AA from markdown — alt text, heading order, link text',
-  'docs-i18n':                'Multilingual parity, hreflang, translation freshness',
-  'docs-media':               'Images, screenshots, diagrams, missing captions, large files',
-  'docs-maintenance':         'Stale content, deprecated pages, TODO/FIXME markers',
-  // Automation
-  'docs-enable-translation':  'Enable AI auto-translation for Docsbook workspace',
-  'docs-pr-check':            'GitHub Actions workflow to check docs on PRs',
-  'docs-release-announce':    'Announce GitHub releases to Slack/email via webhook',
-  'docs-stale-watcher':       'Watch for stale documentation and open issues',
-  'docs-sync':                'Sync documentation across repositories',
-  'docs-translate-webhook':   'Handle translation webhooks from Docsbook',
-  'docs-tune-ai-chat':        'Tune AI chat behavior for Docsbook workspace',
-  // Growth
-  'docs-audience-enricher':   'Enrich audience targeting for documentation',
-  // Observability
-  'docs-engagement-analyzer': 'Analyze documentation engagement metrics',
-  'docs-funnel-mapper':       'Map user funnel through documentation',
-  'docs-link-click-analyzer': 'Analyze link click patterns in documentation',
-  'docs-question-clusterer':  'Cluster user questions from AI chat logs',
-  'docs-utm-analyzer':        'Analyze UTM parameters for documentation traffic',
-  'docs-visitor-cohort':      'Analyze visitor cohorts for documentation',
+  'docs-create':   'Documentation that does not exist yet — from a site, a repo, another platform, or an idea',
+  'docs-analyze':  'What is wrong and what it costs — real numbers first, then the detectors, then the fix',
+  'docs-manage':   'The rulebook: what a page says, and what the site around it does',
+  'docs-automate': 'Drift guards, CI checks, event handlers, alerts and monitors — after asking what you want watched',
 };
 
 const [,, cmd, ...args] = process.argv;
@@ -172,7 +132,7 @@ Usage:
 Examples:
   docs-skills install                    # Auto-detect Claude/Cursor/Codex and install
   docs-skills install ~/                 # Install globally for Claude Code
-  docs-skills info docs-create           # Show the full creation pipeline skill
+  docs-skills info docs-create           # Show the creation skill in full
   docs-skills convert-mdx ./my-mintlify-docs ./clean-docs
   docs-skills crawl https://example.com ./docs-output/example
 `);
