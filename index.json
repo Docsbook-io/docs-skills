@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-17T04:35:12.389Z",
+  "generated_at": "2026-08-26T10:17:36.217Z",
   "skills": [
     {
       "name": "docs-enable-translation",
@@ -398,13 +398,14 @@
     },
     {
       "name": "docs-content-widgets",
-      "description": "Turn flat markdown sections into rich rendered blocks — card grids for hub pages, accordions for troubleshooting and FAQ lists — using invisible HTML-comment markers that keep the source readable as ordinary markdown on GitHub and everywhere else. Use when a page reads as a wall of links or a long stack of headed sections.",
+      "description": "Turn flat markdown sections into rich rendered blocks — card grids, accordions, steppers, playgrounds, call-to-action blocks — using invisible HTML-comment markers that keep the source readable as ordinary markdown on GitHub and everywhere else. Use when a page reads as a wall of links, a long stack of headed sections, an unnumbered procedure, or ends without a next step.",
       "category": "creation",
       "mode": "platform",
       "keywords": [
         "widgets",
         "cards",
         "accordion",
+        "stepper",
         "layout",
         "hub-page",
         "faq",
@@ -417,7 +418,7 @@
       "accelerated_by": [
         "docsbook-mcp"
       ],
-      "version": "1.0.0",
+      "version": "2.0.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-content-widgets/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-content-widgets/SKILL.md"
     },
@@ -882,7 +883,7 @@
       "accelerated_by": [
         "docsbook-mcp"
       ],
-      "version": "1.0.0",
+      "version": "1.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-sales-conversion/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-sales-conversion/SKILL.md"
     },

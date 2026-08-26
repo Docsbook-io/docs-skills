@@ -63,7 +63,7 @@ npx skills add Docsbook-io/docs-skills --skill docs-analyze
 | New site looks like a skeleton | **docs-first-run-enrichment** | Auto-branding + real getting-started and landing pages |
 | Docs look nothing like my product | **docs-branding** | Colors, font, theme, logo derived from real signals |
 | Docs inform but never sell | **docs-sales-conversion** | Monetization model detected → pricing page, CTA ladder, no dead ends |
-| Pages are walls of links | **docs-content-widgets** | Card grids and accordions from invisible markers — source stays plain markdown |
+| Pages are walls of links | **docs-content-widgets** | Rich blocks from invisible markers — the live widget catalog decides which; source stays plain markdown |
 | ChatGPT/Perplexity never cite us | **docs-ai-retrieval** | Passage-level rewrite patterns that survive controlled studies |
 
 ```bash

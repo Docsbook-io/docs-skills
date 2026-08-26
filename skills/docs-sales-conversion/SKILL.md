@@ -2,7 +2,7 @@
 name: docs-sales-conversion
 description: Make generated documentation sell instead of merely inform. Classifies the product's monetization model from real signals (crawled pricing page, repo, description), then applies the matching conversion pattern — a pricing page and plan-comparison table when the product charges, a persistent "start free" CTA ladder when the funnel opens with free access, a self-host-vs-cloud split for open-source products. Every page gets a next action; no page dead-ends. Use during first generation and whenever docs read informative but never ask for the sale.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   category: creation
   mode: refactor
   accelerated_by:
@@ -125,13 +125,16 @@ On top of the standard structure (see `docs-first-run-enrichment`), this skill c
 
 ## Step 5 — Render the money pages as widgets
 
-Conversion pages are scanned, not read. Where the platform supports content widgets (`docs-content-widgets`), wrap:
+Conversion pages are scanned, not read. Where the platform supports content widgets, wrap the regions a scanning reader has to parse: the plan comparison, the FAQ, and the path from signup to first value.
 
-- the plan comparison in a `cards` grid when plans are few and each needs a one-line pitch;
-- the FAQ in an `accordion` so an evaluating reader scans questions and opens only theirs;
-- the getting-started path in a `stepper` so "how long until value" is visually countable.
+**Do not pick the widget from memory — read the live catalog (`list_content_widgets`) and match it against the shape you actually wrote**, following `docs-content-widgets`. Widget names and their contracts change with the product; a name hard-coded in this skill would send you looking for a renderer that has been renamed, or leave the best-fitting one unused because nothing here mentions it. What is stable is the selection rule, and it is about the reader:
 
-The markdown between the markers must read correctly on its own — the widget is presentation, never data.
+- a set of parallel options the reader compares side by side (plans, hosting choices) wants the widget that renders a **grid** — one tile per option, each with its own one-line pitch;
+- questions the reader scans and opens exactly one of (the FAQ) wants the widget that renders **collapsible rows**;
+- an ordered path where "how long until value" is the actual question wants the widget that renders a **numbered sequence**;
+- the page's closing ask wants the widget that renders a **call-to-action block** — one per page, never two.
+
+Follow the chosen widget's contract completely, including the parts marked REQUIRED: a partially-followed contract renders worse than the plain markdown it replaced. The markdown between the markers must read correctly on its own — the widget is presentation, never data.
 
 ---
 
@@ -176,7 +179,7 @@ Not stated (no source signal): <prices|limits|SLA|...>
 ## Related Skills
 
 - `docs-first-run-enrichment` — structure + branding for a first generation; this skill layers the money story onto it
-- `docs-content-widgets` — how to render the pricing/FAQ regions as blocks
+- `docs-content-widgets` — how to render the pricing/FAQ regions as blocks, and how to read the live widget catalog instead of guessing a name
 - `docs-audience` — who the reader is; a CTA aimed at the wrong reader is worse than none
 - `docs-seo` — the FAQ this skill writes is also the AEO surface
 - `docs-style-tone` — the no-hype prose rules this skill depends on
