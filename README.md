@@ -2,7 +2,7 @@
 
 # docs-skills
 
-**52 skills that teach your AI agent to run your documentation like a growth channel.**
+**4 skills that teach your AI agent to run your documentation like a growth channel.**
 
 Install once. Then just ask, in plain language.
 
@@ -10,7 +10,7 @@ Install once. Then just ask, in plain language.
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
 
-[Install](#install-30-seconds) • [Find your pain](#find-your-pain) • [Full catalog](#full-catalog) • [How it works](#how-it-works) • [CLI](#cli-reference)
+[Install](#install-30-seconds) • [Find your pain](#find-your-pain) • [The four skills](#the-four-skills) • [How it works](#how-it-works) • [CLI](#cli-reference)
 
 </div>
 
@@ -20,125 +20,80 @@ npx skills add Docsbook-io/docs-skills --skill '*'
 
 ---
 
+## The four skills
+
+Documentation work is four jobs, and every request lands in one of them.
+
+| | Skill | The question it answers |
+|---|---|---|
+| ✍️ | **`docs-create`** | The docs do not exist yet. Make them — from a site, a repo, another platform, or an idea. |
+| 🔍 | **`docs-analyze`** | Something is wrong. Find it from real numbers, say what it costs in plain language, and fix it. |
+| 📐 | **`docs-manage`** | What should this page say, and what should the site around it do? |
+| ⚙️ | **`docs-automate`** | Make it keep happening without anyone remembering. |
+
+They hand off to each other rather than overlapping: `docs-analyze` finds a gap and hands it to `docs-create`; `docs-create` writes to `docs-manage`'s rules; `docs-manage` executes what `docs-analyze` diagnosed; `docs-automate` makes any of it recur.
+
+---
+
 ## Find your pain
 
-Scan the left column. Find yours. Run the command.
+Scan the left column. Find yours. Ask in your own words — the skill picks itself up.
 
 ### 😫 "My docs are a mess and I don't know where to start"
 
-| Your pain | Skill | What you get back |
+| Your pain | Ask | What you get back |
 |---|---|---|
-| I don't know what's broken | **docs-analyze** | One prioritized report — 10 audits in a single pass |
-| Users can't find answers | **docs-content-types** | Every page classified against Diátaxis, misclassifications flagged |
-| Readers bounce off the page | **docs-audience** | Jargon, undeclared prerequisites, mixed-audience pages |
-| Docs read like a brochure | **docs-style-tone** | Passive voice, filler, marketing adjectives — line by line |
-| Broken links, orphan pages | **docs-navigation-linking** | Full doc-graph walk: dead ends, orphans, "click here" anchors |
-| PRs land malformed pages | **docs-structure-templates** | Frontmatter, heading nesting, untagged code blocks |
-| Nobody finds us on Google | **docs-seo** | Audit judged against the queries you actually rank for — not guessed from the page text |
-| We get impressions, not clicks | **docs-rank-recovery** | Pages stuck at position 5–20, ranked into a rewrite queue — the cheapest traffic you can buy |
-| Screen readers can't use it | **docs-accessibility** | WCAG 2.1 AA violations that actually matter in markdown |
-| Translations rotted silently | **docs-i18n** | Content parity, ISO codes, hreflang, nav coverage |
-| Screenshots show the old UI | **docs-media** | Stale screenshots, bloated images, missing alt text |
-| Docs quietly lie to users | **docs-maintenance** | Stale content, deprecated pages with no migration path, TODOs |
-
-```bash
-npx skills add Docsbook-io/docs-skills --skill docs-analyze
-```
-
-> "Audit my docs and give me one prioritized report"
-
----
+| I don't know what's broken | *"Audit my docs and give me one prioritized report"* | One ranked queue: content type, structure, style, audience, links, SEO, a11y, i18n, media, freshness — deduplicated, worst first |
+| Nobody finds us on Google | *"Why isn't this section getting organic traffic?"* | An audit judged against the queries you actually rank for — not guessed from the page text |
+| We get impressions, not clicks | *"Which pages are one rewrite away from real traffic?"* | Pages stuck at position 5–20, ranked by impressions × distance to close — the cheapest traffic a docs site can buy |
+| ChatGPT and Perplexity never cite us | *"Rewrite this so assistants can cite it"* | Passage-level patterns that survived controlled studies — and the popular tactic that measurably backfires |
+| Readers bounce, and I don't know where | *"Which pages are losing people?"* | Ranked give-up pages with the actual reader journeys behind them |
+| Broken links, orphan pages | *"Which pages have nothing linking to them?"* | A full doc-graph walk: dead ends, orphans, "click here" anchors |
+| Our docs quietly lie about prices | *"Do our docs still match our pricing page?"* | Every price, plan and quota compared against the live page, both sides quoted |
+| We describe other people's products | *"Is anything we say about our integrations still true?"* | Third-party claims checked against their sources, with "unverifiable" kept separate from "wrong" |
 
 ### 🚀 "I have no docs — or the wrong ones"
 
-| Your pain | Skill | What you get back |
+| Your pain | Ask | What you get back |
 |---|---|---|
-| I have a repo/URL and 0 docs | **docs-create** | Detect source → generate → publish → configure. One command |
-| Same, but I want to approve each step | **docs-create-interactive** | Six checkpoints you control before anything ships |
-| I don't know what my source even is | **docs-detect-source** | Website / repo / Mintlify / GitBook / Docusaurus — identified |
-| Only a marketing site exists | **docs-from-site** | Rich conversion-grade Markdown crawled from the live site |
-| Only code exists | **docs-from-code** | README, source tree, exported APIs, examples → Markdown |
-| Trapped in GitBook/Mintlify | **docs-from-docs** | Clean portable Markdown, structure intact |
-| Only a product name exists | **docs-imagine** | A full invented docs site — pages, messaging, structure |
-| New site looks like a skeleton | **docs-first-run-enrichment** | Auto-branding + real getting-started and landing pages |
-| Docs look nothing like my product | **docs-branding** | Colors, font, theme, logo derived from real signals |
-| Docs inform but never sell | **docs-sales-conversion** | Monetization model detected → pricing page, CTA ladder, no dead ends |
-| Pages are walls of links | **docs-content-widgets** | Rich blocks from invisible markers — the live widget catalog decides which; source stays plain markdown |
-| ChatGPT/Perplexity never cite us | **docs-ai-retrieval** | Passage-level rewrite patterns that survive controlled studies |
-
-```bash
-npx skills add Docsbook-io/docs-skills --skill docs-create
-```
-
-> "Turn this GitHub repo into a live docs site"
-
----
+| I have a repo/URL and no docs | *"Turn this repo into a live docs site"* | Product audit → structure → pages → preview → publish → configure |
+| Only a marketing site exists | *"Make docs from this URL"* | Rendered, read, and rebuilt as a foldered conversion-grade site — never a scraped dump |
+| Trapped in GitBook/Mintlify | *"Migrate our docs off Mintlify"* | Clean portable Markdown, structure and slugs intact, nothing lost |
+| Only a product name exists | *"Imagine docs for my product"* | A full invented site — pages and structure invented, facts never |
+| I want to approve each step | *"Build it, but pause before publishing"* | Six checkpoints you control before anything ships |
+| I don't know who actually buys | *"Who are our buyers and how do they enter?"* | Segments, entry paths, competitors, monetization model — before a single page is written |
 
 ### 📊 "I'm guessing what to write next"
 
-Real user signal instead of opinion.
-
-| Your pain | Skill | What you get back |
+| Your pain | Ask | What you get back |
 |---|---|---|
-| What do we fix this week? | **docs-health-triage** | Every health signal merged into one ranked queue, each item handed to the skill that fixes it |
-| Which page do I write next? | **docs-gap-finder** | Failed searches + unanswered AI questions → ranked page list |
-| Search found it, nobody clicked | **docs-title-rewriter** | Rewritten titles and first lines, verbatim and ready to paste — no page rewrites |
-| Do our docs sell or just support? | **docs-buying-blockers** | Chat conversations split by buying stage: who's evaluating, what blocks them, which competitors they name |
-| Readers leave with nothing | **docs-dead-end-hunter** | Ranked give-up pages, with the actual journeys behind them |
-| What are people even asking? | **docs-question-clusterer** | Chat questions clustered, labeled content-gap vs retrieval-miss |
-| Long dwell time — good or bad? | **docs-engagement-analyzer** | Deep interest vs stuck users, split by negative feedback |
-| Where do users drop off? | **docs-funnel-mapper** | Common 3-step journeys, high-volume paths with low completion |
-| Nobody clicks my Upgrade CTA | **docs-link-click-analyzer** | CTR per internal link, conversion-critical buttons that underperform |
-| Campaign traffic bounces | **docs-utm-analyzer** | Where the ad promise doesn't match the doc reality |
-| Who are my power users? | **docs-visitor-cohort** | Top visitors clustered — including "buyer-blockers" |
-
-```bash
-npx skills add Docsbook-io/docs-skills --skill docs-gap-finder
-```
-
-> "What are users searching for but not finding?"
-
----
+| What do we fix this week? | *"What should we work on this week?"* | Five items, each with why-now, effort, the number expected to move, and who does it |
+| Which page do I write next? | *"What are readers searching for and not finding?"* | Failed searches and unanswered questions, clustered against the doc graph |
+| Search found it, nobody clicked | *"Our search returns results and nobody opens them"* | Rewritten titles and first lines, verbatim and paste-ready — no page rewrites |
+| Do our docs sell or just support? | *"Who is evaluating us and what stops them?"* | Conversations split by buying stage: who is deciding, what blocks them, which competitors they name |
+| Did that rewrite actually work? | *"Did our restructure help?"* | Edited pages compared against untouched ones, site trend subtracted, four honest verdicts |
+| What are competitors covering? | *"What are we missing that X documents?"* | The small subset of their coverage that would actually earn you something — not a sitemap diff |
 
 ### 🔁 "I keep doing the same maintenance by hand"
 
-Install once, runs forever.
-
-| Your pain | Skill | What you get back |
+| Your pain | Ask | What you get back |
 |---|---|---|
-| Docs drift behind the code | **docs-sync** | Pre-push hook: detects drift, rewrites the affected sections |
-| PRs merge with stale docs | **docs-pr-check** | GitHub Action gate on every PR |
-| Stale pages nobody notices | **docs-stale-watcher** | Every outdated page becomes a GitHub Issue automatically |
-| We're launching a new market | **docs-enable-translation** | Up to 15 languages, auto-mode, Slack ping per batch |
-| I post release notes by hand | **docs-release-announce** | Slack/email fires on `release: published` |
-| AI chat gets thumbs-down | **docs-tune-ai-chat** | Failures clustered → a prompt update you approve |
-| I want my own TMS | **docs-translate-webhook** | Route translation to DeepL or your own pipeline |
+| Docs drift behind the code | *"Stop my docs drifting out of sync"* | A pre-push or CI drift guard that finds the pages your diff invalidated |
+| PRs merge with stale docs | *"Add a CI gate for documentation"* | A pull-request check: code-vs-docs, frontmatter, internal links |
+| Stale pages nobody notices | *"File an issue when a page goes stale"* | Age-based events routed into normal triage |
+| Rankings slip and we find out late | *"Alert us when a section starts losing position"* | A monitor with a real threshold, a volume floor, and a stated blind spot |
+| The assistant keeps failing on a topic | *"Our chat gets thumbs-down — fix it"* | Failures clustered, retrieval problems separated from content gaps, a prompt change you approve |
+| We're launching a new market | *"Translate our docs and keep them current"* | Languages enabled, parity watched, staleness surfaced |
 
-```bash
-npx skills add Docsbook-io/docs-skills --skill docs-sync
-```
+### 📐 "I know what to write — tell me how"
 
-> "Stop my docs from drifting out of sync with the code"
-
----
-
-### 📦 "Now ship it"
-
-| Your pain | Skill | What you get back |
+| Your pain | Ask | What you get back |
 |---|---|---|
-| Docs sit on my laptop | **docs-publish** | git init → commit → `gh repo create` → push. No account needed |
-| Workspace config is 20 clicks | **docs-setup-workspace** | Branding, UI, AI chat, SEO, languages, domain — one command |
-| Every agent re-learns my docs | **docs-generate-agents-md** | `AGENTS.md` at repo root, so Cursor/Claude Code start informed |
-
----
-
-### 🧭 "I need a plan before I write anything"
-
-| Your pain | Skill | What you get back |
-|---|---|---|
-| I don't know where to start | **docs-strategy-plan** | Guided interview → what to write, for whom, in what order |
-| I don't know who actually buys | **docs-audience-enricher** | Buyer segments, entry paths, competitors — into your source-of-truth |
-| Every new page needs the same fixes | **docs-authoring-rules** | The rulebook loaded *before* you write — page type, structure, style, next step — so the audits find nothing |
+| Every new page needs the same fixes | *"Load the rules before I write this"* | The rulebook: page type, structure, retrieval, style, audience, next step, links |
+| Docs inform but never sell | *"Make our docs sell, not just inform"* | Monetization model detected → pricing page, action ladder, no dead ends |
+| Pages are walls of links | *"This page is a wall of links"* | Rich blocks from invisible markers — the live catalog decides which; source stays plain markdown |
+| Docs look nothing like my product | *"Pull brand colors from our site"* | Contrast-checked light and dark palettes derived from real signals, never invented |
+| Workspace config is 20 clicks | *"Configure the site"* | Identity, navigation, affordances, discovery, assistant, languages, domain — by purpose, verified on the rendered page |
 
 ---
 
@@ -160,8 +115,8 @@ Then ask in plain language. No flags, no config — the skill fires from your re
 
 > "Audit my docs and give me one prioritized report"
 > "Turn this GitHub repo into a live docs site"
-> "Which pages are users searching for but not finding?"
-> "Translate my docs into 15 languages"
+> "Which pages are readers searching for but not finding?"
+> "Stop our docs drifting out of sync with the code"
 
 ---
 
@@ -170,122 +125,28 @@ Then ask in plain language. No flags, no config — the skill fires from your re
 | Without docs-skills | With docs-skills |
 |---|---|
 | Agent hallucinates doc structure | Agent works from your real docs — files, sitemap, or doc graph |
-| One-off prompts, rewritten per project | Reusable catalog that works everywhere |
+| Audits start by reading pages and end in opinions | Audits start from real numbers and end in a ranked queue |
+| "Improve the title" | The proposed title, description and first line, verbatim |
+| Fixes ship and nobody checks | Every fix records a baseline; the next run judges it |
+| One-off prompts, rewritten per project | Four reusable regulations that work everywhere |
 | "Looks good to me" | Every skill ships a pass/fail acceptance checklist |
-| Hours of prompting per audit | `docs-analyze` → one prioritized report |
-| Docs describe the product | Docs convert readers into users |
 
 ---
 
 ## Full catalog
 
-**52 skills**, 7 categories. Browse live: [docsbook.io/skills](https://docsbook.io/skills).
+**4 skills**, 4 categories. Browse live: [docsbook.io/skills](https://docsbook.io/skills).
 
-<details>
-<summary><b>Analysis</b> — 15 skills · audit what already exists</summary>
-
-| Skill | Plan | Ask it |
+| Skill | Category | Covers |
 |---|---|---|
-| `docs-analyze` | free | "Run a full health check before our release" |
-| `docs-content-types` | free | "Check my docs against Diátaxis" |
-| `docs-structure-templates` | free | "Validate the structure of every page in docs/" |
-| `docs-style-tone` | free | "Where am I using 'simply' and 'just' and 'powerful'?" |
-| `docs-audience` | free | "Which pages talk over the reader's head?" |
-| `docs-navigation-linking` | free | "Which pages are orphans with nothing linking to them?" |
-| `docs-seo` | free | "Why isn't this docs section getting organic traffic?" |
-| `docs-title-rewriter` | PRO | "Our search returns results and nobody clicks them — fix the titles" |
-| `docs-accessibility` | free | "Run an a11y audit before we launch publicly" |
-| `docs-i18n` | free | "Are my translations lagging behind the English source?" |
-| `docs-media` | free | "Which screenshots are out of date after the UI redesign?" |
-| `docs-maintenance` | free | "Find docs that reference features that no longer exist" |
+| `docs-create` | creation | Source detection · site / code / migration / idea routes · product audit (buyers, entry paths, competitors, monetization) · structure and page-set design · preview, publish, configure |
+| `docs-analyze` | analysis | Search and answer-engine signals · reader behaviour, dead ends, funnels, cohorts, buying stage · content detectors (type, structure, style, audience, links, a11y, media, freshness, translations) · external checks (pricing, third-party claims, competitor coverage) · business translation · prior-fix impact · apply via PR / chat approval / direct |
+| `docs-manage` | management | Writing rules · retrieval and citation · conversion and the action ladder · rendered blocks, images, diagrams · site configuration by capability · finding → fix playbooks |
+| `docs-automate` | automation | Setup interview · code/site/third-party/freshness drift · events and handlers · CI checks and hooks · monitors, thresholds and alerts · tuning loops |
 
-</details>
+Each skill's detail lives in `skills/<name>/references/`, loaded on demand rather than up front.
 
-<details>
-<summary><b>Creation</b> — 13 skills · produce docs from anything</summary>
-
-| Skill | Plan | Ask it |
-|---|---|---|
-| `docs-authoring-rules` | free | "Load the rules before I write this page" |
-| `docs-create` | free | "Turn this GitHub repo into a live docs site" |
-| `docs-create-interactive` | free | "Build a docs site — pause before publishing so I can review" |
-| `docs-detect-source` | free | "Is this a website, a repo, or an existing docs platform?" |
-| `docs-from-site` | free | "Crawl this site and turn it into Markdown docs" |
-| `docs-from-code` | free | "Generate API docs from this codebase" |
-| `docs-from-docs` | free | "Migrate my docs off Mintlify" |
-| `docs-imagine` | free | "Imagine docs for my product — I only have a name" |
-| `docs-first-run-enrichment` | free | "Turn this skeleton into a real multi-section site" |
-| `docs-branding` | free · MCP | "Pull brand colors from my website and apply them" |
-| `docs-sales-conversion` | free | "Make my docs sell, not just inform" |
-| `docs-content-widgets` | free | "This page is a wall of links — make it a card grid" |
-| `docs-ai-retrieval` | free | "Rewrite this so ChatGPT and Perplexity can cite it" |
-
-</details>
-
-<details>
-<summary><b>Observability</b> — 10 skills · act on real user signal</summary>
-
-| Skill | Plan | Ask it |
-|---|---|---|
-| `docs-gap-finder` | free | "Which docs page should I write next?" |
-| `docs-dead-end-hunter` | PRO | "Which pages are losing people?" |
-| `docs-question-clusterer` | PRO | "Cluster my AI chat questions and tell me what's missing" |
-| `docs-engagement-analyzer` | PRO+ | "Which long-read pages are loved vs confusing?" |
-| `docs-funnel-mapper` | PRO+ | "Where are users dropping before a conversion page?" |
-| `docs-link-click-analyzer` | PRO+ | "Is my Upgrade button buried where nobody clicks it?" |
-| `docs-utm-analyzer` | PRO+ | "Which campaigns send traffic that bounces?" |
-| `docs-visitor-cohort` | PRO+ | "Who are my most active visitors and what are they doing?" |
-| `docs-buying-blockers` | PRO+ | "Who is evaluating us and what stops them from buying?" |
-
-</details>
-
-<details>
-<summary><b>Automation</b> — 7 skills · install once, run forever</summary>
-
-| Skill | Plan | Ask it |
-|---|---|---|
-| `docs-sync` | free | "Detect and fix code↔docs drift before this push" |
-| `docs-pr-check` | free | "Add a CI gate that flags code shipped without docs" |
-| `docs-enable-translation` | PRO · MCP | "Translate my docs into 15 languages" |
-| `docs-release-announce` | PRO · MCP | "Announce every release to Slack automatically" |
-| `docs-tune-ai-chat` | PRO · MCP | "Users keep thumbs-downing the AI chat — fix the prompt" |
-| `docs-stale-watcher` | PRO+ · MCP | "Turn stale-content alerts into GitHub Issues" |
-| `docs-translate-webhook` | PRO+ · MCP | "Route translation to my own DeepL pipeline" |
-
-</details>
-
-<details>
-<summary><b>Publishing</b> — 3 skills · ship it live</summary>
-
-| Skill | Plan | Ask it |
-|---|---|---|
-| `docs-publish` | free | "Push my local docs folder to GitHub" |
-| `docs-setup-workspace` | free · MCP | "Configure my Docsbook workspace from one command" |
-| `docs-generate-agents-md` | free | "Generate an AGENTS.md so every AI agent knows about my docs" |
-
-</details>
-
-<details>
-<summary><b>Planning</b> — 2 skills · decide before you write</summary>
-
-| Skill | Plan | Ask it |
-|---|---|---|
-| `docs-strategy-plan` | free | "I have no docs and don't know where to start" |
-| `docs-health-triage` | PRO | "What should we work on this week?" |
-
-</details>
-
-<details>
-<summary><b>Growth</b> — 2 skills · aim the docs at traffic and buyers</summary>
-
-| Skill | Plan | Ask it |
-|---|---|---|
-| `docs-rank-recovery` | free | "Which pages are one rewrite away from real traffic?" |
-| `docs-audience-enricher` | PRO · MCP | "Figure out who actually buys my product and how they enter" |
-
-</details>
-
-> **Plan / MCP columns.** Most skills are free and run on any agent with no account. `MCP` marks the few that genuinely operate a hosted workspace (branding, languages, webhooks) — they fall back to printed instructions when it's absent. `PRO` / `PRO+` marks skills that read production analytics.
+> **Plans and connections.** Every skill runs on a bare agent with nothing connected. Connect a workspace and the same skills get *sharper*, not different: real search positions, real reader behaviour, applied configuration. Where a capability is gated behind a plan, the skill says once what it would add and continues at the tier you have — it never fabricates the number it could not read.
 
 ---
 
@@ -311,7 +172,7 @@ AI Tool (Claude Code / Cursor / Codex / Copilot)
 
 The agent sees what's available and picks the cheapest path.
 
-**The catalog's contract on tool names.** A skill names the need and the acceptance criteria. A platform tool is named only where calling it *is* the goal of the step — set the branding, register a webhook, flip a workspace flag — and never where it's merely one way to fetch data. So "the questions readers asked that got no answer" stays a need: an agent with nothing connected greps the logs, and one with the MCP connected gets the same answer as a typed list. That's what makes a skill run on a bare agent and get sharper — not narrower — when a platform is attached.
+**The catalog's contract on tool names.** A skill names the need and the acceptance criteria. A platform tool is named only where calling it *is* the goal of the step — set the branding, register a webhook, flip a workspace flag — and never where it's merely one way to fetch data. So "the questions readers asked that got no answer" stays a need: an agent with nothing connected greps the logs, and one with a workspace connected gets the same answer as a typed list. That's what makes a skill run on a bare agent and get sharper — not narrower — when a platform is attached.
 
 ### Modes — what a skill is allowed to touch
 
@@ -323,6 +184,9 @@ Every skill declares a `mode`, so you know before you hand it your docs whether 
 | `refactor` | yes | edits pages that already exist | Fixes; never invents a new page |
 | `authoring` | — | writes new pages | Rules loaded *before* you draft, so the page ships correct |
 | `platform` | — | workspace settings, not content | Branding, languages, webhooks, domains |
+| `orchestrator` | depends on the phase | only past an explicit gate | A top-level skill whose phases each declare one of the four above |
+
+The first four are mutually exclusive on purpose: a skill that both audits and rewrites can be trusted at neither. An orchestrator is the one composite — it runs phases that each carry a single mode, and it may cross from audit into refactor only through a gate the user answers. Every one of the four skills declares its phase table at the top of its `SKILL.md`.
 
 CI enforces it: a skill without a valid mode does not ship.
 
@@ -337,7 +201,7 @@ CI enforces it: a skill without a valid mode does not ship.
 |---|---|---|
 | **Nothing** (default) | `grep`/`find` over the docs folder | free, works everywhere |
 | **`markdown-lsp`** (self-hosted) | semantic + graph search, runs locally — [repo](https://github.com/Docsbook-io/markdown-lsp) | free, you host it |
-| **Docsbook MCP** (cloud) | the same search in the cloud, plus workspace settings | optional account |
+| **Docsbook MCP** (cloud) | the same search in the cloud, plus workspace settings and live reader signals | optional account |
 
 ```bash
 # Optional cloud transport
@@ -353,25 +217,28 @@ mcp add --transport http https://docsbook.io/api/mcp/server
 Powered by the [`skills`](https://github.com/vercel-labs/skills) CLI:
 
 ```bash
-npx skills add Docsbook-io/docs-skills --skill '*'        # install the whole catalog
-npx skills add Docsbook-io/docs-skills --skill docs-seo   # install one skill
+npx skills add Docsbook-io/docs-skills --skill '*'           # install the whole catalog
+npx skills add Docsbook-io/docs-skills --skill docs-analyze  # install one skill
 npx skills add Docsbook-io/docs-skills -a claude-code -a cursor --skill '*'   # target specific agents
-npx skills list                                           # list installed skills
-npx skills find <keyword>                                 # search for a skill
-npx skills update                                         # update installed skills
+npx skills list                                              # list installed skills
+npx skills find <keyword>                                    # search for a skill
+npx skills update                                            # update installed skills
 ```
 
 ---
 
 ## Contributing
 
-Skills are plain Markdown files under `skills/` — either `skills/<name>/SKILL.md` or `skills/<category>/<name>/SKILL.md`; the category comes from frontmatter, not the path. To add one:
+Skills are plain Markdown under `skills/<name>/SKILL.md`, with their detail in `skills/<name>/references/*.md`. The category comes from frontmatter, not the path.
 
-1. Create `skills/your-skill/SKILL.md` following the schema in `schema/`
-2. Run `pnpm build-index` to regenerate `index.json`
-3. Open a PR
+The catalog is deliberately four skills wide. **A new capability belongs inside one of them**, as a reference file and a row in that skill's routing table — not as a fifth top-level skill. The four map to the four jobs documentation work actually splits into, and a fifth entry point makes an agent choose before it has understood the request.
 
-The catalog is intentionally minimal — one file per skill, no runtime dependencies.
+To contribute:
+
+1. Add or extend a reference under `skills/<skill>/references/`, and link it from that skill's `SKILL.md`.
+2. Run `pnpm build-index` to regenerate `index.json`.
+3. Run `node scripts/check-catalog.js` — it enforces the tool-name contract, the mode declaration, the metric dictionary, the frontmatter schema, and the counters in this file.
+4. Open a PR.
 
 ---
 

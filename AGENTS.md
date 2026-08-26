@@ -1,32 +1,39 @@
-# docs-skills — Documentation Analysis Skills
+# docs-skills — four documentation skills
 
-This project includes 11 AI agent skills for documentation analysis.
+This project ships **four** AI agent skills. Documentation work splits into four jobs, and every
+request lands in one of them.
 
 ## Available skills
 
-| Skill | Trigger | Description |
+| Skill | Trigger | What it does |
 |---|---|---|
-| `docs-analyze` | "analyze docs", "docs audit", "review documentation" | Runs all 10 sub-skills, produces unified report |
-| `docs-content-types` | "check content types", "Diátaxis audit" | Tutorial/how-to/reference/explanation classification |
-| `docs-structure-templates` | "check structure", "frontmatter audit" | Frontmatter, heading hierarchy, code blocks |
-| `docs-style-tone` | "check style", "tone review" | Active voice, filler words, terminology |
-| `docs-audience` | "audience check", "vocabulary audit" | Vocabulary mismatch, assumed knowledge |
-| `docs-navigation-linking` | "check links", "broken links" | Orphan pages, broken links, anchor text |
-| `docs-seo` | "docs SEO", "SEO audit" | Title/description, topic clusters, AI Overviews |
-| `docs-ai-retrieval` | "get cited by AI", "AEO/GEO", "optimize for ChatGPT" | Passage-level writing for LLM retrieval + citation |
-| `docs-accessibility` | "a11y check", "accessibility audit" | WCAG 2.1 AA from markdown source |
-| `docs-i18n` | "i18n audit", "translation check" | Multilingual parity, hreflang, staleness |
-| `docs-media` | "check images", "media audit" | Images, alt text, file sizes, diagrams |
-| `docs-maintenance` | "stale docs", "maintenance audit" | TODO/FIXME, deprecated pages, stale content |
+| `docs-create` | "create docs", "from this repo", "from this URL", "migrate off Mintlify", "imagine docs", "we have no docs" | Documentation that does not exist yet. Audits the product and the source, decides the structure, writes the pages, previews, publishes, configures. |
+| `docs-analyze` | "audit our docs", "why did traffic drop", "why do readers leave", "what should we fix first", "SEO check", "nobody clicks" | Starts from real numbers — search positions, answer-engine signals, reader behaviour, funnels — locates the problem, says what it costs in business terms, checks whether a fix like it ever worked, and applies it through the route you choose. |
+| `docs-manage` | "rewrite this page", "check our style", "make the docs sell", "configure the site", "set up branding", "enable search" | The rulebook. What a page says (type, structure, style, audience, retrieval, conversion, presentation) and what the site around it does (identity, navigation, affordances, discovery, assistant, languages, domain). |
+| `docs-automate` | "automate", "monitor", "alert us when", "add a CI check", "keep docs in sync", "wire a webhook" | Anything that should keep happening on its own. Always starts by asking what you actually want watched and offering options. |
+
+Detail lives in `skills/<name>/references/*.md` and is loaded on demand rather than up front.
+
+## How they hand off
+
+- `docs-analyze` finds a gap → `docs-create` writes the page.
+- `docs-create` writes → to `docs-manage`'s rules.
+- `docs-analyze` diagnoses → `docs-manage` executes the change.
+- Any of them recurring → `docs-automate` makes it happen on its own.
+
+Never run two of them on the same job. The boundaries exist so each can be trusted at what it does:
+an audit that quietly edits, or a writer that quietly audits, is trustworthy at neither.
 
 ## How to use
 
-When the user asks to analyze documentation for a GitHub repo:
-1. Ask for the repo URL if not provided
-2. Use the Docsbook MCP tools to fetch the doc graph
-3. Run the appropriate skill(s) based on the request
+When the user asks about documentation:
 
-## MCP setup
+1. Work out which of the four jobs the request is. If it spans two, run them in order and say so.
+2. Read that skill's `SKILL.md`, then only the reference files its routing table points at.
+3. Use whatever is connected to satisfy the data needs — plain file reads, `markdown-lsp`, or a
+   connected workspace. Every skill works with nothing connected and gets sharper with more.
+
+## Optional acceleration
 
 ```
 mcp add --transport http https://docsbook.io/api/mcp/server

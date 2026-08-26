@@ -59,23 +59,28 @@ function installClaudeCode(targetDir, skills) {
     copyDir(srcPath, path.join(dest, name));
   }
   console.log(`[docs-skills] Installed ${skills.length} skills into ${dest}`);
-  console.log('[docs-skills] Use /docs-analyze in Claude Code to start');
+  console.log('[docs-skills] Ask in plain language, or use /docs-create · /docs-analyze · /docs-manage · /docs-automate');
 }
 
 function installCursor(targetDir, skills) {
+  // Copy the full skill trees first. Each SKILL.md routes to reference files under
+  // its own references/ folder — inlining only SKILL.md would strip out most of the
+  // substance and leave the routing table pointing at files that do not exist.
+  const skillsDir = copySkillTrees(targetDir, path.join('.cursor', 'skills'), skills);
+
   const rulesDir = path.join(targetDir, '.cursor', 'rules');
   fs.mkdirSync(rulesDir, { recursive: true });
-  const lines = ['---', 'description: Documentation analysis skills', '---', ''];
-  for (const { srcPath } of skills) {
-    const skillFile = path.join(srcPath, 'SKILL.md');
-    if (fs.existsSync(skillFile)) {
-      lines.push(fs.readFileSync(skillFile, 'utf8'));
-      lines.push('');
-    }
-  }
+  const lines = [
+    '---',
+    'description: Documentation skills — create, analyze, manage, automate',
+    '---',
+    '',
+    buildSkillsSection('# docs-skills', skills, path.join('.cursor', 'skills')),
+  ];
   fs.writeFileSync(path.join(rulesDir, 'docs-skills.mdc'), lines.join('\n'));
   console.log(`[docs-skills] Installed into ${rulesDir}/docs-skills.mdc`);
-  console.log('[docs-skills] Mention @docs-analyze in Cursor chat to use');
+  console.log(`[docs-skills] Reference files copied to ${skillsDir}`);
+  console.log('[docs-skills] Ask in plain language, or mention @docs-create · @docs-analyze · @docs-manage · @docs-automate');
 }
 
 function appendSection(filePath, section) {
@@ -90,14 +95,39 @@ function appendSection(filePath, section) {
   console.log(`[docs-skills] Appended docs-skills section to ${filePath}`);
 }
 
-function buildSkillsSection(header, skills) {
+/**
+ * Copy each skill's whole directory (SKILL.md plus its references/ and assets/)
+ * into targetDir/<subdir>/<name>/. Returns the absolute base directory.
+ */
+function copySkillTrees(targetDir, subdir, skills) {
+  const base = path.join(targetDir, subdir);
+  for (const { name, srcPath } of skills) {
+    copyDir(srcPath, path.join(base, name));
+  }
+  return base;
+}
+
+/**
+ * Inline every SKILL.md under one header. `skillsRelDir` is where the copied skill
+ * trees live relative to the project root — a SKILL.md routes to `references/*.md`,
+ * and without that prefix the agent has no way to resolve those paths.
+ */
+function buildSkillsSection(header, skills, skillsRelDir) {
   const lines = [header, ''];
-  for (const { srcPath } of skills) {
+  if (skillsRelDir) {
+    lines.push(
+      `Each skill below routes to reference files loaded on demand. They live in ` +
+        `\`${skillsRelDir}/<skill>/references/\` — resolve a skill's ` +
+        `\`references/x.md\` against its own folder there.`,
+      ''
+    );
+  }
+  for (const { name, srcPath } of skills) {
     const skillFile = path.join(srcPath, 'SKILL.md');
-    if (fs.existsSync(skillFile)) {
-      lines.push(fs.readFileSync(skillFile, 'utf8'));
-      lines.push('');
-    }
+    if (!fs.existsSync(skillFile)) continue;
+    if (skillsRelDir) lines.push(`<!-- ${skillsRelDir}/${name}/SKILL.md -->`);
+    lines.push(fs.readFileSync(skillFile, 'utf8'));
+    lines.push('');
   }
   return lines.join('\n');
 }
@@ -125,16 +155,22 @@ switch (tool) {
   case 'cursor':
     installCursor(targetDir, skills);
     break;
-  case 'copilot':
+  case 'copilot': {
+    const dir = copySkillTrees(targetDir, '.docs-skills', skills);
     appendSection(
       path.join(targetDir, '.github', 'copilot-instructions.md'),
-      buildSkillsSection('## docs-skills', skills)
+      buildSkillsSection('## docs-skills', skills, '.docs-skills')
     );
+    console.log(`[docs-skills] Reference files copied to ${dir}`);
     break;
-  case 'codex':
+  }
+  case 'codex': {
+    const dir = copySkillTrees(targetDir, '.docs-skills', skills);
     appendSection(
       path.join(targetDir, 'AGENTS.md'),
-      buildSkillsSection('## docs-skills', skills)
+      buildSkillsSection('## docs-skills', skills, '.docs-skills')
     );
+    console.log(`[docs-skills] Reference files copied to ${dir}`);
     break;
+  }
 }

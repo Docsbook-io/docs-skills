@@ -1,75 +1,86 @@
 # Using docs-skills with Claude Code
 
-## 1. Add Docsbook MCP (one-time)
+## 1. Install the skills
+
+```bash
+npx skills add Docsbook-io/docs-skills --skill '*'
+```
+
+Four skills land in your project. Nothing else is required — they work on a plain docs folder.
+
+## 2. Optional: connect a workspace
 
 ```bash
 mcp add --transport http https://docsbook.io/api/mcp/server
 ```
 
-Authenticate in the browser when prompted.
+Authenticate in the browser when prompted. This adds real search positions, reader behaviour and
+applied site configuration. The skills work without it; they get sharper with it.
 
-## 2. Install skills
+## 3. Ask in plain language
 
-```bash
-npm install -g docs-skills
-cd your-project
-docs-skills install
+You do not need the slash command — describe the job and the right skill picks itself up.
+
+```
+Audit our docs and give me one prioritized report
 ```
 
-Or globally:
-
-```bash
-docs-skills install ~/
+```
+Turn github.com/acme/widget into a live docs site
 ```
 
-## 3. Run an audit
+```
+Our search returns results and nobody clicks them — fix the titles
+```
 
-In any Claude Code conversation:
+```
+Stop our docs drifting out of sync with the code
+```
+
+Or name the skill directly:
 
 ```
 /docs-analyze
+/docs-create
+/docs-manage
+/docs-automate
 ```
 
-Claude will ask for the GitHub repo URL, then run all 10 sub-skills.
+## Example: an analysis run
 
-For a focused audit:
-
-```
-/docs-seo
-/docs-accessibility
-/docs-maintenance
-```
-
-## Example output
+`docs-analyze` starts from the numbers, not from the pages — so the report opens with what the data
+covers, and every finding carries the counts behind it.
 
 ```
-# Documentation Audit — acme/my-product
+Period: last 7 days · 1,240 visits · search data 4–31 Jul, as of 30 Jul
+Tier: search positions + reader behaviour. No ranked fix digest on this plan —
+it would add the "what to write" items this queue cannot see.
 
-**Date:** 2024-12-01
-**Pages analyzed:** 47
+#1  docs/api/authentication.md — position 8.4 for "how to authenticate api requests"
+    Why now:   1,840 people saw this result in the window; 11 clicked. The title they
+               saw is "Authentication", which shares no words with what they typed.
+    Effort:    S (title, description, opening line)
+    Effect:    organic clicks on this page, measured against the untouched pages
+    Fix:       title: "How to authenticate API requests | Acme" (52 chars)
+               description: "Authenticate API requests to Acme using Bearer tokens.
+               Get your key from workspace settings in under a minute." (118 chars)
+               opening line: "Authenticate every request with a Bearer token in the
+               Authorization header."
 
-## Summary
-| Severity | Count |
-|---|---|
-| 🔴 Critical | 3 |
-| 🟠 High | 11 |
-| 🟡 Medium | 24 |
-| 🟢 Low | 8 |
+#2  docs/billing/invoices.md — 58 of 412 readers gave up here
+    Why now:   the largest single loss in the set; readers searched twice and left
+    Effort:    M (rewrite of one section)
+    Effect:    dead-end rate on this page 14% → under 8% within two weeks
+    Owner:     docs-manage, after reading the journeys
 
-## Critical Issues
+#3  "sso saml setup" — unanswered 23×, zero results 11× (two signals agree)
+    Why now:   no page covers it
+    Owner:     docs-create
 
-**[docs-seo]** docs/quick-start.md — missing `description` in frontmatter.
-Pages without description get no SERP snippet and score 0 in AI Overviews.
-Fix: Add `description: 'Get started with acme/my-product in 5 minutes...'`
+Not this week: 14 pages below the cut, all under 40 visits.
+Excluded as noise: 6 pages scoring badly on fewer than 5 events.
 
-**[docs-accessibility]** docs/guides/setup.md:34 — informative image with no alt text.
-Fix: `![Setup form with API key field highlighted](screenshots/setup.png)`
-
-**[docs-maintenance]** docs/roadmap.md:23 — 'Coming in Q2 2024' is 8 months past.
-Fix: Update or remove the dated promise.
-
-## Quick Wins (< 30 min each)
-- Add description to 23 pages missing it
-- Fix 8 passive-voice instructions in quick-start.md
-- Link 3 orphan pages from the sidebar
+Apply these where? (1) a pull request  (2) show me each diff to approve  (3) write directly
 ```
+
+That last line is the gate. Nothing is written until you answer it.
