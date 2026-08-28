@@ -71,6 +71,8 @@ Scan the left column. Find yours. Ask in your own words — the skill picks itse
 | Which page do I write next? | *"What are readers searching for and not finding?"* | Failed searches and unanswered questions, clustered against the doc graph |
 | Search found it, nobody clicked | *"Our search returns results and nobody opens them"* | Rewritten titles and first lines, verbatim and paste-ready — no page rewrites |
 | Do our docs sell or just support? | *"Who is evaluating us and what stops them?"* | Conversations split by buying stage: who is deciding, what blocks them, which competitors they name |
+| Nobody declared what success is | *"Set up goals and a funnel for our docs"* | One macro goal, a few micro ones, an ordered route — matched retroactively, so the charts are full the moment they exist |
+| Traffic is fine, nobody converts | *"Where in the funnel do we lose buyers?"* | The worst transition named, not the smallest step — and whether the leak is the link, the promise, or the page |
 | Did that rewrite actually work? | *"Did our restructure help?"* | Edited pages compared against untouched ones, site trend subtracted, four honest verdicts |
 | What are competitors covering? | *"What are we missing that X documents?"* | The small subset of their coverage that would actually earn you something — not a sitemap diff |
 
@@ -81,6 +83,7 @@ Scan the left column. Find yours. Ask in your own words — the skill picks itse
 | Docs drift behind the code | *"Stop my docs drifting out of sync"* | A pre-push or CI drift guard that finds the pages your diff invalidated |
 | PRs merge with stale docs | *"Add a CI gate for documentation"* | A pull-request check: code-vs-docs, frontmatter, internal links |
 | Stale pages nobody notices | *"File an issue when a page goes stale"* | Age-based events routed into normal triage |
+| A rewrite quietly broke our analytics | *"Check our goals still work after content changes"* | Every matcher re-resolved on the same push — plus what you just shipped that nothing measures |
 | Rankings slip and we find out late | *"Alert us when a section starts losing position"* | A monitor with a real threshold, a volume floor, and a stated blind spot |
 | The assistant keeps failing on a topic | *"Our chat gets thumbs-down — fix it"* | Failures clustered, retrieval problems separated from content gaps, a prompt change you approve |
 | We're launching a new market | *"Translate our docs and keep them current"* | Languages enabled, parity watched, staleness surfaced |

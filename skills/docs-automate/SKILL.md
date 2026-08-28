@@ -1,8 +1,8 @@
 ---
 name: docs-automate
-description: Set up the things that should keep happening without anyone remembering to do them - drift guards that catch documentation falling behind the code, the site or any other source of truth; event handlers and webhooks; CI checks on pull requests; alerts; and standing monitors over search, answer-engine, analytics and funnel signals. Always starts by asking what you actually want watched and offering concrete options rather than assuming. Use when asked to automate, monitor, watch, set up alerts, notify us when, add a CI check, keep docs in sync, catch drift, wire a webhook, автоматизировать, следить за, настроить алерты.
+description: Set up the things that should keep happening without anyone remembering to do them - drift guards that catch documentation falling behind the code, the site or any other source of truth, and that catch a content change breaking or outgrowing the goals and funnels the docs are measured by; event handlers and webhooks; CI checks on pull requests; alerts; and standing monitors over search, answer-engine, analytics and funnel signals. Always starts by asking what you actually want watched and offering concrete options rather than assuming. Use when asked to automate, monitor, watch, set up alerts, notify us when, add a CI check, keep docs in sync, catch drift, check our goals still work after a rewrite, wire a webhook, автоматизировать, следить за, настроить алерты.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   category: automation
   mode: orchestrator
   requires_docsbook_mcp: false
@@ -17,6 +17,7 @@ metadata:
     - dead_end_rate
     - self_serve_resolution_rate
     - funnel_completion_rate
+    - goal_completion_rate
     - content_health_score
   metric_dictionary: ../../metrics/metric-dictionary.json
   accelerated_by:
@@ -26,7 +27,7 @@ metadata:
     - .github/workflows/*.yml
     - .docs-sync.json
     - AGENTS.md
-  keywords: [automation, monitor, alert, webhook, drift, sync, ci, github-actions, pre-push, watcher, notify, scheduled, автоматизация, алерты, следить]
+  keywords: [automation, monitor, alert, webhook, drift, sync, ci, github-actions, pre-push, watcher, notify, scheduled, goals, funnel, measurement-drift, автоматизация, алерты, следить]
 ---
 
 # docs-automate — Make it keep happening
@@ -86,6 +87,7 @@ Pick the routes the interview settled on:
 | Route | What it is | Reference |
 |---|---|---|
 | **Drift** | Docs falling behind code, the live site, a pricing page, or any other source of truth | `references/drift.md` |
+| **Measurement drift** | A content change that broke what a goal matches, or shipped something no goal measures — checked on the same push | `references/drift.md` |
 | **Events** | Something happens on the platform and a handler reacts | `references/events.md` |
 | **CI** | A check on every pull request, or a guard before every push | `references/workflows.md` |
 | **Monitors** | A standing watch over search, answer-engine, reader-behaviour or funnel signals, with an alert when a threshold trips | `references/monitoring.md` |
@@ -117,6 +119,8 @@ That last one is not a courtesy. An automation nobody knows how to disable gets 
 - **Never fail loudly on a plan gate or an unreachable dependency, and never fail silently either.** Record it, keep what was already written, and continue with the rest of the run.
 - **Never fabricate a command, a URL, a version or a limit** in generated content or generated configuration. Ground every concrete claim in the diff, the repository's own metadata, or the existing page. When unsure, link the source instead of guessing.
 - **Never hardcode a credential in a generated file.** Reference a stored secret. Generate a fresh signing secret per registration and never reuse one you have shown before.
+- **Never let a guard silently re-point a goal or a funnel step.** A re-pointed matcher produces one series spanning a definition change — plausible and no longer comparable. Propose it, with the date the comparison restarts.
+- **Never report a broken matcher as a conversion problem.** A goal matching nothing is a measurement defect; naming it as reader behaviour sends someone to rewrite a page that was never at fault.
 - **Never alert on a sample too thin to mean anything.** Every threshold carries a volume floor — see `references/monitoring.md`.
 - **Never let a monitor rewrite content on its own** beyond the drift routes' explicit guardrails, and never let any route touch a price, a claim about another company, or a deprecation notice without a human.
 - **Never delete a partially-written file when a later step fails.** It is useful the moment the dependency lands.

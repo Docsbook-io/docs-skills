@@ -8,8 +8,9 @@ Drift is the gap between what the docs say and what is true. It has several sour
 | **The live site** | A price, a plan name, a limit, a feature that shipped or was withdrawn | Scheduled, against the public page |
 | **Another company** | A partner's API, a competitor's limit, an external link | Scheduled, and on a known breaking change |
 | **The docs themselves** | A translation behind its source, a page nobody has reviewed, a leftover promise | Scheduled, on an age threshold |
+| **What the docs are measured by** | A goal pointing at an anchor a rewrite renamed; a funnel step on a page that moved; new content nothing measures | Diff-triggered, on the same push as the content change |
 
-Only the first is genuinely automatable end to end. The rest produce **proposals** — a wrong price or a claim about another company is never rewritten without a human. That boundary is in `../../docs-manage/references/fix-playbooks.md` and it holds here.
+Only the first and the last are genuinely automatable end to end. The rest produce **proposals** — a wrong price or a claim about another company is never rewritten without a human. That boundary is in `../../docs-manage/references/fix-playbooks.md` and it holds here.
 
 ---
 
@@ -66,6 +67,47 @@ Claims about third parties decay with no commit on your side, no failing test, a
 Run it quarterly as a floor, and on a trigger when a partner ships a breaking change — that run is scoped to the one vendor and is much faster than a sweep. The verification method, the verdicts, and the "unverifiable is its own verdict" rule are in `../../docs-analyze/references/external-checks.md`.
 
 Route the result as a proposal. Where the check finds a dead external link, that fix is mechanical enough to propose as a pull request; where it finds a contradicted claim about another company, it is a sentence for a human to approve.
+
+---
+
+## Docs → what measures them
+
+🔴 **The drift class with no external source of truth, and the only one that fails without a single error.** Nothing breaks. No link 404s, no test goes red, no page contradicts anything. A goal declared against `#pricing` keeps drawing its chart after a rewrite renamed that heading to `#plans-and-pricing` — and the chart draws a flat line at zero, which reads *exactly* like readers refusing to convert. The owner then spends a quarter rewriting a page that was never the problem, and the audit that told them to does not know it was wrong either.
+
+The rule worth automating is one sentence: **a goal is a claim about a page that still exists, and content changes without asking the goal.**
+
+### Trigger
+
+Same push as the content change, not a schedule. This is a diff-triggered guard for the same reason the code route is — the diff says exactly what moved, and the fix is cheapest in the minute the author still remembers why. A typo does not need it; five kinds of change always do:
+
+| What the diff did | What it can break |
+|---|---|
+| Renamed, removed or re-anchored a heading | Every section goal on that anchor drops to zero |
+| Moved, merged, renamed or deleted a page | Every page goal and every funnel step on that path |
+| Restructured navigation or internal links | The route still exists and nobody walks it any more |
+| Added, removed or re-pointed a call to action | The macro goal now measures a destination nobody clicks |
+| Shipped a new page, section or conversion action | Nothing breaks — the new thing is simply unmeasured, which is the more common case by far |
+
+Note the shape of that last row. **Two different checks live here and only one of them is a repair:** whether what is declared still resolves, and whether what just shipped is measured at all. A guard that only does the first will run clean forever on a site that is slowly ceasing to measure anything it builds.
+
+### The check
+
+Reading what is declared is free on every plan — the results are the paid part, and this guard does not need them, which is what makes it safe to run on every push regardless of tier.
+
+1. Read the declared goals and funnels, with what each one matches.
+2. Resolve every matcher against the docs **as the diff leaves them**: does the anchor exist on a page, does the path resolve without a redirect, is the outbound host still the one the calls to action point at, is the event still emitted from the page the goal is scoped to.
+3. Report an unresolvable matcher as a **measurement defect**, never as a conversion problem. Naming it as reader behaviour is the failure this guard exists to prevent, and it is worse than no guard at all.
+4. Ask the additive question against the diff: did this change ship something a reader is supposed to *do*, that no goal names?
+
+### Route the output
+
+**Propose; never re-point a matcher automatically.** Re-pointing produces one series that spans a definition change, and a series that silently changed meaning is the same failure as a funnel that silently drops a step — the number stays plausible and stops being comparable. The proposal carries the date, so whoever accepts it knows where the comparison restarts.
+
+The additive half is a **suggestion, not a finding**, and it is worth being explicit about the asymmetry: declaring a new goal costs nothing and loses nothing, because matching is retroactive — a goal declared today arrives with its history already filled in. There is no "we will add it once we have data". The data is already there.
+
+Both halves belong to whoever owns the declaration, in `../../docs-manage/references/goals-funnels.md`. Reading the numbers afterwards is `docs-analyze`, and the two must not be run by the same automation: a guard that both changes what is measured and reports on the result can be trusted at neither.
+
+**Warn, do not block.** A stale goal is not worth stopping a push over, and a guard that blocks on measurement gets disabled within a week — after which nothing catches the class at all.
 
 ---
 

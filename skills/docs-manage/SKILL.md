@@ -1,15 +1,24 @@
 ---
 name: docs-manage
-description: The rulebook for writing documentation and for running the site it lives on. Two halves - how to write or change a page (page type, structure, style, audience, retrieval, conversion, presentation) and how to configure the site (identity, navigation, reading affordances, discovery, assistant, languages, domain, access), including what each feature actually gives a reader and when it is worth turning on. Load it before writing a line, and whenever an analysis has told you what is wrong and you need to know what to do about it. Use when asked to write, rewrite, edit, restyle or restructure docs, or to configure, brand, set up navigation, enable features, turn on search or the assistant, настроить сайт, переписать страницу.
+description: The rulebook for writing documentation and for running the site it lives on. Two halves - how to write or change a page (page type, structure, style, audience, retrieval, conversion, presentation) and how to configure the site (identity, navigation, reading affordances, discovery, assistant, languages, domain, access, and the goals and funnels that declare what a reader was supposed to do), including what each feature actually gives a reader and when it is worth turning on. Load it before writing a line, and whenever an analysis has told you what is wrong and you need to know what to do about it. Use when asked to write, rewrite, edit, restyle or restructure docs, or to configure, brand, set up navigation, enable features, turn on search or the assistant, track a conversion, set up goals or a funnel, measure whether readers do what they should, настроить сайт, переписать страницу, настроить цели и воронку.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   category: management
   mode: orchestrator
   requires_docsbook_mcp: false
+  measures:
+    - goal_completion_rate
+    - funnel_completion_rate
+  metric_dictionary: ../../metrics/metric-dictionary.json
+  uses_mcp_tools:
+    - create_goal
+    - create_funnel
+    - mark_path_as_funnel_step
+    - delete_goal
   accelerated_by:
     - markdown-lsp      # heading/section-level search — lets you inspect real chunk boundaries cheaply
-    - docsbook-mcp      # apply site configuration and read the live widget catalog, if a workspace is connected
-  keywords: [write, rewrite, edit, authoring, style, tone, structure, diataxis, retrieval, aeo, geo, conversion, cta, widgets, branding, navigation, configure, settings, features, enable, languages, domain, переписать, настроить-сайт]
+    - docsbook-mcp      # apply site configuration, declare goals and funnels, and read the live widget catalog, if a workspace is connected
+  keywords: [write, rewrite, edit, authoring, style, tone, structure, diataxis, retrieval, aeo, geo, conversion, cta, widgets, branding, navigation, configure, settings, features, enable, languages, domain, goals, funnel, conversion-tracking, measurement, activation, переписать, настроить-сайт, цели, воронка]
 ---
 
 # docs-manage — What the page says, and what the site does
@@ -33,6 +42,7 @@ This skill is a rulebook, not an investigation. It never goes looking for what i
 | Writing a new page | `authoring` | Produce a page that is already correct. **Never repair an old one.** |
 | Changing an existing page | `refactor` | Rewrite preserving meaning and URL. **Never invent a new page.** |
 | Configuring the site | `platform` | Change settings, never content. |
+| Declaring what to measure | `platform` | Define goals and funnels. Changes what the site observes, never what a page says. |
 
 These do not blur. Mixing them is how "write one page" becomes a rewrite nobody asked for, and how an audit quietly starts editing.
 
@@ -60,6 +70,14 @@ Five rules hold across all of them, and everything else is detail:
 
 `references/site-config.md` is the capability catalog: what each site feature actually does for a reader, in what order to apply them, what a plan gate really costs, and how to verify a setting took effect on the rendered page rather than in the response that accepted it.
 
+Measurement is the second half of configuring a site, and the half that is usually skipped: a site nobody declared a goal for cannot be judged against its own purpose by any later audit. `references/goals-funnels.md` is that rulebook.
+
+| You are | Read |
+|---|---|
+| Turning something on, branding it, naming it or wiring it up | `references/site-config.md` |
+| Declaring what a reader was supposed to do, and the ordered route to it | `references/goals-funnels.md` |
+| Checking whether a content change just broke or outgrew what is measured | `references/goals-funnels.md` §5 |
+
 The catalog is written by **capability, not by product**. Platforms name these things differently and the set changes on their release cycle, not this skill's — so read the live settings and the live catalog of what this platform offers, match by purpose, and never reach for a field name from memory. A name hard-coded here would send you looking for something that has been renamed, or leave the best-fitting capability unused because nothing here mentions it.
 
 Four rules govern every configuration change:
@@ -68,6 +86,7 @@ Four rules govern every configuration change:
 2. **Never invent a value.** No default accent colour, no font picked to fill a slot. No signal means ask for one — a reference URL, a screenshot, a hex — not make one up.
 3. **A content-dependent switch and its content go together.** Enabling answer markup on prose with no genuine Q&A or procedure produces nothing at best and invalid markup at worst.
 4. **Verify on the rendered page, not in the write that accepted it.** A settings call returning success while the page renders defaults is the normal failure mode here, and it is invisible from the configuration side. If you cannot verify, report the site as unverified rather than implying a confirmation you did not make.
+5. **A structural content change can silently invalidate a measurement.** A renamed anchor, a moved page or a redirected call to action leaves the goal pointing at nothing — and a goal that matches nothing looks exactly like readers refusing to convert. After any change of that shape, resolve every matcher against the docs as they now are, and ask whether what you just shipped is measured at all. `references/goals-funnels.md` §5.
 
 ## Guardrails
 
@@ -81,6 +100,10 @@ Four rules govern every configuration change:
 - **Do not apply retrieval work to private or internal docs.** It only applies to publicly reachable content.
 - **Do not rewrite a page that already earns assistant traffic** without checking first — body-only rewrites measurably cost retrieval.
 - **Do not bundle changes.** One coherent change per page per pass, so its effect stays measurable.
+- **Never declare a goal the owner did not ask for.** A goal states what the business wants; inventing one and then reporting against it produces a confident answer to a question nobody asked.
+- **Never summarise what a declaration refused or warned about.** Those messages name a specific defect in a specific definition, and "there were some warnings" throws away all of it.
+- **Archive a goal, never delete one to tidy up.** A funnel that silently loses a step reports a *better* conversion rate than the real route.
+- **Do not read goal results from here and call it an analysis.** Declaring measurement is this skill; interpreting what it says is `docs-analyze`.
 
 ## Acceptance criteria
 
@@ -94,3 +117,5 @@ Four rules govern every configuration change:
 - [ ] Configuration read the current state first and overwrote nothing a human set.
 - [ ] Every content-dependent switch was paired with the content it needs.
 - [ ] Every applied setting was verified on the rendered page, or explicitly reported unverified.
+- [ ] Any goal or funnel declared has one macro goal, a broad first step and a business outcome last, and every refusal or warning was relayed verbatim.
+- [ ] After a structural content change, every matcher was resolved against the current docs, and the question of whether the new content is measured at all was asked.
