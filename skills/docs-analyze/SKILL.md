@@ -1,8 +1,8 @@
 ---
 name: docs-analyze
-description: Find out what is actually wrong with documentation that already exists, and fix it. Starts from the numbers — search positions, AI-answer and citation signals, reader behaviour, funnels — locates the page or the section that is losing people, brings in the detectors that say what exactly is broken there, states the finding in business terms, checks whether a change like it has ever worked before, and then applies the fix through whichever route you choose. Use when asked why traffic dropped, why readers leave, what to fix first, audit our docs, run an SEO or GEO check, why nobody clicks, where do we lose people, что не так с документацией, почему упал трафик.
+description: Find out what is actually wrong with documentation that already exists, and fix it. Starts from the numbers — search positions, AI-answer and citation signals, reader behaviour, funnels — locates the page or the section that is losing people, brings in the detectors that say what exactly is broken there, states the finding in business terms, checks whether a change like it has ever worked before, and then applies the fix through whichever route you choose. Also audits the demand side: what the product can do, which jobs and audiences that serves, and which of them the docs never address at all — the gap no number can show, because a page that does not exist has no traffic. Use when asked why traffic dropped, why readers leave, what to fix first, audit our docs, run an SEO or GEO check, why nobody clicks, where do we lose people, who else could use this, which use cases are we missing, which pages should we write, audit our audiences, что не так с документацией, почему упал трафик, кому ещё нужен наш продукт, каких страниц нам не хватает.
 metadata:
-  version: 2.0.0
+  version: 2.1.0
   category: analysis
   mode: orchestrator
   measures:
@@ -30,7 +30,7 @@ metadata:
   accelerated_by:
     - markdown-lsp      # graph/semantic search over the docs folder (self-hosted) — faster & cheaper than grep
     - docsbook-mcp      # search rankings, reader behaviour and the doc graph in the cloud, if a workspace is connected
-  keywords: [audit, analysis, seo, geo, aeo, analytics, metrics, traffic-drop, dead-end, funnel, conversion, rankings, ctr, why, diagnose, triage, fix-queue, change-impact, что-не-так, почему-упал-трафик]
+  keywords: [audit, analysis, seo, geo, aeo, analytics, metrics, traffic-drop, dead-end, funnel, conversion, rankings, ctr, why, diagnose, triage, fix-queue, change-impact, use-cases, jobs-to-be-done, audience, personas, coverage-gap, content-gap, opportunity, adjacent-markets, что-не-так, почему-упал-трафик, кому-нужен, каких-страниц-не-хватает]
 ---
 
 # docs-analyze — From a number to a fix that shipped
@@ -38,6 +38,8 @@ metadata:
 Every documentation audit that starts by reading pages produces a list of opinions. This one starts from what already happened: what readers searched, where they gave up, which page the search engine already shows and nobody clicks. The numbers say **where** to look. The detectors say **what** is wrong there. Only then is there a fix worth applying.
 
 The loop has five phases and closes at the end — a fix that ships is measured, and what the measurement says feeds the next run.
+
+There is one thing the numbers structurally cannot say, and phase 2 carries it: a use case the docs never address has no page, so it has no impressions, no dead ends and no failing rank. Its absence is indistinguishable from success in every signal above. That gap is found by reasoning forward from what the product can do — `references/opportunity-audit.md` — and it is the only part of this skill that runs on inference rather than on traffic. It is labelled as such, and it never outranks a measured failure.
 
 ## Companion skills
 
@@ -78,19 +80,24 @@ If a signal is unavailable, say so once, at the top, in a sentence the reader ca
 
 Output of the phase: a shortlist of pages or sections, ranked by readers affected, each with the raw counts behind it and the signal that put it there.
 
+**If there is no history to rank** — a new site, a workspace just connected, traffic below the sample floors in `references/metrics.md` — say so plainly and go to the demand-side pass in phase 2 rather than producing a ranked list from nothing. An audit built on four visits is worse than an audit that admits it has none.
+
 ### 2. Diagnose — say what is actually wrong there
 
-A number tells you a page is failing. It does not tell you why, and the three reasons need three different fixes:
+A number tells you a page is failing. It does not tell you why, and the four reasons need four different fixes:
 
 - **Missing** — nothing answers the question. Cross-check zero-result searches and unanswered questions; a topic confirmed in both outranks a bigger count in either alone. This is `docs-create`'s work, not this skill's.
 - **Unhelpful** — the page exists and does not answer. Run the content detectors on it.
 - **Unfindable** — the answer exists and readers never reach it. The fix is a title, a link or the navigation — not a rewrite.
+- **Unserved** — a whole job, audience or workflow the product supports and the docs address nowhere. Nobody searched for it here because nothing here matched what they would have typed, so it appears in no signal at all. Found by working forward from the product's capabilities, never backward from traffic.
 
-Mislabelling is expensive: writing a new page when the real problem was the title costs a week and does not work.
+Mislabelling is expensive: writing a new page when the real problem was the title costs a week and does not work. **Unserved** is the one nobody checks for, because its symptom is silence.
 
 Once the failure mode is known, bring in only the detectors that can explain it. `references/detectors.md` holds the content detectors (page type, structure, style, audience, links, accessibility, media, freshness, translations) with their severity tables. `references/signals.md` holds the behavioural ones (dead ends, routes and funnels, question clusters, engagement, campaign traffic, reader cohorts, buying stage, the striking-distance band, rejected searches). `references/external-checks.md` holds the claims that decay without anyone touching them — prices against the live pricing page, third-party facts against their source, coverage against a named competitor.
 
 Run detectors in parallel where they are independent. Run the ones that need the full graph — link and orphan analysis, duplicate titles, translation parity — after the graph is built. Deduplicate across detectors: one line flagged twice is reported once, at the higher severity, naming both.
+
+**Unserved** has no detector, because there is no page to run one on. It has a pass of its own: `references/opportunity-audit.md` walks `capability → job → user → workflow → outcome → market → content`, produces a coverage matrix across fifteen dimensions and a queue of named missing assets, and hands the queue to `docs-create`. Run it when the site is new or the numbers are thin, when the measurable work is already done and volume is still small, or when the product shipped a capability the docs never framed as a job. Its whole output is `hypothesis` tier — it says who *could* be arriving, not who did.
 
 ### 3. Translate — say it in the language of the business
 
@@ -136,6 +143,9 @@ Apply the rules in `references/apply.md`: one recommendation per page per run, m
 - **Do not run search analysis on private or internal docs.** It only applies to public pages.
 - **Do not write in phases 1–4**, and do not cross into phase 5 without the apply gate answered.
 - **Do not create pages here.** A gap is handed to `docs-create`.
+- **Never invent a capability.** Every use case, audience, workflow and market in the demand-side pass traces to something the source actually showed. A page commissioned for a feature the product does not have is the most expensive output this skill can produce.
+- **Never present a potential audience, integration or market as an existing one**, and never attach a search volume to a phrasing this skill reasoned its way to.
+- **Never let an opportunity score outrank a measured failure.** Reasoning about who might arrive loses to a page that is demonstrably losing the readers who did.
 - **One recommendation per page per run.** Bundled changes make the next run unable to say which one worked.
 - **Cut the queue to what a week holds.** Five items is a plan; twenty is a backlog dump that gets ignored. Everything below the cut is one line with a count.
 
@@ -144,7 +154,8 @@ Apply the rules in `references/apply.md`: one recommendation per page per run, m
 - [ ] One window chosen, stated in the first line with total volume, used for every signal.
 - [ ] Availability tier stated once up front, with what a missing tier would have added — no mid-report upgrade prompts.
 - [ ] Every page in the queue carries its raw counts, its dominant signal, and a `measured` or `hypothesis` label.
-- [ ] Each item is labelled missing / unhelpful / unfindable, and missing items are handed to `docs-create` rather than rewritten.
+- [ ] Each item is labelled missing / unhelpful / unfindable / unserved, and missing and unserved items are handed to `docs-create` rather than rewritten.
+- [ ] Where the demand-side pass ran: its output is labelled `hypothesis` throughout, every use case names the capabilities it rests on, and no opportunity was ranked above a measured failure.
 - [ ] Cross-detector duplicates merged — no line reported twice.
 - [ ] Findings presented in plain language, worst first, with evidence quoted verbatim; no JSON handed to a person as the answer.
 - [ ] Prior comparable changes checked and a verdict given, or a baseline recorded because none existed.
