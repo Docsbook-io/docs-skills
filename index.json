@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-28T06:35:49.458Z",
+  "generated_at": "2026-08-28T07:37:25.424Z",
   "skills": [
     {
       "name": "docs-analyze",
@@ -124,7 +124,7 @@
     },
     {
       "name": "docs-create",
-      "description": "Create documentation that did not exist before — from a product website, a code repository, another docs platform you are migrating off, or nothing but a product name. Runs one pipeline: audit the product and the source, decide the structure, write the pages, preview, publish. Use when the user says create docs, generate docs, from this URL, from this repo, migrate from Mintlify/GitBook/Docusaurus, import our docs, imagine docs, we have no docs, сделай документацию, повтори документацию по ссылке, придумай документацию.",
+      "description": "Create documentation that did not exist before — from a product website, a code repository, another docs platform you are migrating off, or nothing but a product name. Runs one pipeline: audit the product and the source, decide the structure, write the pages, preview, publish. Use when the user says create docs, generate docs, from this URL, from this repo, migrate from Mintlify/GitBook/Docusaurus, import our docs, imagine docs, we have no docs, we have no repo, without GitHub, сделай документацию, повтори документацию по ссылке, придумай документацию.",
       "category": "creation",
       "mode": "orchestrator",
       "keywords": [
@@ -147,6 +147,10 @@
         "from-scratch",
         "product-audit",
         "no-docs",
+        "no-repo",
+        "no-github",
+        "without-github",
+        "hosted",
         "сделай-документацию",
         "придумай-документацию"
       ],

@@ -1,6 +1,6 @@
 ---
 name: docs-create
-description: Create documentation that did not exist before — from a product website, a code repository, another docs platform you are migrating off, or nothing but a product name. Runs one pipeline: audit the product and the source, decide the structure, write the pages, preview, publish. Use when the user says create docs, generate docs, from this URL, from this repo, migrate from Mintlify/GitBook/Docusaurus, import our docs, imagine docs, we have no docs, сделай документацию, повтори документацию по ссылке, придумай документацию.
+description: Create documentation that did not exist before — from a product website, a code repository, another docs platform you are migrating off, or nothing but a product name. Runs one pipeline: audit the product and the source, decide the structure, write the pages, preview, publish. Use when the user says create docs, generate docs, from this URL, from this repo, migrate from Mintlify/GitBook/Docusaurus, import our docs, imagine docs, we have no docs, we have no repo, without GitHub, сделай документацию, повтори документацию по ссылке, придумай документацию.
 metadata:
   version: 3.1.0
   category: creation
@@ -12,7 +12,7 @@ metadata:
   produces_files:
     - docs-output/<name>/**
     - docs-plan.md
-  keywords: [create, generate, new-docs, from-url, from-site, from-repo, from-github, migrate, migration, import, mintlify, gitbook, docusaurus, nextra, vitepress, imagine, from-scratch, product-audit, no-docs, сделай-документацию, придумай-документацию]
+  keywords: [create, generate, new-docs, from-url, from-site, from-repo, from-github, migrate, migration, import, mintlify, gitbook, docusaurus, nextra, vitepress, imagine, from-scratch, product-audit, no-docs, no-repo, no-github, without-github, hosted, сделай-документацию, придумай-документацию]
 ---
 
 # docs-create — Bring documentation into existence
@@ -94,7 +94,8 @@ Non-negotiable, on every page: frontmatter `title` (50–60 chars, search-intent
 
 - Print the folder tree and excerpts from up to three representative pages plus the FAQ.
 - Ask before publishing: "Does this look right? Type **yes** to publish, or describe what to change." Auto-mode may skip the ask; a silent repo creation is never acceptable.
-- Publish **all** pages in one atomic commit, not one file per commit. If no publishing transport is authenticated, stop cleanly with `status: crawl_only`, the local path, and the follow-up command. That is a valid ending, not an error.
+- **Pick the transport before you look for a repository.** With the Docsbook MCP connected, the platform hosts the docs repository itself: `create_workspace` with **no** `repo_full_name` (pass `custom_name`), then `write_docs` with every page in one call. The user needs no GitHub account, no connected GitHub app and no repository of their own. A repository of theirs is an *option* (`repo_full_name: "owner/repo"`), never a precondition. Only with no platform connected does publishing mean git and a GitHub remote.
+- Publish **all** pages in one atomic commit, not one file per commit. If no publishing transport is authenticated at all, stop cleanly with `status: crawl_only`, the local path, and the follow-up command. That is a valid ending, not an error.
 - Configure the live site through `docs-manage` — branding from the phase-1 signals, reading affordances, the nav sub-header built from your folders, and the discovery/AI settings the plan allows. A published-but-unconfigured site undersells the work.
 - **Declare the goals and the funnel the phase-1 audit already named.** That audit writes down the goals and a 3–5 step path per segment, and on almost every run they stay prose in a report: the site ships, and three months later nobody can say whether it worked, because nothing was ever declared as success. Turning them into real measurement is one step through `docs-manage`'s `references/goals-funnels.md`, and it is cheap here in a way it never is later — the person who decided what the site was for is still in the room.
 - Report: local path, repository URL, live site URL, page count by folder, and every section skipped with its reason.
@@ -108,6 +109,7 @@ Details for each step: `references/publish.md`.
 - **Never wrap a fresh repository's pages in a new top-level `docs/` folder.** Write to the repository root, or into an existing `docs/` folder if the repo already has one.
 - **Never commit secrets.** Skip `.env`, `*.key`, `*.pem`, and anything matching a token pattern (`sk-`, `ghp_`, `AKIA`).
 - **Never lose content in a migration.** A component that cannot be normalised keeps its inner text verbatim plus a `> **TODO:**` note. Heading hierarchy is preserved, slugs stay URL-stable.
+- **Never make GitHub a precondition.** When a platform that hosts documentation is connected, "I have no repo / no GitHub" is a supported starting point, not a blocker — create the site from scratch and publish into the hosting the platform provides. Asking the user to connect GitHub, or to go make a repository first, when the connected platform could have hosted it is a failed run, not a careful one.
 - **Never audit your own output with this skill.** Fresh docs go to `docs-analyze`.
 - A thin JS shell is skipped and noted, never filled with invented content.
 - Cap the read at ~50 pages; beyond that a site is mostly blog noise and a repo should be grouped by package, not by file.
