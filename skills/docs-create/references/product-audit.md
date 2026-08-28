@@ -37,6 +37,16 @@ List every path a reader can arrive by — organic search, a repo README, a pack
 
 If the product declares an entry funnel or a positioning rule anywhere in its own knowledge base, **read it first and treat it as a hard constraint.** No page you propose may contradict it.
 
+## Lens 2b — Capabilities and the jobs they unlock
+
+A segment list says who arrives. It does not say what the product lets them finish, and a plan built only on segments produces a page per feature — which is how generated docs end up as a file dump with better headings.
+
+Before the structure decision, walk the chain once: **capability → job → user → workflow → outcome**. Translate every feature into the action it performs ("webhook" → "start a process the moment something happens"), then ask which jobs that action finishes, for whom, and what the result is worth. Combinations matter more than individual capabilities: *API + filtering + export* is six different use cases for six different audiences, and each of them types something different into a search box.
+
+This is what the mandatory use-case page and the FAQ get written from, and it is what stops the plan from covering only technical intent while nobody problem-aware ever finds the product.
+
+`docs-analyze/references/opportunity-audit.md` is the full method — ten job classes, four audience axes, the coverage matrix, the scoring. Load it here when the plan needs more than two or three use-case pages, or when the product's capabilities clearly serve audiences the source never addresses. Its one hard rule applies with full force at creation time: **a capability the source did not show does not exist**, and no page may be planned for it.
+
 ## Lens 3 — Competitors: who you are measured against
 
 - Who the source itself names, and who the segments actually compare against — these differ more often than not.
@@ -145,6 +155,7 @@ When the product keeps its own knowledge base (a README plus specs tree, a produ
 
 - [ ] Segments, entry paths and competitors each recorded with an evidence tier, and simulated claims labelled.
 - [ ] A stated entry funnel or positioning rule, where one exists, was read first and contradicted by nothing proposed.
+- [ ] Capability → job → user chain walked at least once, and every planned use-case page traces to a capability the source actually showed.
 - [ ] Monetization model classified from real signals, and the site shape follows from it.
 - [ ] CTA destination resolved before generation started.
 - [ ] Brand signals recorded with sources, absences recorded as absences.

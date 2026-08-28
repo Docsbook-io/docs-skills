@@ -27,7 +27,7 @@ Documentation work is four jobs, and every request lands in one of them.
 | | Skill | The question it answers |
 |---|---|---|
 | ✍️ | **`docs-create`** | The docs do not exist yet. Make them — from a site, a repo, another platform, or an idea. |
-| 🔍 | **`docs-analyze`** | Something is wrong. Find it from real numbers, say what it costs in plain language, and fix it. |
+| 🔍 | **`docs-analyze`** | Something is wrong. Find it from real numbers, say what it costs in plain language, and fix it — including the gap no number shows: the audiences and use cases the docs never address. |
 | 📐 | **`docs-manage`** | What should this page say, and what should the site around it do? |
 | ⚙️ | **`docs-automate`** | Make it keep happening without anyone remembering. |
 
@@ -143,7 +143,7 @@ Then ask in plain language. No flags, no config — the skill fires from your re
 | Skill | Category | Covers |
 |---|---|---|
 | `docs-create` | creation | Source detection · site / code / migration / idea routes · product audit (buyers, entry paths, competitors, monetization) · structure and page-set design · preview, publish, configure |
-| `docs-analyze` | analysis | Search and answer-engine signals · reader behaviour, dead ends, funnels, cohorts, buying stage · content detectors (type, structure, style, audience, links, a11y, media, freshness, translations) · external checks (pricing, third-party claims, competitor coverage) · business translation · prior-fix impact · apply via PR / chat approval / direct |
+| `docs-analyze` | analysis | Search and answer-engine signals · reader behaviour, dead ends, funnels, cohorts, buying stage · content detectors (type, structure, style, audience, links, a11y, media, freshness, translations) · external checks (pricing, third-party claims, competitor coverage) · demand-side opportunity audit (capability → job → audience → workflow → outcome, 15-dimension coverage matrix, named content gaps) · business translation · prior-fix impact · apply via PR / chat approval / direct |
 | `docs-manage` | management | Writing rules · retrieval and citation · conversion and the action ladder · rendered blocks, images, diagrams · site configuration by capability · finding → fix playbooks |
 | `docs-automate` | automation | Setup interview · code/site/third-party/freshness drift · events and handlers · CI checks and hooks · monitors, thresholds and alerts · tuning loops |
 

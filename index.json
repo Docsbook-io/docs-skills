@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-28T06:33:38.827Z",
+  "generated_at": "2026-08-28T06:35:49.458Z",
   "skills": [
     {
       "name": "docs-analyze",
-      "description": "Find out what is actually wrong with documentation that already exists, and fix it. Starts from the numbers — search positions, AI-answer and citation signals, reader behaviour, funnels — locates the page or the section that is losing people, brings in the detectors that say what exactly is broken there, states the finding in business terms, checks whether a change like it has ever worked before, and then applies the fix through whichever route you choose. Reads the goals and funnels the owner declared as the one signal that measures the docs against their own stated purpose, and says what a given shape of those numbers actually means before anything is rewritten. Use when asked why traffic dropped, why readers leave, what to fix first, audit our docs, run an SEO or GEO check, why nobody clicks, where do we lose people, why nobody converts, did that change work, что не так с документацией, почему упал трафик, где теряем читателей.",
+      "description": "Find out what is actually wrong with documentation that already exists, and fix it. Starts from the numbers — search positions, AI-answer and citation signals, reader behaviour, funnels — locates the page or the section that is losing people, brings in the detectors that say what exactly is broken there, states the finding in business terms, checks whether a change like it has ever worked before, and then applies the fix through whichever route you choose. Reads the goals and funnels the owner declared as the one signal that measures the docs against their own stated purpose, and says what a given shape of those numbers actually means before anything is rewritten. Also audits the demand side: what the product can do, which jobs and audiences that serves, and which of them the docs never address at all — the gap no number can show, because a page that does not exist has no traffic. Use when asked why traffic dropped, why readers leave, what to fix first, audit our docs, run an SEO or GEO check, why nobody clicks, where do we lose people, why nobody converts, did that change work, who else could use this, which use cases are we missing, which pages should we write, audit our audiences, что не так с документацией, почему упал трафик, где теряем читателей, кому ещё нужен наш продукт, каких страниц нам не хватает.",
       "category": "analysis",
       "mode": "orchestrator",
       "keywords": [
@@ -28,10 +28,20 @@
         "triage",
         "fix-queue",
         "change-impact",
+        "use-cases",
+        "jobs-to-be-done",
+        "audience",
+        "personas",
+        "coverage-gap",
+        "content-gap",
+        "opportunity",
+        "adjacent-markets",
         "что-не-так",
         "почему-упал-трафик",
         "цели",
-        "воронка"
+        "воронка",
+        "кому-нужен",
+        "каких-страниц-не-хватает"
       ],
       "accelerated_by": [
         "markdown-lsp",
@@ -60,7 +70,7 @@
         "visit_evidence",
         "traffic"
       ],
-      "version": "2.1.0",
+      "version": "2.2.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-analyze/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-analyze/SKILL.md"
     },
