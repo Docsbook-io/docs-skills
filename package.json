@@ -1,6 +1,6 @@
 {
   "name": "docs-skills",
-  "version": "1.8.32",
+  "version": "1.8.33",
   "description": "Four AI agent skills that run documentation as a growth channel — create, analyze, manage, automate. For Claude Code, Cursor, Codex and other AI coding tools.",
   "keywords": [
     "documentation",
