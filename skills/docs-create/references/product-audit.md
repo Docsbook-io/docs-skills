@@ -85,6 +85,8 @@ Ask only what the source did not already tell you. One question at a time, react
 - **Audience** — propose two or three roles from what you read rather than asking cold; confirm each one's entry point, current knowledge, job to be done, and what success looks like.
 - **Funnels** — for each confirmed role, a 3–5 step path from entry to success. Where a top-of-funnel goal is selected, the awareness pages are about the problem space, not the product.
 
+**These two are not report prose — they are the definitions the site gets measured by.** The goals and the funnel written here are handed to `../../docs-manage/references/goals-funnels.md` at publish and declared against the live site. Write them so that step is possible: a goal is one thing a reader does that something observable can match — a section they reach, an action they take in the page, a destination they leave for — and a funnel is those goals in the order they happen, starting broad and ending on the thing that changes revenue. A goal phrased as an internal aspiration ("build trust") cannot be declared, and a funnel starting at the index page describes a reader almost nobody is.
+
 Cap the first plan at 5–7 P0 pages. No team ships more than that, and a plan nobody finishes is a plan nobody trusts.
 
 ## Output: `docs-plan.md`

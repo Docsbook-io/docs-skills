@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-26T13:44:10.947Z",
+  "generated_at": "2026-08-28T06:33:38.827Z",
   "skills": [
     {
       "name": "docs-analyze",
-      "description": "Find out what is actually wrong with documentation that already exists, and fix it. Starts from the numbers — search positions, AI-answer and citation signals, reader behaviour, funnels — locates the page or the section that is losing people, brings in the detectors that say what exactly is broken there, states the finding in business terms, checks whether a change like it has ever worked before, and then applies the fix through whichever route you choose. Use when asked why traffic dropped, why readers leave, what to fix first, audit our docs, run an SEO or GEO check, why nobody clicks, where do we lose people, что не так с документацией, почему упал трафик.",
+      "description": "Find out what is actually wrong with documentation that already exists, and fix it. Starts from the numbers — search positions, AI-answer and citation signals, reader behaviour, funnels — locates the page or the section that is losing people, brings in the detectors that say what exactly is broken there, states the finding in business terms, checks whether a change like it has ever worked before, and then applies the fix through whichever route you choose. Reads the goals and funnels the owner declared as the one signal that measures the docs against their own stated purpose, and says what a given shape of those numbers actually means before anything is rewritten. Use when asked why traffic dropped, why readers leave, what to fix first, audit our docs, run an SEO or GEO check, why nobody clicks, where do we lose people, why nobody converts, did that change work, что не так с документацией, почему упал трафик, где теряем читателей.",
       "category": "analysis",
       "mode": "orchestrator",
       "keywords": [
@@ -18,7 +18,9 @@
         "traffic-drop",
         "dead-end",
         "funnel",
+        "goals",
         "conversion",
+        "activation",
         "rankings",
         "ctr",
         "why",
@@ -27,7 +29,9 @@
         "fix-queue",
         "change-impact",
         "что-не-так",
-        "почему-упал-трафик"
+        "почему-упал-трафик",
+        "цели",
+        "воронка"
       ],
       "accelerated_by": [
         "markdown-lsp",
@@ -49,19 +53,20 @@
         "time_to_first_value",
         "content_health_score",
         "funnel_completion_rate",
+        "goal_completion_rate",
         "route_frequency",
         "rage_signal_rate",
         "repeat_visit_retention",
         "visit_evidence",
         "traffic"
       ],
-      "version": "2.0.0",
+      "version": "2.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-analyze/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-analyze/SKILL.md"
     },
     {
       "name": "docs-automate",
-      "description": "Set up the things that should keep happening without anyone remembering to do them - drift guards that catch documentation falling behind the code, the site or any other source of truth; event handlers and webhooks; CI checks on pull requests; alerts; and standing monitors over search, answer-engine, analytics and funnel signals. Always starts by asking what you actually want watched and offering concrete options rather than assuming. Use when asked to automate, monitor, watch, set up alerts, notify us when, add a CI check, keep docs in sync, catch drift, wire a webhook, автоматизировать, следить за, настроить алерты.",
+      "description": "Set up the things that should keep happening without anyone remembering to do them - drift guards that catch documentation falling behind the code, the site or any other source of truth, and that catch a content change breaking or outgrowing the goals and funnels the docs are measured by; event handlers and webhooks; CI checks on pull requests; alerts; and standing monitors over search, answer-engine, analytics and funnel signals. Always starts by asking what you actually want watched and offering concrete options rather than assuming. Use when asked to automate, monitor, watch, set up alerts, notify us when, add a CI check, keep docs in sync, catch drift, check our goals still work after a rewrite, wire a webhook, автоматизировать, следить за, настроить алерты.",
       "category": "automation",
       "mode": "orchestrator",
       "keywords": [
@@ -77,6 +82,9 @@
         "watcher",
         "notify",
         "scheduled",
+        "goals",
+        "funnel",
+        "measurement-drift",
         "автоматизация",
         "алерты",
         "следить"
@@ -97,9 +105,10 @@
         "dead_end_rate",
         "self_serve_resolution_rate",
         "funnel_completion_rate",
+        "goal_completion_rate",
         "content_health_score"
       ],
-      "version": "1.0.0",
+      "version": "1.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-automate/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-automate/SKILL.md"
     },
@@ -136,13 +145,13 @@
         "markdown-lsp",
         "docsbook-mcp"
       ],
-      "version": "3.0.0",
+      "version": "3.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-create/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-create/SKILL.md"
     },
     {
       "name": "docs-manage",
-      "description": "The rulebook for writing documentation and for running the site it lives on. Two halves - how to write or change a page (page type, structure, style, audience, retrieval, conversion, presentation) and how to configure the site (identity, navigation, reading affordances, discovery, assistant, languages, domain, access), including what each feature actually gives a reader and when it is worth turning on. Load it before writing a line, and whenever an analysis has told you what is wrong and you need to know what to do about it. Use when asked to write, rewrite, edit, restyle or restructure docs, or to configure, brand, set up navigation, enable features, turn on search or the assistant, настроить сайт, переписать страницу.",
+      "description": "The rulebook for writing documentation and for running the site it lives on. Two halves - how to write or change a page (page type, structure, style, audience, retrieval, conversion, presentation) and how to configure the site (identity, navigation, reading affordances, discovery, assistant, languages, domain, access, and the goals and funnels that declare what a reader was supposed to do), including what each feature actually gives a reader and when it is worth turning on. Load it before writing a line, and whenever an analysis has told you what is wrong and you need to know what to do about it. Use when asked to write, rewrite, edit, restyle or restructure docs, or to configure, brand, set up navigation, enable features, turn on search or the assistant, track a conversion, set up goals or a funnel, measure whether readers do what they should, настроить сайт, переписать страницу, настроить цели и воронку.",
       "category": "management",
       "mode": "orchestrator",
       "keywords": [
@@ -168,15 +177,32 @@
         "enable",
         "languages",
         "domain",
+        "goals",
+        "funnel",
+        "conversion-tracking",
+        "measurement",
+        "activation",
         "переписать",
-        "настроить-сайт"
+        "настроить-сайт",
+        "цели",
+        "воронка"
+      ],
+      "uses_mcp_tools": [
+        "create_goal",
+        "create_funnel",
+        "mark_path_as_funnel_step",
+        "delete_goal"
       ],
       "requires_docsbook_mcp": false,
       "accelerated_by": [
         "markdown-lsp",
         "docsbook-mcp"
       ],
-      "version": "1.0.0",
+      "measures": [
+        "goal_completion_rate",
+        "funnel_completion_rate"
+      ],
+      "version": "1.1.0",
       "raw_url": "https://raw.githubusercontent.com/Docsbook-io/docs-skills/main/skills/docs-manage/SKILL.md",
       "github_url": "https://github.com/Docsbook-io/docs-skills/blob/main/skills/docs-manage/SKILL.md"
     }

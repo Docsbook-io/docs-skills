@@ -1,8 +1,8 @@
 ---
 name: docs-analyze
-description: Find out what is actually wrong with documentation that already exists, and fix it. Starts from the numbers — search positions, AI-answer and citation signals, reader behaviour, funnels — locates the page or the section that is losing people, brings in the detectors that say what exactly is broken there, states the finding in business terms, checks whether a change like it has ever worked before, and then applies the fix through whichever route you choose. Use when asked why traffic dropped, why readers leave, what to fix first, audit our docs, run an SEO or GEO check, why nobody clicks, where do we lose people, что не так с документацией, почему упал трафик.
+description: Find out what is actually wrong with documentation that already exists, and fix it. Starts from the numbers — search positions, AI-answer and citation signals, reader behaviour, funnels — locates the page or the section that is losing people, brings in the detectors that say what exactly is broken there, states the finding in business terms, checks whether a change like it has ever worked before, and then applies the fix through whichever route you choose. Reads the goals and funnels the owner declared as the one signal that measures the docs against their own stated purpose, and says what a given shape of those numbers actually means before anything is rewritten. Use when asked why traffic dropped, why readers leave, what to fix first, audit our docs, run an SEO or GEO check, why nobody clicks, where do we lose people, why nobody converts, did that change work, что не так с документацией, почему упал трафик, где теряем читателей.
 metadata:
-  version: 2.0.0
+  version: 2.1.0
   category: analysis
   mode: orchestrator
   measures:
@@ -21,6 +21,7 @@ metadata:
     - time_to_first_value
     - content_health_score
     - funnel_completion_rate
+    - goal_completion_rate
     - route_frequency
     - rage_signal_rate
     - repeat_visit_retention
@@ -30,7 +31,7 @@ metadata:
   accelerated_by:
     - markdown-lsp      # graph/semantic search over the docs folder (self-hosted) — faster & cheaper than grep
     - docsbook-mcp      # search rankings, reader behaviour and the doc graph in the cloud, if a workspace is connected
-  keywords: [audit, analysis, seo, geo, aeo, analytics, metrics, traffic-drop, dead-end, funnel, conversion, rankings, ctr, why, diagnose, triage, fix-queue, change-impact, что-не-так, почему-упал-трафик]
+  keywords: [audit, analysis, seo, geo, aeo, analytics, metrics, traffic-drop, dead-end, funnel, goals, conversion, activation, rankings, ctr, why, diagnose, triage, fix-queue, change-impact, что-не-так, почему-упал-трафик, цели, воронка]
 ---
 
 # docs-analyze — From a number to a fix that shipped
@@ -70,7 +71,7 @@ Then establish, in this order, whichever is available:
 - **Search performance** — position, impressions, clicks and the queries each page ranks for, and specifically the pages sitting at positions 5–20 with impressions and no clicks. That band is the cheapest growth in the whole analysis.
 - **Answer-engine signals** — whether the platform's structured-data layers are switched on at all, and whether assistant crawlers are reading pages whose most citable structure is being withheld.
 - **Reader behaviour** — the outcome mix of visits, the pages readers gave up on, the routes they walked, the searches that returned nothing and the ones that returned results and got no click, the questions the assistant could not answer.
-- **Conversion** — completion of the paths that end somewhere that matters, click-through on the actions that matter.
+- **Conversion** — the goals the owner declared and how the ordered route through them holds up, step by step. This is the only signal in the run that measures the docs against the owner's *own* stated intent, and the only one whose numbers can be wrong because a definition is wrong rather than because readers changed. Read `references/goal-signals.md` before quoting any of it — §0 says when the question even calls for goals, and §1 is the four checks that decide whether a number is about readers at all. Where nothing is declared, that is the finding: report it once, without an upsell, and read the routes readers actually walked instead.
 
 If a signal is unavailable, say so once, at the top, in a sentence the reader can act on — never mid-report, never as a repeated upsell. Then continue at the tier you actually have. `references/metrics.md` carries the confounders, the sample floors, the honesty tiers, and what each missing tier would have added. Read it before quoting a single number; skipping it is how this skill produces a confident, expensive, wrong plan.
 
@@ -88,7 +89,7 @@ A number tells you a page is failing. It does not tell you why, and the three re
 
 Mislabelling is expensive: writing a new page when the real problem was the title costs a week and does not work.
 
-Once the failure mode is known, bring in only the detectors that can explain it. `references/detectors.md` holds the content detectors (page type, structure, style, audience, links, accessibility, media, freshness, translations) with their severity tables. `references/signals.md` holds the behavioural ones (dead ends, routes and funnels, question clusters, engagement, campaign traffic, reader cohorts, buying stage, the striking-distance band, rejected searches). `references/external-checks.md` holds the claims that decay without anyone touching them — prices against the live pricing page, third-party facts against their source, coverage against a named competitor.
+Once the failure mode is known, bring in only the detectors that can explain it. `references/detectors.md` holds the content detectors (page type, structure, style, audience, links, accessibility, media, freshness, translations) with their severity tables. `references/signals.md` holds the behavioural ones (dead ends, routes and funnels, question clusters, engagement, campaign traffic, reader cohorts, buying stage, the striking-distance band, rejected searches). `references/goal-signals.md` holds the declared ones — goals and funnels — with the pairs that disambiguate them and the worked readings for the shapes that mean opposite things depending on what sits beside them. `references/external-checks.md` holds the claims that decay without anyone touching them — prices against the live pricing page, third-party facts against their source, coverage against a named competitor.
 
 Run detectors in parallel where they are independent. Run the ones that need the full graph — link and orphan analysis, duplicate titles, translation parity — after the graph is built. Deduplicate across detectors: one line flagged twice is reported once, at the higher severity, naming both.
 
@@ -128,6 +129,9 @@ Apply the rules in `references/apply.md`: one recommendation per page per run, m
 
 - **Never invent a number.** No position, impression, query, percentage, or rate the data withheld. Report absolute counts and say the sample is thin.
 - **Never present lagged data as current.** Search data lags roughly two days and refreshes at most once a day; state the window and its as-of date, and do not re-pull within a day for the same numbers.
+- **Never report a goal or funnel step reading zero as reader behaviour** until its matcher has been resolved against the docs as they are now. A goal that cannot fire is visually identical to a goal with 100% drop-off, and the two lead to opposite work.
+- **Never quote a funnel rate without the share of traffic that entered step 1.** A funnel is a hypothesis about a path most readers are not on, and a rate without its coverage reads as a fact about the whole site.
+- **Never declare or edit a goal from an audit.** Missing or broken measurement is a finding; changing it belongs to `docs-manage`, after the apply gate.
 - **Never rank on a composite score alone.** Two pages at the same health score can be two completely different jobs. Name the dominant signal or flag the item as undecomposable and make its action a diagnostic, not a rewrite.
 - **Never re-penalise a page readers leave from after succeeding.** A high exit rate on a terminal success page is not a defect, and recommending its rewrite makes the docs worse.
 - **Never convert findings into money, pipeline, or deflected tickets on the owner's behalf.** If they want a figure, ask them for their cost per ticket and label the result as their assumption.
@@ -147,6 +151,7 @@ Apply the rules in `references/apply.md`: one recommendation per page per run, m
 - [ ] Each item is labelled missing / unhelpful / unfindable, and missing items are handed to `docs-create` rather than rewritten.
 - [ ] Cross-detector duplicates merged — no line reported twice.
 - [ ] Findings presented in plain language, worst first, with evidence quoted verbatim; no JSON handed to a person as the answer.
+- [ ] Where goals or funnels were read, every matcher was verified to resolve, the definition was unchanged inside the window, and every funnel rate carries the share of traffic that entered step 1.
 - [ ] Prior comparable changes checked and a verdict given, or a baseline recorded because none existed.
 - [ ] The apply route was asked for and answered before any file changed.
 - [ ] Changes were written through `docs-manage`'s rules; meaning and URLs preserved; no page created.

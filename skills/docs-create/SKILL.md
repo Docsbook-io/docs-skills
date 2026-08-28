@@ -2,7 +2,7 @@
 name: docs-create
 description: Create documentation that did not exist before — from a product website, a code repository, another docs platform you are migrating off, or nothing but a product name. Runs one pipeline: audit the product and the source, decide the structure, write the pages, preview, publish. Use when the user says create docs, generate docs, from this URL, from this repo, migrate from Mintlify/GitBook/Docusaurus, import our docs, imagine docs, we have no docs, сделай документацию, повтори документацию по ссылке, придумай документацию.
 metadata:
-  version: 3.0.0
+  version: 3.1.0
   category: creation
   mode: orchestrator
   requires_docsbook_mcp: false
@@ -96,6 +96,7 @@ Non-negotiable, on every page: frontmatter `title` (50–60 chars, search-intent
 - Ask before publishing: "Does this look right? Type **yes** to publish, or describe what to change." Auto-mode may skip the ask; a silent repo creation is never acceptable.
 - Publish **all** pages in one atomic commit, not one file per commit. If no publishing transport is authenticated, stop cleanly with `status: crawl_only`, the local path, and the follow-up command. That is a valid ending, not an error.
 - Configure the live site through `docs-manage` — branding from the phase-1 signals, reading affordances, the nav sub-header built from your folders, and the discovery/AI settings the plan allows. A published-but-unconfigured site undersells the work.
+- **Declare the goals and the funnel the phase-1 audit already named.** That audit writes down the goals and a 3–5 step path per segment, and on almost every run they stay prose in a report: the site ships, and three months later nobody can say whether it worked, because nothing was ever declared as success. Turning them into real measurement is one step through `docs-manage`'s `references/goals-funnels.md`, and it is cheap here in a way it never is later — the person who decided what the site was for is still in the room.
 - Report: local path, repository URL, live site URL, page count by folder, and every section skipped with its reason.
 
 Details for each step: `references/publish.md`.
@@ -126,4 +127,5 @@ When the user wants control, the same pipeline pauses at six checkpoints — sou
 - [ ] Preview (tree + excerpts incl. FAQ) printed before any publish prompt.
 - [ ] All pages published in one atomic commit — or `crawl_only` with the local path and the follow-up command.
 - [ ] Site configured through `docs-manage`, or connection instructions printed without failing the pipeline.
+- [ ] The goals and the funnel named in the phase-1 audit were declared against the live site, or their absence was reported with the reason.
 - [ ] Final report lists local path, repository URL, live URL, page count by folder, and skipped sections with reasons.
