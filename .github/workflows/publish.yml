@@ -3,6 +3,9 @@ name: Publish to npm
 on:
   push:
     branches: [main]
+  # Six releases were lost to a credential this workflow could not check, and
+  # recovering from that took a no-op commit because a push was the only way in.
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -15,14 +18,14 @@ jobs:
     if: github.actor != 'github-actions[bot]'
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           # Use GITHUB_TOKEN with write permission so git push works
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
           registry-url: https://registry.npmjs.org
 
       # index.json is generated from the SKILL.md frontmatter, but nothing ever
@@ -46,85 +49,81 @@ jobs:
       - name: Check catalog
         run: node scripts/check-catalog.js
 
-      # Fail on the credential BEFORE anything is bumped or pushed.
-      #
-      # Publishes had been failing since 2026-08-26 with `npm error 404 Not Found
-      # - PUT https://registry.npmjs.org/docs-skills`, and a 404 reads like "the
-      # package does not exist" when it means the opposite: npm answers 404 for a
-      # package that exists and that your token may not write, deliberately, so
-      # the registry never confirms a private name to a stranger. The real cause
-      # is the token, and nothing in the log said so — six releases (1.8.30 to
-      # 1.8.35) were tagged in git while npm stayed on 1.8.29.
-      #
-      # `npm whoami` separates the two cases the 404 fuses together: no identity
-      # at all (missing, malformed or revoked token) versus a valid identity
-      # without publish rights on this package. Both messages name NPM_TOKEN,
-      # because the fix is a human rotating a secret, never a change to this file.
-      - name: Verify the npm credential
+      # Prove the credential can publish BEFORE anything is written to main.
+      # Six releases (1.8.30 … 1.8.35) died on `E404 PUT
+      # registry.npmjs.org/docs-skills` — the 404 npm returns for "this token
+      # may not publish that package" just as readily as for "no such package",
+      # so the message pointed nowhere. The failure was invisible because the
+      # bump was committed and pushed one step earlier: main advertised six
+      # releases the registry never received, and every downstream consumer
+      # pinning the npm version froze at 1.8.29 while looking current.
+      - name: Verify npm credentials
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           if [ -z "${NODE_AUTH_TOKEN}" ]; then
-            echo "::error::NPM_TOKEN is not set on this repository. Add an npm automation token with publish rights on 'docs-skills' as the NPM_TOKEN secret."
+            echo "::error::The NPM_TOKEN secret is unset or empty. Create an npm automation token with publish rights on 'docs-skills' and store it as the NPM_TOKEN repository secret."
             exit 1
           fi
-          if ! NPM_USER=$(npm whoami 2>&1); then
-            echo "::error::NPM_TOKEN does not authenticate against registry.npmjs.org (npm whoami said: ${NPM_USER}). The token is missing, malformed, revoked or expired — rotate it."
+
+          if ! WHOAMI=$(npm whoami 2>&1); then
+            echo "::error::NPM_TOKEN is not a usable npm credential (npm whoami said: ${WHOAMI}). It has most likely expired or been revoked — issue a new automation token at https://www.npmjs.com/settings/~/tokens and update the NPM_TOKEN secret."
             exit 1
           fi
-          echo "npm identity: ${NPM_USER}"
+          echo "authenticated to npm as ${WHOAMI}"
 
-      - name: Bump patch version
-        run: npm version patch --no-git-tag-version
+          PKG=$(node -p "require('./package.json').name")
+          # A live token belonging to an account that is not a maintainer fails
+          # exactly like an expired one — same 404, at the last step. Say which
+          # it is here instead.
+          if npm view "$PKG" version >/dev/null 2>&1; then
+            if ! npm view "$PKG" maintainers --json | grep -q "\"${WHOAMI} "; then
+              echo "::error::npm token authenticates as '${WHOAMI}', who is not a maintainer of '${PKG}'. Publishing would fail with a misleading 404. Add ${WHOAMI} as a maintainer, or issue the token from an account that already is."
+              exit 1
+            fi
+          fi
 
-      # Publish BEFORE the bump is committed, and only if this exact version is
-      # not already on the registry.
-      #
-      # The bump used to be committed and pushed first, so a failed publish still
-      # burned a version number: git said "chore: release v1.8.35" while npm had
-      # 1.8.29, and every retry moved the target instead of retrying the same one.
-      # Publishing first makes a failure cost nothing — the next push retries the
-      # same version — and the existence check keeps that retry safe when the
-      # previous run published and then failed to push.
+      # The next version is one patch above whichever of the two sources is
+      # ahead — the committed package.json or what the registry actually holds.
+      # They diverged by six patches while publishing was broken, and a bump
+      # computed from package.json alone stays wrong in the opposite direction
+      # the first time a publish succeeds and the follow-up push does not.
+      - name: Decide the next version
+        id: version
+        run: |
+          PKG=$(node -p "require('./package.json').name")
+          LOCAL=$(node -p "require('./package.json').version")
+          PUBLISHED=$(npm view "$PKG" version 2>/dev/null || echo "0.0.0")
+          echo "package.json: ${LOCAL} · registry: ${PUBLISHED}"
+
+          NEXT=$(node -e '
+            const parse = (v) => String(v || "0.0.0").split("-")[0].split(".").map((n) => Number(n) || 0)
+            const [a, b] = [parse(process.argv[1]), parse(process.argv[2])]
+            const ahead = [0, 1, 2].reduce((acc, i) => acc !== 0 ? acc : a[i] - b[i], 0) >= 0 ? a : b
+            process.stdout.write([ahead[0], ahead[1], ahead[2] + 1].join("."))
+          ' "$LOCAL" "$PUBLISHED")
+
+          echo "next: ${NEXT}"
+          echo "next=${NEXT}" >> "$GITHUB_OUTPUT"
+
+      - name: Set the version
+        run: npm version "${{ steps.version.outputs.next }}" --no-git-tag-version --allow-same-version
+
+      # Publish first, record second. A failed upload now costs nothing: the
+      # bump lives only in the runner's working tree and main is untouched, so
+      # the next push retries the same version instead of stepping over it.
       - name: Publish to npm
-        id: publish
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          # Not `npm view docs-skills@$VERSION`: for a version that does not
-          # exist npm prints nothing and still exits 0, which would read as
-          # "already published" and silently skip every release forever.
-          # The registry's per-version document answers with a status code.
-          if curl -sfo /dev/null "https://registry.npmjs.org/docs-skills/${VERSION}"; then
-            echo "docs-skills@${VERSION} is already on the registry — nothing to publish."
-            exit 0
-          fi
-          if ! OUT=$(npm publish --access public 2>&1); then
-            echo "${OUT}"
-            case "${OUT}" in
-              *"404"*)
-                echo "::error::npm refused the publish with 404. The token authenticated (see the identity above) but is not authorised to publish 'docs-skills' — it is scoped to other packages, or read-only. Issue an automation token with write access to this package and update the NPM_TOKEN secret."
-                ;;
-              *)
-                echo "::error::npm publish failed — see the output above."
-                ;;
-            esac
-            exit 1
-          fi
-          echo "${OUT}"
 
-      # Only once the artefact is actually on the registry does the version
-      # number become a fact worth recording. A commit that says "release" and
-      # is not one is how this repo drifted six versions ahead of npm.
-      - name: Commit version bump
+      - name: Record the release on main
         run: |
-          if git diff --quiet -- package.json; then
-            echo "version unchanged — nothing to commit"
-            exit 0
-          fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add package.json
-          git commit -m "chore: release v$(node -p "require('./package.json').version") [skip ci]"
-          git push
+          git commit -m "chore: release v${{ steps.version.outputs.next }} [skip ci]"
+          # main can have moved during the upload; rebase rather than fail a
+          # release that npm has already accepted and cannot accept twice.
+          git pull --rebase origin main
+          git push origin HEAD:main
