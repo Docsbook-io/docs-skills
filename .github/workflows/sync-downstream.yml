@@ -8,9 +8,14 @@ name: Sync downstream plugin
 # one it had.
 #
 # This closes that window from the writing end: main moves, the plugin is told
-# immediately. The cron on the other side stays as the backstop for the runs
-# this one cannot cover — a dispatch that 500s, a token that lapses, a period
-# where this workflow itself is broken.
+# immediately. The cron on the other side stays, but it is a weak backstop and
+# not a substitute: GitHub throttles scheduled workflows on quiet repositories,
+# and that "hourly" job has fired ONCE in the eleven hours since it was added.
+# Measured rather than assumed — at the time of writing the plugin is still
+# missing 67e19cd (sixteen files of docs-analyze perspectives, pushed an hour
+# earlier), and would look perfectly in sync to anyone reading its own CI.
+# So the dispatch below is the dependable path, and PLUGINS_SYNC_TOKEN is a
+# requirement rather than an optimisation.
 #
 # Deliberately separate from publish.yml rather than a step inside it: the
 # plugin pins a git SHA, not an npm version, so a catalog change reaches it
@@ -42,7 +47,7 @@ jobs:
           SHA: ${{ github.sha }}
         run: |
           if [ -z "${TOKEN}" ]; then
-            echo "::warning::PLUGINS_SYNC_TOKEN is not set — docs-claude-plugins will pick this commit up on its hourly schedule instead of immediately. Add a fine-grained PAT with Contents: read and write on Docsbook-io/docs-claude-plugins as the PLUGINS_SYNC_TOKEN secret."
+            echo "::warning::PLUGINS_SYNC_TOKEN is not set, so this commit reaches docs-claude-plugins only when its cron next fires — which GitHub throttles on quiet repositories and has been running roughly once a night, not hourly. Add a fine-grained PAT with Contents: read and write on Docsbook-io/docs-claude-plugins as the PLUGINS_SYNC_TOKEN secret."
             exit 0
           fi
 
