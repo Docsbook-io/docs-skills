@@ -14,6 +14,12 @@ request lands in one of them.
 
 Detail lives in `skills/<name>/references/*.md` and is loaded on demand rather than up front.
 
+`docs-analyze` goes one level further: its phase 2 has fifteen **perspectives** in
+`skills/docs-analyze/references/perspectives/`, each finding a class of problem the others structurally
+cannot see, and `references/audit-router.md` decides which two to four of them a given question and a given
+evidence tier actually call for. Read the router before choosing one. Running all fifteen is not
+thoroughness — it is a report nobody finishes.
+
 ## How they hand off
 
 - `docs-analyze` finds a gap → `docs-create` writes the page.
