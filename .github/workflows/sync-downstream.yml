@@ -1,0 +1,70 @@
+name: Sync downstream plugin
+
+# docs-claude-plugins ships this catalog as committed files, copied in by its
+# scripts/sync-skills.mjs from the commit pinned in scripts/upstream.json. Its
+# own job moves that pin, and until now the only thing that started it was an
+# hourly cron — so every change here spent up to an hour published on main and
+# absent from the plugin, and a release the plugin missed looked identical to
+# one it had.
+#
+# This closes that window from the writing end: main moves, the plugin is told
+# immediately. The cron on the other side stays as the backstop for the runs
+# this one cannot cover — a dispatch that 500s, a token that lapses, a period
+# where this workflow itself is broken.
+#
+# Deliberately separate from publish.yml rather than a step inside it: the
+# plugin pins a git SHA, not an npm version, so a catalog change reaches it
+# whether or not the npm release succeeds. Making the sync a step in the
+# publish job would have coupled it to the exact failure it is meant to survive.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync-downstream
+  cancel-in-progress: false
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tell docs-claude-plugins that main moved
+        env:
+          # GITHUB_TOKEN is scoped to this repository and cannot dispatch into
+          # another one. This must be a fine-grained PAT with Contents: read and
+          # write on Docsbook-io/docs-claude-plugins.
+          TOKEN: ${{ secrets.PLUGINS_SYNC_TOKEN }}
+          SHA: ${{ github.sha }}
+        run: |
+          if [ -z "${TOKEN}" ]; then
+            echo "::warning::PLUGINS_SYNC_TOKEN is not set — docs-claude-plugins will pick this commit up on its hourly schedule instead of immediately. Add a fine-grained PAT with Contents: read and write on Docsbook-io/docs-claude-plugins as the PLUGINS_SYNC_TOKEN secret."
+            exit 0
+          fi
+
+          STATUS=$(curl -sS -o /tmp/dispatch.txt -w '%{http_code}' \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${TOKEN}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/Docsbook-io/docs-claude-plugins/dispatches \
+            -d "$(node -p 'JSON.stringify({ event_type: "upstream-push", client_payload: { sha: process.env.SHA, repo: "Docsbook-io/docs-skills" } })')")
+
+          # 204 is the only success; the API answers 404 for a token without
+          # write access as readily as for a repository that is not there, so
+          # say both possibilities rather than reporting the status alone.
+          if [ "${STATUS}" = "204" ]; then
+            echo "dispatched upstream-push for ${SHA} to Docsbook-io/docs-claude-plugins"
+            exit 0
+          fi
+
+          echo "::error::repository_dispatch to Docsbook-io/docs-claude-plugins returned HTTP ${STATUS}."
+          cat /tmp/dispatch.txt
+          if [ "${STATUS}" = "404" ]; then
+            echo "::error::A 404 here means PLUGINS_SYNC_TOKEN lacks Contents: write on that repository (or has expired), not that the repository is missing."
+          fi
+          exit 1
